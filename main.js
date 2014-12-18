@@ -27,6 +27,15 @@ noteManager.prototype = {
           
         }, this));
 
+
+        $('#dropbox').on('click',  $.proxy(function(e){
+
+          this.createJSONfile($.parseJSON(localStorage.getItem("WebNotes")));
+          // FIXME not working with localhost, test with a public URL 
+          Dropbox.save("http://localhost/Web-Notes/temp/WebNotes.json", "WebNotes");
+          
+        }, this));
+
     },
 
     /**
@@ -177,7 +186,22 @@ noteManager.prototype = {
       var tagsArray = tags.split(',');
 
       return tagsArray;
-    }
+    },
+
+    /**
+     * Ajax request to generate a JSON file through a PHP script
+     * @param  {JSON} notes    object containing all notes
+     */
+    createJSONfile: function (notes) {
+      $.ajax({
+        type : "POST",
+        url : "json.php",
+        dataType : 'json', 
+        data : {
+            json : JSON.stringify(notes)
+        }
+    });
+    },
 };
  
 
