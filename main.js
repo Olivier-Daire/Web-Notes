@@ -30,8 +30,8 @@ noteManager.prototype = {
     },
 
     /**
-     * Get form data
-     * @return {JSON}
+     * Get form data and return it as a JSON object
+     * @return {JSON}   Note as JSON object  
      */
     getNote: function () {
       var title = $('form .title').val();
@@ -39,25 +39,28 @@ noteManager.prototype = {
       var today = this.formatDate();
       var date = today[0];
       var time = today[1];
+      var tags = this.formatTags($('form .tags').val());
 
-      var note = this.formatNote(title, content, date, time);
+      var note = this.formatNote(title, content, date, time, tags);
       return note;
     },
 
     /**
      * Format note to JSON with form data
-     * @param  {string}
-     * @param  {string}
-     * @param  {string}
-     * @param  {string}
-     * @return {JSON}
+     * @param  {string} title     Note title
+     * @param  {string} content   Note text content
+     * @param  {string} date      Note date 
+     * @param  {string} time      Note hour
+     * @param  {string} tags      Note tags
+     * @return {JSON}             Note as JSON object
      */
-    formatNote: function (title, content, date, time) {
+    formatNote: function (title, content, date, time, tags) {
       var note = {
             "title": title,
             "content": content,
             "date": date,
             "time": time,
+            "tags": tags,
           };
 
       return note;
@@ -87,28 +90,59 @@ noteManager.prototype = {
      */
     displayNotes: function () {
       if (localStorage.getItem("WebNotes") !== null) {
+
         var notes = $.parseJSON(localStorage.getItem("WebNotes"));
+        var tags;
+
         for (var i = notes.length-1 ; i >= 0; i--) {
+          for (var j = 0; j < notes[i].tags.length; j++) {
+            if (j === 0 ) {
+              tags = '<span>' + notes[i].tags[j] + '</span>';
+            }else{
+              tags = tags + ' <span>' + notes[i].tags[j] + '</span>';
+            }
+          }
+
           $('#main').append(
-            '<div id="'+i+'"><h2>'+notes[i].title+'</h2><p>'+notes[i].content+'</p><i>'+notes[i].date+' - '+notes[i].time+'</i></div>'
+            '<div id="'+i+'">'+
+              '<h2>'+notes[i].title+'</h2>'+
+              '<p>'+notes[i].content+'</p>'+
+              '<div>'+ tags +'</div>'+
+              '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
+            '</div>'
           );
         }
+
       }
     },
 
     /**
      * Display a single note
-     * @param  {JSON}
+     * @param {JSON} note
      */
     displaySingleNote: function (note) {
+      var tags;
+      for (var j = 0; j < note.tags.length; j++) {
+          if (j === 0 ) {
+            tags = '<span>' + note.tags[j] + '</span>';
+          }else{
+            tags = tags + ' <span>' + note.tags[j] + '</span>';
+          }
+      }
+
        $('#main').prepend(
-            '<div id=""><h2>'+note.title+'</h2><p>'+note.content+'</p><i>'+note.date+' - '+note.time+'</i></div>'
+            '<div id="">'+
+              '<h2>'+note.title+'</h2>'+
+              '<p>'+note.content+'</p>'+
+              '<div>'+ tags +'</div>'+
+              '<i>'+note.date+' - '+note.time+'</i>'+
+            '</div>'
         );
     },
 
     /**
      * Get current date and time and format it
-     * @return {array}
+     * @return {array}    containing current date and hour
      */
     formatDate: function () {
       var today = new Date();
@@ -134,6 +168,16 @@ noteManager.prototype = {
       return [today, time];
     },
     
+    /**
+     * Convert a list of tags into an array
+     * @param  {string} tags    list of tags
+     * @return {array}          array of tags
+     */
+    formatTags: function (tags) {
+      var tagsArray = tags.split(',');
+
+      return tagsArray;
+    }
 };
  
 

@@ -3,12 +3,14 @@
 <head>
 	<title></title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="lib/jQuery-Tags-Input/jquery.tagsinput.css" />
 </head>
 <body>
 
 	<form>
-		<input type="text" class="title">
-		<textarea></textarea>
+		<input type="text" class="title" placeholder="Title">
+		<textarea placeholder="Content"></textarea>
+		<input name="tags" class="tags" value="" />
 		<button type="submit">Save</button>
 	</form>
 
@@ -16,11 +18,16 @@
 
 
 	<script type="text/javascript" src="main.js"></script>
+	<script src="lib/jQuery-Tags-Input/jquery.tagsinput.min.js"></script>
 	<script type="text/javascript">
 		var noteManager = new noteManager({
 		 option: 'value2'
 		});
 		noteManager.init();
+
+		$('.tags').tagsInput({
+			'height': 'auto'
+		});
 	</script>
 </body>
 </html>
