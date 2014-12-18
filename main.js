@@ -23,7 +23,7 @@ noteManager.prototype = {
 
           var note = this.getNote();
           this.saveNote(note);
-          this.displayNotes();
+          this.displaySingleNote(note);
           
         }, this));
 
@@ -82,18 +82,28 @@ noteManager.prototype = {
       }
     },
 
+    /**
+     * Display all notes
+     */
     displayNotes: function () {
       if (localStorage.getItem("WebNotes") !== null) {
         var notes = $.parseJSON(localStorage.getItem("WebNotes"));
-        console.log(notes[0]);
-        for (var i = 0; i < notes.length; i++) {
-          $('body').append(
+        for (var i = notes.length-1 ; i >= 0; i--) {
+          $('#main').append(
             '<div id="'+i+'"><h2>'+notes[i].title+'</h2><p>'+notes[i].content+'</p><i>'+notes[i].date+' - '+notes[i].time+'</i></div>'
           );
         }
       }
+    },
 
-
+    /**
+     * Display a single note
+     * @param  {JSON}
+     */
+    displaySingleNote: function (note) {
+       $('#main').prepend(
+            '<div id=""><h2>'+note.title+'</h2><p>'+note.content+'</p><i>'+note.date+' - '+note.time+'</i></div>'
+        );
     },
 
     /**
