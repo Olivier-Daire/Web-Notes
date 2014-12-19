@@ -1,0 +1,6 @@
+	div[id^="note-"]{
+	display: inline-block;
+	margin: 1%;
+	padding: 1%;
+	border: 1px solid black;
+}
