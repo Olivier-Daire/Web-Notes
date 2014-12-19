@@ -106,14 +106,14 @@ noteManager.prototype = {
         for (var i = notes.length-1 ; i >= 0; i--) {
           for (var j = 0; j < notes[i].tags.length; j++) {
             if (j === 0 ) {
-              tags = '<span>' + notes[i].tags[j] + '</span>';
+              tags = '<span id="tag-'+j+'">' + notes[i].tags[j] + '</span>';
             }else{
-              tags = tags + ' <span>' + notes[i].tags[j] + '</span>';
+              tags = tags + ' <span id="tag-'+j+'">' + notes[i].tags[j] + '</span>';
             }
           }
 
           $('#main').append(
-            '<div id="'+i+'">'+
+            '<div id="note-'+i+'">'+
               '<h2>'+notes[i].title+'</h2>'+
               '<p>'+notes[i].content+'</p>'+
               '<div>'+ tags +'</div>'+
@@ -131,16 +131,19 @@ noteManager.prototype = {
      */
     displaySingleNote: function (note) {
       var tags;
+      var notesLength = $.parseJSON(localStorage.getItem("WebNotes")).length;
+      notesLength = notesLength-1; // Number of next note
+
       for (var j = 0; j < note.tags.length; j++) {
           if (j === 0 ) {
-            tags = '<span>' + note.tags[j] + '</span>';
+            tags = '<span id="tag-'+j+'">' + note.tags[j] + '</span>';
           }else{
-            tags = tags + ' <span>' + note.tags[j] + '</span>';
+            tags = tags + ' <span id="tag-'+j+'">' + note.tags[j] + '</span>';
           }
       }
 
        $('#main').prepend(
-            '<div id="">'+
+            '<div id="note-'+notesLength+'">'+
               '<h2>'+note.title+'</h2>'+
               '<p>'+note.content+'</p>'+
               '<div>'+ tags +'</div>'+
@@ -203,6 +206,3 @@ noteManager.prototype = {
     });
     },
 };
- 
-
- 
