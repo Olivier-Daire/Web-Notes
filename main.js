@@ -23,6 +23,7 @@ noteManager.prototype = {
 
           var note = this.getNote();
           this.saveNote(note);
+          this.clearForm();
           this.displaySingleNote(note);
           
         }, this));
@@ -150,6 +151,12 @@ noteManager.prototype = {
               '<i>'+note.date+' - '+note.time+'</i>'+
             '</div>'
         );
+    },
+
+
+    clearForm: function () {
+      $('form input.title, form textarea').val('');
+      $('div.tagsinput span').remove();
     },
 
     /**
