@@ -37,6 +37,17 @@ noteManager.prototype = {
           
         }, this));
 
+        $('#delete').on('click', $.proxy(function(){
+          this.deleteNotes();
+        }, this));
+
+
+        var that = this;
+        $(document).on('click', '.note button.delete', function(){
+          var id = $(this).parent().attr('id');
+          id = id.substr(5, id.length);
+          that.deleteSingleNote(id);
+        });
     },
 
     /**
@@ -44,12 +55,12 @@ noteManager.prototype = {
      * @return {JSON}   Note as JSON object  
      */
     getNote: function () {
-      var title = $('form .title').val();
-      var content = $('form textarea').val();
-      var today = this.formatDate();
-      var date = today[0];
-      var time = today[1];
-      var tags = this.formatTags($('form .tags').val());
+      var title = $('form .title').val(),
+          content = $('form textarea').val(),
+          today = this.formatDate(),
+          date = today[0],
+          time = today[1],
+          tags = this.formatTags($('form .tags').val());
 
       var note = this.formatNote(title, content, date, time, tags);
       return note;
@@ -114,11 +125,12 @@ noteManager.prototype = {
           }
 
           $('#main').append(
-            '<div id="note-'+i+'">'+
+            '<div id="note-'+i+'" class="note">'+
               '<h2>'+notes[i].title+'</h2>'+
               '<p>'+notes[i].content+'</p>'+
               '<div>'+ tags +'</div>'+
               '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
+              '<button class="delete">Delete</button>'+
             '</div>'
           );
         }
@@ -144,15 +156,36 @@ noteManager.prototype = {
       }
 
        $('#main').prepend(
-            '<div id="note-'+notesLength+'">'+
+            '<div id="note-'+notesLength+'" class="note">'+
               '<h2>'+note.title+'</h2>'+
               '<p>'+note.content+'</p>'+
               '<div>'+ tags +'</div>'+
               '<i>'+note.date+' - '+note.time+'</i>'+
+              '<button class="delete">Delete</button>'+
             '</div>'
         );
     },
 
+    /**
+     * Delete all notes
+     */
+    deleteNotes: function () {
+      localStorage.removeItem("WebNotes");
+    },
+
+    /**
+     * Delete a single note
+     * @param  {int} id  ID of the note to be deleted
+     */
+    deleteSingleNote: function (id) {
+      var notes = $.parseJSON(localStorage.getItem("WebNotes"));
+      if (id != -1) {
+        notes.splice(id, 1);
+        notes = JSON.stringify(notes);
+        localStorage.setItem("WebNotes", notes);
+        $('#note-'+id+'').remove();
+      }
+    },
 
     clearForm: function () {
       $('form input.title, form textarea').val('');
