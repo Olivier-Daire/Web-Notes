@@ -31,9 +31,9 @@ noteManager.prototype = {
 
         $('#dropbox').on('click',  $.proxy(function(e){
 
-          this.createJSONfile($.parseJSON(localStorage.getItem("WebNotes")));
-          // FIXME not working with localhost, test with a public URL 
-          Dropbox.save("http://localhost/Web-Notes/temp/WebNotes.json", "WebNotes");
+          var id = this.createJSONfile($.parseJSON(localStorage.getItem("WebNotes")));
+          // FIXME permission denied on univ server
+          Dropbox.save("https://etudiant.univ-mlv.fr/~odaire/WebNotes/temp/WebNotes-"+id+".json", "WebNotes");
           
         }, this));
 
@@ -236,12 +236,20 @@ noteManager.prototype = {
      * @param  {JSON} notes    object containing all notes
      */
     createJSONfile: function (notes) {
+      // TODO GET unique ID from php and return it
       $.ajax({
         type : "POST",
         url : "json.php",
         dataType : 'json', 
         data : {
             json : JSON.stringify(notes)
+        },
+        error: function(data){
+          console.log('Error generating JSON');
+          console.log(data);
+        },
+        success: function(data){
+          return data;
         }
     });
     },
