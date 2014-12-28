@@ -16,51 +16,70 @@ noteManager.prototype = {
  
     plugEvents: function () {
 
-        this.displayNotes();
-       
-        $('button[type="submit"]').on('click', $.proxy(function(e){
-          e.preventDefault();
+      this.displayNotes();
+      var that = this;
 
-          var note = this.getNote();
-          this.saveNote(note);
-          this.clearForm();
-          this.displaySingleNote(note);
+      $('button[type="submit"]').on('click', function(e){
+        e.preventDefault();
+
+        var note = that.getNote($(this).closest('form'));
+        that.saveNote(note);
+        that.clearForm();
+        that.displaySingleNote(note);
+      });
+
+
+      $('#dropbox').on('click',  $.proxy(function(){
+
+        var id = this.createJSONfile($.parseJSON(localStorage.getItem("WebNotes")));
+        // FIXME permission denied on univ server
+        Dropbox.save("https://etudiant.univ-mlv.fr/~odaire/WebNotes/temp/WebNotes-"+id+".json", "WebNotes");
           
-        }, this));
+      }, this));
 
+      $('#delete').on('click', $.proxy(function(){
+        this.deleteNotes();
+      }, this));
 
-        $('#dropbox').on('click',  $.proxy(function(e){
+      $(document).on('click', '.note button.delete', function(){
+        var id = $(this).parent().attr('id');
+        id = id.substr(5, id.length);
+        that.deleteSingleNote(id);
+      });
 
-          var id = this.createJSONfile($.parseJSON(localStorage.getItem("WebNotes")));
-          // FIXME permission denied on univ server
-          Dropbox.save("https://etudiant.univ-mlv.fr/~odaire/WebNotes/temp/WebNotes-"+id+".json", "WebNotes");
-          
-        }, this));
+      $(document).on('click', '.note button.edit', function(){
+        var id = $(this).parent().attr('id');
+        id = id.substr(5, id.length);
+        that.editNote(id);
+      });
 
-        $('#delete').on('click', $.proxy(function(){
-          this.deleteNotes();
-        }, this));
+      // Only when editing a note
+      $(document).on('click', '.note button[type="submit"]', function(e){
+        e.preventDefault();
+        var note = that.getNote($(this).closest('form'));
+        that.saveNote(note);
 
+        var id = $(this).closest('form').parent().attr('id');
+        id = id.substr(5, id.length);
+        that.deleteSingleNote(id);
 
-        var that = this;
-        $(document).on('click', '.note button.delete', function(){
-          var id = $(this).parent().attr('id');
-          id = id.substr(5, id.length);
-          that.deleteSingleNote(id);
-        });
+        that.displaySingleNote(note);
+      });
+
     },
 
     /**
      * Get form data and return it as a JSON object
+     * @param {HTML Object} form   The form generating this note
      * @return {JSON}   Note as JSON object  
      */
-    getNote: function () {
-      var title = $('form .title').val(),
-          content = $('form textarea').val(),
+    getNote: function (form) {
+      var title = form.find('.title').val(),
+          content = form.find('textarea').val(),
           today = this.formatDate(),
           date = today[0],
           time = today[1],
-          tags = this.formatTags($('form .tags').val());
+          tags = this.formatTags(form.find('.tags').val());
 
       var note = this.formatNote(title, content, date, time, tags);
       return note;
@@ -130,6 +149,7 @@ noteManager.prototype = {
               '<p>'+notes[i].content+'</p>'+
               '<div>'+ tags +'</div>'+
               '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
+              '<button class="edit">Edit</button>'+
               '<button class="delete">Delete</button>'+
             '</div>'
           );
@@ -161,6 +181,7 @@ noteManager.prototype = {
               '<p>'+note.content+'</p>'+
               '<div>'+ tags +'</div>'+
               '<i>'+note.date+' - '+note.time+'</i>'+
+              '<button class="edit">Edit</button>'+
               '<button class="delete">Delete</button>'+
             '</div>'
         );
@@ -185,6 +206,26 @@ noteManager.prototype = {
         localStorage.setItem("WebNotes", notes);
         $('#note-'+id+'').remove();
       }
+    },
+
+    /**
+     * Edit a note 
+     * @param  {int} id ID of the note to be edited
+     */
+    editNote: function (id) {
+      var notes = $.parseJSON(localStorage.getItem("WebNotes"));
+      var note = notes[id];
+
+     $('#note-'+id).html(
+        '<form>'+
+          '<input type="text" class="title" value="'+note.title+'">'+
+          '<textarea>'+note.content+'</textarea>'+
+          '<input name="tags" class="tags" value="'+note.tags+'" />'+
+          '<button type="submit">Save</button>'+
+        '</form>'
+      );
+
+     $('.tags').tagsInput();
     },
 
     clearForm: function () {
