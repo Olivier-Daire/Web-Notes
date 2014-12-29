@@ -8,13 +8,13 @@ var noteManager = function (options) {
  
 noteManager.prototype = {
     
-    init: function () {
+    init: function() {
       // merge defaults options and user's ones
       this.options = $.extend({}, this.defaults, this.parameters);
       this.plugEvents();
     },
  
-    plugEvents: function () {
+    plugEvents: function() {
 
       this.displayNotes();
       var that = this;
@@ -29,7 +29,7 @@ noteManager.prototype = {
       });
 
 
-      $('#dropbox').on('click',  $.proxy(function(){
+      $('#dropbox').on('click', $.proxy(function(){
 
         var id = this.createJSONfile($.parseJSON(localStorage.getItem("WebNotes")));
         // FIXME permission denied on univ server
@@ -68,20 +68,26 @@ noteManager.prototype = {
 
     },
 
+
+    /******************
+      CORE FUNCTIONS
+    ******************/
+
     /**
      * Get form data and return it as a JSON object
      * @param {HTML Object} form   The form generating this note
      * @return {JSON}   Note as JSON object  
      */
-    getNote: function (form) {
+    getNote: function(form) {
       var title = form.find('.title').val(),
           content = form.find('textarea').val(),
+          url = this.containsURL(content);
           today = this.formatDate(),
           date = today[0],
           time = today[1],
           tags = this.formatTags(form.find('.tags').val());
 
-      var note = this.formatNote(title, content, date, time, tags);
+      var note = this.formatNote(title, content, date, time, tags, url);
       return note;
     },
 
@@ -92,15 +98,17 @@ noteManager.prototype = {
      * @param  {string} date      Note date 
      * @param  {string} time      Note hour
      * @param  {string} tags      Note tags
+     * @param  {string} url       URL contained in note
      * @return {JSON}             Note as JSON object
      */
-    formatNote: function (title, content, date, time, tags) {
+    formatNote: function(title, content, date, time, tags, url) {
       var note = {
             "title": title,
             "content": content,
             "date": date,
             "time": time,
             "tags": tags,
+            "url": url,
           };
 
       return note;
@@ -111,7 +119,7 @@ noteManager.prototype = {
      * else create the object and save it in local storage.
      * @param  {JSON}
      */
-    saveNote: function (note) {
+    saveNote: function(note) {
       var notes;
       if (localStorage.getItem("WebNotes") === null) {
         notes = [ note ];
@@ -128,7 +136,7 @@ noteManager.prototype = {
     /**
      * Display all notes
      */
-    displayNotes: function () {
+    displayNotes: function() {
       if (localStorage.getItem("WebNotes") !== null) {
 
         var notes = $.parseJSON(localStorage.getItem("WebNotes"));
@@ -162,7 +170,7 @@ noteManager.prototype = {
      * Display a single note
      * @param {JSON} note
      */
-    displaySingleNote: function (note) {
+    displaySingleNote: function(note) {
       var tags;
       var notesLength = $.parseJSON(localStorage.getItem("WebNotes")).length;
       notesLength = notesLength-1; // Number of next note
@@ -190,7 +198,7 @@ noteManager.prototype = {
     /**
      * Delete all notes
      */
-    deleteNotes: function () {
+    deleteNotes: function() {
       localStorage.removeItem("WebNotes");
     },
 
@@ -198,7 +206,7 @@ noteManager.prototype = {
      * Delete a single note
      * @param  {int} id  ID of the note to be deleted
      */
-    deleteSingleNote: function (id) {
+    deleteSingleNote: function(id) {
       var notes = $.parseJSON(localStorage.getItem("WebNotes"));
       if (id != -1) {
         notes.splice(id, 1);
@@ -212,7 +220,7 @@ noteManager.prototype = {
      * Edit a note 
      * @param  {int} id ID of the note to be edited
      */
-    editNote: function (id) {
+    editNote: function(id) {
       var notes = $.parseJSON(localStorage.getItem("WebNotes"));
       var note = notes[id];
 
@@ -228,7 +236,13 @@ noteManager.prototype = {
      $('.tags').tagsInput();
     },
 
-    clearForm: function () {
+
+
+    /******************
+      TOOLS FUNCTIONS
+    ******************/
+
+    clearForm: function() {
       $('form input.title, form textarea').val('');
       $('div.tagsinput span').remove();
     },
@@ -237,7 +251,7 @@ noteManager.prototype = {
      * Get current date and time and format it
      * @return {array}    containing current date and hour
      */
-    formatDate: function () {
+    formatDate: function() {
       var today = new Date();
       var dd = today.getDate();
       var mm = today.getMonth()+1; //January is 0!
@@ -266,7 +280,7 @@ noteManager.prototype = {
      * @param  {string} tags    list of tags
      * @return {array}          array of tags
      */
-    formatTags: function (tags) {
+    formatTags: function(tags) {
       var tagsArray = tags.split(',');
 
       return tagsArray;
@@ -276,7 +290,7 @@ noteManager.prototype = {
      * Ajax request to generate a JSON file through a PHP script
      * @param  {JSON} notes    object containing all notes
      */
-    createJSONfile: function (notes) {
+    createJSONfile: function(notes) {
       // TODO GET unique ID from php and return it
       $.ajax({
         type : "POST",
@@ -292,6 +306,52 @@ noteManager.prototype = {
         success: function(data){
           return data;
         }
-    });
+      });
     },
+
+    /**
+     * Check for an URL inside a string
+     * @param  {string} s 
+     * @return {string}   Matched URL
+     */
+    containsURL: function(s) {
+      var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+      return regexp.exec(s)[0];
+    },
+
+    /**
+     * Test for compatible websites and return a widget or a picture
+     * @param  {string} s URL to be tested
+     * @return {string}   HTML tags or picture URL
+     */
+    matchWebsite: function(s) {
+      var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr)/
+
+      switch (regexp.exec(s)[0]) {
+        case 'youtube.com':
+        case 'youtu.be':
+         
+        break;
+        case 'soundcloud.com':
+        // FIXME Find out about the client ID
+          SC.initialize({
+            client_id: 'YOUR_CLIENT_ID'
+          });
+
+          var track_url = s;
+          SC.oEmbed(track_url, { auto_play: false }, function(oEmbed) {
+            return oEmbed.html;
+          });
+        break;
+        case 'imdb.com':
+          
+        break;
+        case 'allocine.fr':
+           
+        break;
+      }
+
+    },
+
+
 };
