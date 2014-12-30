@@ -316,7 +316,9 @@ noteManager.prototype = {
      */
     containsURL: function(s) {
       var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-      return regexp.exec(s)[0];
+      if (regexp.exec(s)) {
+        return regexp.exec(s)[0];
+      };
     },
 
     /**
