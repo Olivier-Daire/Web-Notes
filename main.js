@@ -342,27 +342,46 @@ noteManager.prototype = {
       switch (regexp.exec(s)[0]) {
         case 'youtube.com':
         case 'youtu.be':
-         
+          //http://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com
+          console.log(s);
+          s = this.getYoutubeId(s);
+          var iframe = '<iframe id="" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
+          $('#note-'+id).prepend(iframe);
         break;
+
         case 'soundcloud.com':
-          // FIXME Fidn out about the client id, mandatory ?
           SC.initialize({
-            client_id: 'YOUR_CLIENT_ID'
+            client_id: '174356325111c05f60352760c8f377b2'
           });
 
           var track_url = s;
-          SC.oEmbed(track_url, { auto_play: false }, function(oEmbed) {
+          SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
             $('#note-'+id).prepend(oEmbed.html);
           });
         break;
+
         case 'imdb.com':
           
         break;
+        
         case 'allocine.fr':
            
         break;
       }
     },
 
+
+    getYoutubeId: function(url){
+      var ID = '';
+      url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+      if(url[2] !== undefined) {
+        ID = url[2].split(/[^0-9a-z_]/i);
+        ID = ID[0];
+      }
+      else {
+        ID = url;
+      }
+        return ID;
+    },
 
 };
