@@ -336,7 +336,7 @@ noteManager.prototype = {
      * @return {string}    HTML tags or picture URL
      */
     generateWidget: function(id, s) {
-      var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr)/;
+      var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
 
 
       switch (regexp.exec(s)[0]) {
@@ -363,9 +363,17 @@ noteManager.prototype = {
         case 'imdb.com':
           
         break;
-        
+
         case 'allocine.fr':
            
+        break;
+
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'gif':
+          var img = '<img src="'+s+'" alt="">'
+          $('#note-'+id).prepend(img);
         break;
       }
     },
