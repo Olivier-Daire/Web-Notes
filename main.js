@@ -161,6 +161,10 @@ noteManager.prototype = {
               '<button class="delete">Delete</button>'+
             '</div>'
           );
+
+          if (notes[i].url) {
+            this.generateWidget(i, notes[i].url);
+          }
         }
 
       }
@@ -193,6 +197,10 @@ noteManager.prototype = {
               '<button class="delete">Delete</button>'+
             '</div>'
         );
+
+      if (note.url) {
+        this.generateWidget(notesLength, note.url);
+      }
     },
 
     /**
@@ -315,19 +323,21 @@ noteManager.prototype = {
      * @return {string}   Matched URL
      */
     containsURL: function(s) {
-      var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+      var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
       if (regexp.exec(s)) {
         return regexp.exec(s)[0];
-      };
+      }
     },
 
     /**
      * Test for compatible websites and return a widget or a picture
-     * @param  {string} s URL to be tested
-     * @return {string}   HTML tags or picture URL
+     * @param  {int}    id ID of the note containing the url
+     * @param  {string} s  URL to be tested
+     * @return {string}    HTML tags or picture URL
      */
-    matchWebsite: function(s) {
-      var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr)/
+    generateWidget: function(id, s) {
+      var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr)/;
+
 
       switch (regexp.exec(s)[0]) {
         case 'youtube.com':
@@ -335,14 +345,14 @@ noteManager.prototype = {
          
         break;
         case 'soundcloud.com':
-        // FIXME Find out about the client ID
+          // FIXME Fidn out about the client id, mandatory ?
           SC.initialize({
             client_id: 'YOUR_CLIENT_ID'
           });
 
           var track_url = s;
           SC.oEmbed(track_url, { auto_play: false }, function(oEmbed) {
-            return oEmbed.html;
+            $('#note-'+id).prepend(oEmbed.html);
           });
         break;
         case 'imdb.com':
@@ -352,7 +362,6 @@ noteManager.prototype = {
            
         break;
       }
-
     },
 
 
