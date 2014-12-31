@@ -10,6 +10,7 @@
 
 	<button id="dropbox">Dropbox</button>
 	<button id="delete">Delete</button>
+	<button id="order">Sort</button>
 
 	<form>
 		<input type="text" class="title" placeholder="Title">
@@ -27,7 +28,7 @@
 	<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="thas943csc5s4tu"></script>
 	<script type="text/javascript">
 		var noteManager = new noteManager({
-		 option: 'value2'
+		 defaultSort: 'older'
 		});
 		noteManager.init();
 

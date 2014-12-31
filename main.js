@@ -2,7 +2,7 @@
 var noteManager = function (options) {
     this.parameters = options;
     this.defaults = {
-        option: 'value'
+        defaultSort: 'newer'
     };
 };
  
@@ -17,6 +17,10 @@ noteManager.prototype = {
     plugEvents: function() {
 
       this.displayNotes();
+      if (this.options.defaultSort === "older") {
+        this.reverseOrder();
+      }
+
       var that = this;
 
       $('button[type="submit"]').on('click', function(e){
@@ -38,7 +42,9 @@ noteManager.prototype = {
       }, this));
 
       $('#delete').on('click', $.proxy(function(){
-        this.deleteNotes();
+        if (confirm("All notes will be deleted, are you sure ?")) {
+          this.deleteNotes();
+        }
       }, this));
 
       $(document).on('click', '.note button.delete', function(){
@@ -66,6 +72,10 @@ noteManager.prototype = {
         that.displaySingleNote(note);
       });
 
+      $('#order').on('click', $.proxy(function(e){
+        e.preventDefault();
+        this.reverseOrder();
+      }, this));
     },
 
 
@@ -187,17 +197,30 @@ noteManager.prototype = {
           }
       }
 
-       $('#main').prepend(
-            '<div id="note-'+notesLength+'" class="note">'+
-              '<h2>'+note.title+'</h2>'+
-              '<p>'+note.content+'</p>'+
-              '<div>'+ tags +'</div>'+
-              '<i>'+note.date+' - '+note.time+'</i>'+
-              '<button class="edit">Edit</button>'+
-              '<button class="delete">Delete</button>'+
-            '</div>'
+      if (this.options.defaultSort === "older") {
+        $('#main').append(
+          '<div id="note-'+notesLength+'" class="note">'+
+            '<h2>'+note.title+'</h2>'+
+            '<p>'+note.content+'</p>'+
+            '<div>'+ tags +'</div>'+
+            '<i>'+note.date+' - '+note.time+'</i>'+
+            '<button class="edit">Edit</button>'+
+            '<button class="delete">Delete</button>'+
+          '</div>'
+        );  
+      }else{
+        $('#main').prepend(
+          '<div id="note-'+notesLength+'" class="note">'+
+            '<h2>'+note.title+'</h2>'+
+            '<p>'+note.content+'</p>'+
+            '<div>'+ tags +'</div>'+
+            '<i>'+note.date+' - '+note.time+'</i>'+
+            '<button class="edit">Edit</button>'+
+            '<button class="delete">Delete</button>'+
+          '</div>'
         );
-
+      }
+      
       if (note.url) {
         this.generateWidget(notesLength, note.url);
       }
@@ -208,6 +231,7 @@ noteManager.prototype = {
      */
     deleteNotes: function() {
       localStorage.removeItem("WebNotes");
+      $('div[id^="note-"]').remove();
     },
 
     /**
@@ -226,7 +250,7 @@ noteManager.prototype = {
 
     /**
      * Edit a note 
-     * @param  {int} id ID of the note to be edited
+     * @param  {int} id  ID of the note to be edited
      */
     editNote: function(id) {
       var notes = $.parseJSON(localStorage.getItem("WebNotes"));
@@ -247,7 +271,7 @@ noteManager.prototype = {
 
 
     /******************
-      TOOLS FUNCTIONS
+     TOOLKIT FUNCTIONS
     ******************/
 
     clearForm: function() {
@@ -318,6 +342,16 @@ noteManager.prototype = {
     },
 
     /**
+     * Display all notes in reverse order : old ones first
+     */
+    reverseOrder: function() {
+      $('#main > div').each(function() {
+        $(this).prependTo(this.parentNode);
+      });
+    },
+
+
+    /**
      * Check for an URL inside a string
      * @param  {string} s 
      * @return {string}   Matched URL
@@ -333,7 +367,6 @@ noteManager.prototype = {
      * Test for compatible websites and return a widget or a picture
      * @param  {int}    id ID of the note containing the url
      * @param  {string} s  URL to be tested
-     * @return {string}    HTML tags or picture URL
      */
     generateWidget: function(id, s) {
       var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
@@ -342,8 +375,6 @@ noteManager.prototype = {
       switch (regexp.exec(s)[0]) {
         case 'youtube.com':
         case 'youtu.be':
-          //http://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com
-          console.log(s);
           s = this.getYoutubeId(s);
           var iframe = '<iframe id="" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
           $('#note-'+id).prepend(iframe);
@@ -372,13 +403,17 @@ noteManager.prototype = {
         case 'jpg':
         case 'png':
         case 'gif':
-          var img = '<img src="'+s+'" alt="">'
+          var img = '<img src="'+s+'" alt="">';
           $('#note-'+id).prepend(img);
         break;
       }
     },
 
-
+    /**
+     * Get the ID from a Youtube video
+     * @param  {string} url  URL of the video
+     * @return {string}      ID of the video
+     */
     getYoutubeId: function(url){
       var ID = '';
       url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
