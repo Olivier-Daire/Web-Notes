@@ -2,21 +2,25 @@
 var noteManager = function (options) {
     this.parameters = options;
     this.defaults = {
-        option: 'value'
+        defaultSort: 'newer'
     };
 };
  
 noteManager.prototype = {
     
-    init: function () {
+    init: function() {
       // merge defaults options and user's ones
       this.options = $.extend({}, this.defaults, this.parameters);
       this.plugEvents();
     },
  
-    plugEvents: function () {
+    plugEvents: function() {
 
       this.displayNotes();
+      if (this.options.defaultSort === "older") {
+        this.reverseOrder();
+      }
+
       var that = this;
 
       $('button[type="submit"]').on('click', function(e){
@@ -29,7 +33,7 @@ noteManager.prototype = {
       });
 
 
-      $('#dropbox').on('click',  $.proxy(function(){
+      $('#dropbox').on('click', $.proxy(function(){
 
         var id = this.createJSONfile($.parseJSON(localStorage.getItem("WebNotes")));
         // FIXME permission denied on univ server
@@ -38,7 +42,9 @@ noteManager.prototype = {
       }, this));
 
       $('#delete').on('click', $.proxy(function(){
-        this.deleteNotes();
+        if (confirm("All notes will be deleted, are you sure ?")) {
+          this.deleteNotes();
+        }
       }, this));
 
       $(document).on('click', '.note button.delete', function(){
@@ -66,22 +72,32 @@ noteManager.prototype = {
         that.displaySingleNote(note);
       });
 
+      $('#order').on('click', $.proxy(function(e){
+        e.preventDefault();
+        this.reverseOrder();
+      }, this));
     },
+
+
+    /******************
+      CORE FUNCTIONS
+    ******************/
 
     /**
      * Get form data and return it as a JSON object
      * @param {HTML Object} form   The form generating this note
      * @return {JSON}   Note as JSON object  
      */
-    getNote: function (form) {
+    getNote: function(form) {
       var title = form.find('.title').val(),
           content = form.find('textarea').val(),
+          url = this.containsURL(content);
           today = this.formatDate(),
           date = today[0],
           time = today[1],
           tags = this.formatTags(form.find('.tags').val());
 
-      var note = this.formatNote(title, content, date, time, tags);
+      var note = this.formatNote(title, content, date, time, tags, url);
       return note;
     },
 
@@ -92,15 +108,17 @@ noteManager.prototype = {
      * @param  {string} date      Note date 
      * @param  {string} time      Note hour
      * @param  {string} tags      Note tags
+     * @param  {string} url       URL contained in note
      * @return {JSON}             Note as JSON object
      */
-    formatNote: function (title, content, date, time, tags) {
+    formatNote: function(title, content, date, time, tags, url) {
       var note = {
             "title": title,
             "content": content,
             "date": date,
             "time": time,
             "tags": tags,
+            "url": url,
           };
 
       return note;
@@ -111,7 +129,7 @@ noteManager.prototype = {
      * else create the object and save it in local storage.
      * @param  {JSON}
      */
-    saveNote: function (note) {
+    saveNote: function(note) {
       var notes;
       if (localStorage.getItem("WebNotes") === null) {
         notes = [ note ];
@@ -128,7 +146,7 @@ noteManager.prototype = {
     /**
      * Display all notes
      */
-    displayNotes: function () {
+    displayNotes: function() {
       if (localStorage.getItem("WebNotes") !== null) {
 
         var notes = $.parseJSON(localStorage.getItem("WebNotes"));
@@ -153,6 +171,10 @@ noteManager.prototype = {
               '<button class="delete">Delete</button>'+
             '</div>'
           );
+
+          if (notes[i].url) {
+            this.generateWidget(i, notes[i].url);
+          }
         }
 
       }
@@ -162,7 +184,7 @@ noteManager.prototype = {
      * Display a single note
      * @param {JSON} note
      */
-    displaySingleNote: function (note) {
+    displaySingleNote: function(note) {
       var tags;
       var notesLength = $.parseJSON(localStorage.getItem("WebNotes")).length;
       notesLength = notesLength-1; // Number of next note
@@ -175,30 +197,48 @@ noteManager.prototype = {
           }
       }
 
-       $('#main').prepend(
-            '<div id="note-'+notesLength+'" class="note">'+
-              '<h2>'+note.title+'</h2>'+
-              '<p>'+note.content+'</p>'+
-              '<div>'+ tags +'</div>'+
-              '<i>'+note.date+' - '+note.time+'</i>'+
-              '<button class="edit">Edit</button>'+
-              '<button class="delete">Delete</button>'+
-            '</div>'
+      if (this.options.defaultSort === "older") {
+        $('#main').append(
+          '<div id="note-'+notesLength+'" class="note">'+
+            '<h2>'+note.title+'</h2>'+
+            '<p>'+note.content+'</p>'+
+            '<div>'+ tags +'</div>'+
+            '<i>'+note.date+' - '+note.time+'</i>'+
+            '<button class="edit">Edit</button>'+
+            '<button class="delete">Delete</button>'+
+          '</div>'
+        );  
+      }else{
+        $('#main').prepend(
+          '<div id="note-'+notesLength+'" class="note">'+
+            '<h2>'+note.title+'</h2>'+
+            '<p>'+note.content+'</p>'+
+            '<div>'+ tags +'</div>'+
+            '<i>'+note.date+' - '+note.time+'</i>'+
+            '<button class="edit">Edit</button>'+
+            '<button class="delete">Delete</button>'+
+          '</div>'
         );
+      }
+      
+      if (note.url) {
+        this.generateWidget(notesLength, note.url);
+      }
     },
 
     /**
      * Delete all notes
      */
-    deleteNotes: function () {
+    deleteNotes: function() {
       localStorage.removeItem("WebNotes");
+      $('div[id^="note-"]').remove();
     },
 
     /**
      * Delete a single note
      * @param  {int} id  ID of the note to be deleted
      */
-    deleteSingleNote: function (id) {
+    deleteSingleNote: function(id) {
       var notes = $.parseJSON(localStorage.getItem("WebNotes"));
       if (id != -1) {
         notes.splice(id, 1);
@@ -210,9 +250,9 @@ noteManager.prototype = {
 
     /**
      * Edit a note 
-     * @param  {int} id ID of the note to be edited
+     * @param  {int} id  ID of the note to be edited
      */
-    editNote: function (id) {
+    editNote: function(id) {
       var notes = $.parseJSON(localStorage.getItem("WebNotes"));
       var note = notes[id];
 
@@ -228,7 +268,13 @@ noteManager.prototype = {
      $('.tags').tagsInput();
     },
 
-    clearForm: function () {
+
+
+    /******************
+     TOOLKIT FUNCTIONS
+    ******************/
+
+    clearForm: function() {
       $('form input.title, form textarea').val('');
       $('div.tagsinput span').remove();
     },
@@ -237,7 +283,7 @@ noteManager.prototype = {
      * Get current date and time and format it
      * @return {array}    containing current date and hour
      */
-    formatDate: function () {
+    formatDate: function() {
       var today = new Date();
       var dd = today.getDate();
       var mm = today.getMonth()+1; //January is 0!
@@ -266,7 +312,7 @@ noteManager.prototype = {
      * @param  {string} tags    list of tags
      * @return {array}          array of tags
      */
-    formatTags: function (tags) {
+    formatTags: function(tags) {
       var tagsArray = tags.split(',');
 
       return tagsArray;
@@ -276,7 +322,7 @@ noteManager.prototype = {
      * Ajax request to generate a JSON file through a PHP script
      * @param  {JSON} notes    object containing all notes
      */
-    createJSONfile: function (notes) {
+    createJSONfile: function(notes) {
       // TODO GET unique ID from php and return it
       $.ajax({
         type : "POST",
@@ -292,6 +338,93 @@ noteManager.prototype = {
         success: function(data){
           return data;
         }
-    });
+      });
     },
+
+    /**
+     * Display all notes in reverse order : old ones first
+     */
+    reverseOrder: function() {
+      $('#main > div').each(function() {
+        $(this).prependTo(this.parentNode);
+      });
+    },
+
+
+    /**
+     * Check for an URL inside a string
+     * @param  {string} s 
+     * @return {string}   Matched URL
+     */
+    containsURL: function(s) {
+      var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+      if (regexp.exec(s)) {
+        return regexp.exec(s)[0];
+      }
+    },
+
+    /**
+     * Test for compatible websites and return a widget or a picture
+     * @param  {int}    id ID of the note containing the url
+     * @param  {string} s  URL to be tested
+     */
+    generateWidget: function(id, s) {
+      var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
+
+
+      switch (regexp.exec(s)[0]) {
+        case 'youtube.com':
+        case 'youtu.be':
+          s = this.getYoutubeId(s);
+          var iframe = '<iframe id="" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
+          $('#note-'+id).prepend(iframe);
+        break;
+
+        case 'soundcloud.com':
+          SC.initialize({
+            client_id: '174356325111c05f60352760c8f377b2'
+          });
+
+          var track_url = s;
+          SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
+            $('#note-'+id).prepend(oEmbed.html);
+          });
+        break;
+
+        case 'imdb.com':
+          
+        break;
+
+        case 'allocine.fr':
+           
+        break;
+
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'gif':
+          var img = '<img src="'+s+'" alt="">';
+          $('#note-'+id).prepend(img);
+        break;
+      }
+    },
+
+    /**
+     * Get the ID from a Youtube video
+     * @param  {string} url  URL of the video
+     * @return {string}      ID of the video
+     */
+    getYoutubeId: function(url){
+      var ID = '';
+      url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+      if(url[2] !== undefined) {
+        ID = url[2].split(/[^0-9a-z_]/i);
+        ID = ID[0];
+      }
+      else {
+        ID = url;
+      }
+        return ID;
+    },
+
 };
