@@ -153,12 +153,15 @@ noteManager.prototype = {
         var tags;
 
         for (var i = notes.length-1 ; i >= 0; i--) {
+          tags = '';
           for (var j = 0; j < notes[i].tags.length; j++) {
-            if (j === 0 ) {
-              tags = '<span id="tag-'+j+'">' + notes[i].tags[j] + '</span>';
-            }else{
-              tags = tags + ' <span id="tag-'+j+'">' + notes[i].tags[j] + '</span>';
-            }
+            if (notes[i].tags[j]) {
+              if (j === 0 ) {
+                tags = '<span id="tag-'+j+'">#' + notes[i].tags[j] + '</span>';  
+              }else{
+                tags = tags + ' <span id="tag-'+j+'">#' + notes[i].tags[j] + '</span>';
+              }
+            }   
           }
 
           $('#main').append(
@@ -185,16 +188,19 @@ noteManager.prototype = {
      * @param {JSON} note
      */
     displaySingleNote: function(note) {
-      var tags;
+      var tags = '';
       var notesLength = $.parseJSON(localStorage.getItem("WebNotes")).length;
       notesLength = notesLength-1; // Number of next note
 
       for (var j = 0; j < note.tags.length; j++) {
+        console.log(note.tags[j]);
+         if (note.tags[j]) {
           if (j === 0 ) {
-            tags = '<span id="tag-'+j+'">' + note.tags[j] + '</span>';
+            tags = '<span id="tag-'+j+'">#' + note.tags[j] + '</span>';
           }else{
-            tags = tags + ' <span id="tag-'+j+'">' + note.tags[j] + '</span>';
+            tags = tags + ' <span id="tag-'+j+'">#' + note.tags[j] + '</span>';
           }
+        }
       }
 
       if (this.options.defaultSort === "older") {
@@ -392,11 +398,12 @@ noteManager.prototype = {
         break;
 
         case 'imdb.com':
-          
+          this.getTitleFromUrl(s);
         break;
 
         case 'allocine.fr':
-           
+           this.getTitleFromUrl(s);
+        
         break;
 
         case 'jpeg':
@@ -426,5 +433,25 @@ noteManager.prototype = {
       }
         return ID;
     },
+
+
+    getTitleFromUrl: function(url) {
+      console.log(url);
+      $.ajax({
+        type : "POST",
+        url : "getTitle.php",
+        data : {
+            'url' : url
+        },
+        success: function(data){
+          return data;
+          console.log(data)
+        },
+         error: function(data){
+          console.log('Error generating JSON');
+          console.log(data);
+        },
+      });
+    }
 
 };
