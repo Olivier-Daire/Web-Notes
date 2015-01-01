@@ -144,10 +144,10 @@ noteManager.prototype = {
           }
 
           $('#main').append(
-            '<div id="note-'+i+'" class="note">'+
+            '<div id="note-'+i+'" class="note film">'+
               '<h2>'+notes[i].title+'</h2>'+
               '<p>'+notes[i].content+'</p>'+
-              '<div>'+ tags +'</div>'+
+              '<div class="tools">'+ tags +'</div>'+
               '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
               '<button class="edit">Edit</button>'+
               '<button class="delete">Delete</button>'+
@@ -169,17 +169,17 @@ noteManager.prototype = {
 
       for (var j = 0; j < note.tags.length; j++) {
           if (j === 0 ) {
-            tags = '<span id="tag-'+j+'">' + note.tags[j] + '</span>';
+            tags = '<span class="hashtag" id="tag-'+j+'">' + note.tags[j] + '</span>';
           }else{
-            tags = tags + ' <span id="tag-'+j+'">' + note.tags[j] + '</span>';
+            tags = tags + ' <span class="hashtag" id="tag-'+j+'">' + note.tags[j] + '</span>';
           }
       }
 
        $('#main').prepend(
-            '<div id="note-'+notesLength+'" class="note">'+
+            '<div id="note-'+notesLength+'" class="note film">'+
               '<h2>'+note.title+'</h2>'+
               '<p>'+note.content+'</p>'+
-              '<div>'+ tags +'</div>'+
+              '<div class="tools">'+ tags +'</div>'+
               '<i>'+note.date+' - '+note.time+'</i>'+
               '<button class="edit">Edit</button>'+
               '<button class="delete">Delete</button>'+

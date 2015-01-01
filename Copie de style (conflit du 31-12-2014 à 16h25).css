@@ -108,7 +108,7 @@ button{
 
 #takeNotes{
 	width:240px;
-	height:321px;
+	height:300px;
 	margin:5px;
 	background-color: #1C1C1C;
 }
@@ -118,7 +118,7 @@ button{
 	border:none;	
 }
 
-#takeNotes .title{
+#takeNotes .titre{
 	background-color: #1C1C1C;
 	border:none;
 	border-bottom:2px solid #F9F9F9;
@@ -127,11 +127,11 @@ button{
 
 #takeNotes textarea{
 	width:100%;
-	height:180px;
+	height:192px;
 
 	padding:10px;
 
-	color:#F9F9F9;
+	color:#939393;
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size:18px;
 }
@@ -143,45 +143,28 @@ button{
 
 	border-top:2px solid #F9F9F9;
 	border-bottom:2px solid #F9F9F9;
-	color:#F9F9F9;
+	color:#939393;
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size:18px;
 }
 
 #takeNotes button[type="submit"]{
-	position:relative;
-	top:0;
 	width:100%;
 	margin:0;
 	padding:0;
-	height:42px;
+	height:30px;
 	text-transform: uppercase;
 	color:#F9F9F9;
-	font-size:16px;
-	font-weight:700;
-	color: #F9F9F9;
+	font-size:18px;
+	color: #d91e18;
 	border:none;
-	background-color: #991914;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
-
+	background-color: #1C1C1C
 }
 
 #takeNotes button[type="submit"]:hover{
-	position:relative;
-	top:-279px;
-	height:321px;
-	font-size:28px;
-	background-color: rgba(153,25,21,0.8);
-	color:#F9F9F9;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
+	margin-top:-480px;
+	height:240px;
+	background-color: rgba(255,255,255,0.4);
 }
 
 .note{
@@ -198,7 +181,7 @@ button{
 	border:2px solid #d91e18;
 }
 
-.title, h2{
+.titre{
 	display:block;
 	width:100%;
 	height:40px;
@@ -214,7 +197,7 @@ button{
 	color: #F9F9F9;
 }
 
-.film h2{
+.film .titre{
 	background-color:#d91e18;
 }
 
@@ -246,20 +229,12 @@ button{
 	content: "#";
 }
 
-i{
-	font-size:12px;
-	float:left;
-	padding-left:20px;
-	padding-bottom:5px;
-	margin: -5px 0 5px 0;
-	font-style:italic;
-}
-
 .toolsButton{
-	height:24px;
 	width:32px;
-	margin:-15px 10px 0 0;
-	float:right;
+	height:24px;
+	position: absolute;
+	margin-top:4px;
+	float:left;
 	background:url(img/filmTools.png);
 	border:none;
 	opacity:.6;

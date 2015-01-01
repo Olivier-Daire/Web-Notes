@@ -1,0 +1,124 @@
+<html>
+<head>
+	<title>GREATNAME</title>
+	<link rel="icon" type="image/png" href="img/icones/favicon.png" />
+	<link rel="stylesheet" href="style.css">
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+
+	<header>
+
+		<nav>
+			<a href="#"><img id="logo" src="img/logo.png"></a>
+			<div id="ButtonGroup">
+				<button id="dropbox">Dropbox</button>
+				<button id="delete">Delete</button>
+				<button id="dropbox">Dropbox</button>
+				<button id="delete">Delete</button>
+				<button id="dropbox">Dropbox</button>
+			</div>
+		</nav>
+
+	</header>
+
+	<div id="mainContent">
+
+		<div id="main">
+
+			<div class="note" id="takeNotes">
+				<form>
+					<input type="text" class="title" placeholder="Votre titre">
+					<textarea placeholder="Contenu"></textarea>
+					<input name="tags" class="tags" value="" placeholder="Vos tags"/>
+					<button type="submit">Enregistrer la note</button>
+				</form>
+			</div>
+
+			<!--<div class="note film">
+				<h2>C'est Supeeeer !</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat.</p>
+				<div class="tools">
+					<span class="hashtag">SuperNote</span>
+					<span class="hashtag">efese</span>
+					<span class="hashtag">segbus</span>
+					<span class="hashtag">segxdgsge</span>
+				</div>
+				<i>10/12/2014</i>
+				<button class="toolsButton"></button>
+			</div>
+
+			<div class="note film">
+				<h2>C'est Supeeeer !</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat.</p>
+				<div class="tools">
+					<span class="hashtag">SuperNote</span>
+					<span class="hashtag">efese</span>
+					<span class="hashtag">segbus</span>
+					<span class="hashtag">segxdgsge</span>
+				</div>
+				<i>10/12/2014</i>
+				<button class="toolsButton"></button>
+			</div>
+
+			<div class="note film">
+				<h2>C'est Supeeeer !</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat..</p>
+				<div class="tools">
+					<span class="hashtag">SuperNote</span>
+					<span class="hashtag">efese</span>
+				
+					<span class="hashtag">segbus</span>
+					<span class="hashtag">segxdgsge</span>
+					<span class="hashtag">segbus</span>
+					<span class="hashtag">segxdgsge</span>
+				</div>
+				<i>10/12/2014</i>
+				<button class="toolsButton"></button>
+			</div>
+
+			<div class="note film">
+				<h2>C'est Supeeeer !</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua.</p>
+				<div class="tools">
+					<span class="hashtag">SuperNote</span>
+					<span class="hashtag">efese</span>
+				</div>
+				<i>10/12/2014</i>
+				<button class="toolsButton"></button>
+			</div>-->
+
+
+		</div>
+
+	</div>
+
+	<script type="text/javascript" src="main.js"></script>
+	<script src="lib/jQuery-Tags-Input/jquery.tagsinput.min.js"></script>
+	<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="thas943csc5s4tu"></script>
+	<script type="text/javascript">
+		var noteManager = new noteManager({
+		 option: 'value2'
+		});
+		noteManager.init();
+
+		$('.tags').tagsInput({
+			'height': 'auto'
+		});
+	</script>
+
+</body>
+</html>
