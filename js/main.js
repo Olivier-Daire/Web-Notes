@@ -193,7 +193,6 @@ noteManager.prototype = {
       notesLength = notesLength-1; // Number of next note
 
       for (var j = 0; j < note.tags.length; j++) {
-        console.log(note.tags[j]);
          if (note.tags[j]) {
           if (j === 0 ) {
             tags = '<span id="tag-'+j+'">#' + note.tags[j] + '</span>';
@@ -332,7 +331,7 @@ noteManager.prototype = {
       // TODO GET unique ID from php and return it
       $.ajax({
         type : "POST",
-        url : "json.php",
+        url : "php-tools/json.php",
         dataType : 'json', 
         data : {
             json : JSON.stringify(notes)
@@ -371,12 +370,13 @@ noteManager.prototype = {
 
     /**
      * Test for compatible websites and return a widget or a picture
-     * @param  {int}    id ID of the note containing the url
-     * @param  {string} s  URL to be tested
+     * @param  {int}    id  ID of the note containing the url
+     * @param  {string} s   URL to be tested
      */
     generateWidget: function(id, s) {
       var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
 
+      // TODO avoid multiple API call by saving the image url instead of the IMDB/Allocine link
 
       switch (regexp.exec(s)[0]) {
         case 'youtube.com':
@@ -388,7 +388,7 @@ noteManager.prototype = {
 
         case 'soundcloud.com':
           SC.initialize({
-            client_id: '174356325111c05f60352760c8f377b2'
+            client_id: config.SoundCloud_client_id
           });
 
           var track_url = s;
@@ -398,12 +398,36 @@ noteManager.prototype = {
         break;
 
         case 'imdb.com':
-          this.getTitleFromUrl(s);
+          var movieTitle = this.getTitleFromUrl(s);
+          var that = this;
+
+          movieTitle.success(function(movieTitle){
+            // Remove year from title 
+            var regex = /(\(.*\))/;
+            movieTitle = movieTitle.replace(regex.exec(movieTitle)[0], '');
+
+            var movie = that.getMovie(movieTitle);
+            movie.success(function(movie){
+              var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
+              var img = '<img src="'+url+'" alt="">';
+              $('#note-'+id).prepend(img);
+            });
+          });
         break;
 
         case 'allocine.fr':
-           this.getTitleFromUrl(s);
-        
+          var movieTitle = this.getTitleFromUrl(s);
+          var that = this;
+
+          movieTitle.success(function(movieTitle){
+            var movie = that.getMovie(movieTitle);
+
+            movie.success(function(movie){
+              var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
+              var img = '<img src="'+url+'" alt="">';
+              $('#note-'+id).prepend(img);
+            });
+          });
         break;
 
         case 'jpeg':
@@ -427,31 +451,43 @@ noteManager.prototype = {
       if(url[2] !== undefined) {
         ID = url[2].split(/[^0-9a-z_]/i);
         ID = ID[0];
-      }
-      else {
+      }else{
         ID = url;
       }
         return ID;
     },
 
-
+    /**
+     * Get the movie title from an IMDB/Allocine URL
+     * @param  {strin} url  Webpage url
+     */
     getTitleFromUrl: function(url) {
-      console.log(url);
-      $.ajax({
+      return $.ajax({
         type : "POST",
-        url : "getTitle.php",
+        url : "php-tools/getTitle.php",
         data : {
             'url' : url
-        },
-        success: function(data){
-          return data;
-          console.log(data)
-        },
-         error: function(data){
-          console.log('Error generating JSON');
-          console.log(data);
-        },
+        }
       });
-    }
+    },
+
+    /**
+     * Call to The Movie Database API in order to get infos about a movie
+     * @param  {string} movie  Name of the movie
+     */
+    getMovie: function(movieTitle) {
+      movieTitle = encodeURI(movieTitle);
+      var url = 'http://api.themoviedb.org/3/search/movie?query='+movieTitle+'&api_key='+config.TMDB_api_key;
+      var path;
+
+     return $.ajax({
+        type : "GET",
+        url : url,
+        dataType: "jsonp",       
+      });
+
+    },
+
 
 };
+ 
