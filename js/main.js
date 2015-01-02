@@ -376,8 +376,6 @@ noteManager.prototype = {
     generateWidget: function(id, s) {
       var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
 
-      // TODO avoid multiple API call by saving the image url instead of the IMDB/Allocine link
-
       switch (regexp.exec(s)[0]) {
         case 'youtube.com':
         case 'youtu.be':
@@ -409,8 +407,17 @@ noteManager.prototype = {
             var movie = that.getMovie(movieTitle);
             movie.success(function(movie){
               var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
+
+              // Append the image
               var img = '<img src="'+url+'" alt="">';
               $('#note-'+id).prepend(img);
+
+              // Change note url to image URL instead of IMDB's one
+              // so that there is juste one API call (first time the note is saved)
+              notes = $.parseJSON(localStorage.getItem("WebNotes"));
+              notes[id].url = url;
+              notes = JSON.stringify(notes);
+              localStorage.setItem("WebNotes", notes);
             });
           });
         break;
@@ -424,8 +431,17 @@ noteManager.prototype = {
 
             movie.success(function(movie){
               var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
+              
+              // Append the image
               var img = '<img src="'+url+'" alt="">';
               $('#note-'+id).prepend(img);
+
+              // Change note url to image URL instead of Allocine's one
+              // so that there is juste one API call (first time the note is saved)
+              notes = $.parseJSON(localStorage.getItem("WebNotes"));
+              notes[id].url = url;
+              notes = JSON.stringify(notes);
+              localStorage.setItem("WebNotes", notes);
             });
           });
         break;
