@@ -48,9 +48,11 @@ noteManager.prototype = {
       }, this));
 
       $(document).on('click', '.note button.delete', function(){
-        var id = $(this).parent().attr('id');
-        id = id.substr(5, id.length);
-        that.deleteSingleNote(id);
+        if (confirm("All notes will be deleted, are you sure ?")) {
+          var id = $(this).parent().attr('id');
+          id = id.substr(5, id.length);
+          that.deleteSingleNote(id); 
+        }
       });
 
       $(document).on('click', '.note button.edit', function(){
