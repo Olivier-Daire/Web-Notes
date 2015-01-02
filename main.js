@@ -137,9 +137,9 @@ noteManager.prototype = {
         for (var i = notes.length-1 ; i >= 0; i--) {
           for (var j = 0; j < notes[i].tags.length; j++) {
             if (j === 0 ) {
-              tags = '<span id="tag-'+j+'">' + notes[i].tags[j] + '</span>';
+              tags = '<span id="tag-'+j+' class="hashtag">' + notes[i].tags[j] + '</span>';
             }else{
-              tags = tags + ' <span id="tag-'+j+'">' + notes[i].tags[j] + '</span>';
+              tags = tags + ' <span id="tag-'+j+' class="hastag">' + notes[i].tags[j] + '</span>';
             }
           }
 
@@ -149,8 +149,8 @@ noteManager.prototype = {
               '<p>'+notes[i].content+'</p>'+
               '<div class="tools">'+ tags +'</div>'+
               '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
-              '<button class="edit">Edit</button>'+
-              '<button class="delete">Delete</button>'+
+              '<button class="toolsButton">Edit</button>'+
+              '<!--<button class="delete">Delete</button>-->'+
             '</div>'
           );
         }
@@ -181,8 +181,8 @@ noteManager.prototype = {
               '<p>'+note.content+'</p>'+
               '<div class="tools">'+ tags +'</div>'+
               '<i>'+note.date+' - '+note.time+'</i>'+
-              '<button class="edit">Edit</button>'+
-              '<button class="delete">Delete</button>'+
+              '<button class="toolsButton">Edit</button>'+
+              '<!--<button class="delete">Delete</button>-->'+
             '</div>'
         );
     },

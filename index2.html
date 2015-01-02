@@ -1,7 +1,9 @@
 <html>
 <head>
-	<title>GREATNAME</title>
+	<title>CrossNotes</title>
 	<link rel="icon" type="image/png" href="img/icones/favicon.png" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="lib/jQuery-Tags-Input/jquery.tagsinput.css" />
 	<link rel="stylesheet" href="style.css">
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 </head>
@@ -11,13 +13,20 @@
 
 		<nav>
 			<a href="#"><img id="logo" src="img/logo.png"></a>
-			<div id="ButtonGroup">
-				<button id="dropbox">Dropbox</button>
-				<button id="delete">Delete</button>
-				<button id="dropbox">Dropbox</button>
-				<button id="delete">Delete</button>
-				<button id="dropbox">Dropbox</button>
+			<div id="buttonGroup">
+				<button id="sort"><img src="img/appbar.sort.png" alt="Trier les notes"></button>
+				<button id="tags"><img src="img/appbar.social.twitter.hashtag.png" alt="Trier par tags"></button>
+				<button id="search"><img src="img/appbar.page.search.png" alt="Rechercher"></button>
+				<button id="sync"><img src="img/appbar.social.dropbox.download.png" alt="Synchroniser avec dropbox"></button>
+				<button id="delete"><img src="img/appbar.delete.png" alt="Supprimer des notes"></button>
 			</div>
+				<table class="menu2" id="sortType">
+					<tr>
+						<td><button id="1"><img src="img/appbar.sort.png"><img src="img/appbar.sort_b.png"></td>
+						<td><button id="2"><img src="img/appbar.sort.png"><img src="img/appbar.sort_b.png"></td>
+						<td><button id="3"><img src="img/appbar.sort.png"><img src="img/appbar.sort_b.png"></td>
+					</tr>
+				</table>
 		</nav>
 
 	</header>
@@ -35,7 +44,7 @@
 				</form>
 			</div>
 
-			<!--<div class="note film">
+			<div class="note film">
 				<h2>C'est Supeeeer !</h2>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -51,7 +60,7 @@
 				<button class="toolsButton"></button>
 			</div>
 
-			<div class="note film">
+			<!--<div class="note film">
 				<h2>C'est Supeeeer !</h2>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
