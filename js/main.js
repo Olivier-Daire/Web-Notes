@@ -226,14 +226,14 @@ noteManager.prototype = {
             }   
           }
 
-          $('#main').append(
-            '<div id="note-'+i+'" class="note">'+
+          $('#takeNotes').after(
+            '<div id="note-'+i+'" class="note film">'+
               '<h2>'+notes[i].title+'</h2>'+
               '<p>'+notes[i].content+'</p>'+
-              '<div>'+ tags +'</div>'+
+              '<div class="tools">'+ tags +'</div>'+
               '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
-              '<button class="edit">Edit</button>'+
-              '<button class="delete">Delete</button>'+
+              '<button class="toolsButton"></button>'+
+              '<!--<button class="delete">Delete</button>-->'+
             '</div>'
           );
 
@@ -265,25 +265,25 @@ noteManager.prototype = {
       }
 
       if (this.options.defaultSort === "older") {
-        $('#main').append(
-          '<div id="note-'+notesLength+'" class="note">'+
-            '<h2>'+note.title+'</h2>'+
-            '<p>'+note.content+'</p>'+
-            '<div>'+ tags +'</div>'+
-            '<i>'+note.date+' - '+note.time+'</i>'+
-            '<button class="edit">Edit</button>'+
-            '<button class="delete">Delete</button>'+
+        $('#takeNotes').after(
+          '<div id="note-'+notesLength+'" class="note film">'+
+            '<h2>'+notes[i].title+'</h2>'+
+            '<p>'+notes[i].content+'</p>'+
+            '<div class="tools">'+ tags +'</div>'+
+            '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
+            '<button class="toolsButton"></button>'+
+            '<!--<button class="delete">Delete</button>-->'+
           '</div>'
         );  
       }else{
-        $('#main').prepend(
-          '<div id="note-'+notesLength+'" class="note">'+
+        $('#takeNotes').after(
+          '<div id="note-'+notesLength+'" class="note film">'+
             '<h2>'+note.title+'</h2>'+
             '<p>'+note.content+'</p>'+
-            '<div>'+ tags +'</div>'+
+            '<div class="tools">'+ tags +'</div>'+
             '<i>'+note.date+' - '+note.time+'</i>'+
-            '<button class="edit">Edit</button>'+
-            '<button class="delete">Delete</button>'+
+            '<button class="toolsButton"></button>'+
+            '<!--<button class="delete">Delete</button>-->'+
           '</div>'
         );
       }

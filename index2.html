@@ -17,7 +17,8 @@
 				<button id="sort"><img src="img/appbar.sort.png" alt="Trier les notes"></button>
 				<button id="tags"><img src="img/appbar.social.twitter.hashtag.png" alt="Trier par tags"></button>
 				<button id="search"><img src="img/appbar.page.search.png" alt="Rechercher"></button>
-				<button id="sync"><img src="img/appbar.social.dropbox.download.png" alt="Synchroniser avec dropbox"></button>
+				<button id="dropbox-export"><img src="img/appbar.social.dropbox.download.png" alt="Exporter sur dropbox"></button>
+				<button id="dropbox-import"><img src="img/appbar.social.dropbox.upload.png" alt="Importer sur dropbox"></button>
 				<button id="delete"><img src="img/appbar.delete.png" alt="Supprimer des notes"></button>
 			</div>
 				<table class="menu2" id="sortType">
@@ -35,7 +36,7 @@
 
 		<div id="main">
 
-			<div class="note" id="takeNotes">
+			<div id="takeNotes">
 				<form>
 					<input type="text" class="title" placeholder="Votre titre">
 					<textarea placeholder="Contenu"></textarea>
@@ -44,7 +45,7 @@
 				</form>
 			</div>
 
-			<div class="note film">
+			<div id="canartichaut" class="note film">
 				<h2>C'est Supeeeer !</h2>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -115,7 +116,7 @@
 
 	</div>
 
-	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="main(old).js"></script>
 	<script src="lib/jQuery-Tags-Input/jquery.tagsinput.min.js"></script>
 	<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="thas943csc5s4tu"></script>
 	<script type="text/javascript">
@@ -125,7 +126,8 @@
 		noteManager.init();
 
 		$('.tags').tagsInput({
-			'height': 'auto'
+			'height': 'auto',
+			'width' : 'auto'
 		});
 	</script>
 

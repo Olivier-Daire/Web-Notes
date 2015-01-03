@@ -1,41 +1,135 @@
-<!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>CrossNotes</title>
+	<link rel="icon" type="image/png" href="img/icones/favicon.png" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="lib/jQuery-Tags-Input/jquery.tagsinput.css" />
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="style.css">
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
-	<button id="dropbox-export">Dropbox export</button>
-	<button id="dropbox-import">Dropbox import</button>
-	<button id="delete">Delete</button>
-	<button id="order">Sort</button>
+	<header>
 
-	<form>
-		<input type="text" class="title" placeholder="Title">
-		<textarea placeholder="Content"></textarea>
-		<input name="tags" class="tags" value="" />
-		<button type="submit">Save</button>
-	</form>
+		<nav>
+			<a href="#"><img id="logo" src="img/logo.png"></a>
+			<div id="buttonGroup">
+				<button id="sort"><img src="img/appbar.sort.png" alt="Trier les notes"></button>
+				<button id="tags"><img src="img/appbar.social.twitter.hashtag.png" alt="Trier par tags"></button>
+				<button id="search"><img src="img/appbar.page.search.png" alt="Rechercher"></button>
+				<button id="dropbox-export"><img src="img/appbar.social.dropbox.download.png" alt="Exporter sur dropbox"></button>
+				<button id="dropbox-import"><img src="img/appbar.social.dropbox.upload.png" alt="Importer sur dropbox"></button>
+				<button id="delete"><img src="img/appbar.delete.png" alt="Supprimer des notes"></button>
+			</div>
+				<table class="menu2" id="sortType">
+					<tr>
+						<td><button id="1"><img src="img/appbar.sort.png"><img src="img/appbar.sort_b.png"></td>
+						<td><button id="2"><img src="img/appbar.sort.png"><img src="img/appbar.sort_b.png"></td>
+						<td><button id="3"><img src="img/appbar.sort.png"><img src="img/appbar.sort_b.png"></td>
+					</tr>
+				</table>
+		</nav>
 
-	<div id="main"></div>
+	</header>
 
-	<script type="text/javascript" src="js/config.js"></script>
+	<div id="mainContent">
+
+		<div id="main">
+
+			<div id="takeNotes">
+				<form>
+					<input type="text" class="title" placeholder="Votre titre">
+					<textarea placeholder="Contenu"></textarea>
+					<input name="tags" class="tags" value="" placeholder="Vos tags"/>
+					<button type="submit">Enregistrer la note</button>
+				</form>
+			</div>
+
+			<div id="canartichaut" class="note film">
+				<h2>C'est Supeeeer !</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat.</p>
+				<div class="tools">
+					<span>SuperNote</span>
+					<span>efese</span>
+					<span>segbus</span>
+					<span>segxdgsge</span>
+				</div>
+				<i>10/12/2014</i>
+				<button class="toolsButton"></button>
+			</div>
+
+			<!--<div class="note film">
+				<h2>C'est Supeeeer !</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat.</p>
+				<div class="tools">
+					<span class="hashtag">SuperNote</span>
+					<span class="hashtag">efese</span>
+					<span class="hashtag">segbus</span>
+					<span class="hashtag">segxdgsge</span>
+				</div>
+				<i>10/12/2014</i>
+				<button class="toolsButton"></button>
+			</div>
+
+			<div class="note film">
+				<h2>C'est Supeeeer !</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat..</p>
+				<div class="tools">
+					<span class="hashtag">SuperNote</span>
+					<span class="hashtag">efese</span>
+				
+					<span class="hashtag">segbus</span>
+					<span class="hashtag">segxdgsge</span>
+					<span class="hashtag">segbus</span>
+					<span class="hashtag">segxdgsge</span>
+				</div>
+				<i>10/12/2014</i>
+				<button class="toolsButton"></button>
+			</div>
+
+			<div class="note film">
+				<h2>C'est Supeeeer !</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua.</p>
+				<div class="tools">
+					<span class="hashtag">SuperNote</span>
+					<span class="hashtag">efese</span>
+				</div>
+				<i>10/12/2014</i>
+				<button class="toolsButton"></button>
+			</div>-->
+
+
+		</div>
+
+	</div>
+
 	<script type="text/javascript" src="js/main.js"></script>
 	<script src="lib/jQuery-Tags-Input/jquery.tagsinput.min.js"></script>
-	<script src="http://connect.soundcloud.com/sdk.js"></script>
 	<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="thas943csc5s4tu"></script>
 	<script type="text/javascript">
 		var noteManager = new noteManager({
-		 defaultSort: 'newer' // older
+		 option: 'value2'
 		});
 		noteManager.init();
 
 		$('.tags').tagsInput({
-			'height': 'auto'
+			'height': 'auto',
+			'width' : 'auto'
 		});
 	</script>
+
 </body>
 </html>
