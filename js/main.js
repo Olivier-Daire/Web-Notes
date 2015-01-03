@@ -365,11 +365,11 @@ noteManager.prototype = {
 
       var h = today.getHours();
       var m = today.getMinutes();
-      var s = today.getSeconds();
+      //var s = today.getSeconds();
 
       today = dd+'/'+mm+'/'+yyyy;
 
-      var time = h + 'h' + m + 'min' + s + 's';
+      var time = h + 'h' + m + 'min';
 
       return [today, time];
     },
