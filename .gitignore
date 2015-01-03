@@ -1,2 +1,5 @@
 #Config file containing private keys
 js/config.js
+
+#Temp folder where json back-up are generated
+temp/*

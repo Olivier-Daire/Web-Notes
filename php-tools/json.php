@@ -4,8 +4,8 @@
    if (json_decode($json) != null) {
    		$id = uniqid();
    		$name = '../temp/WebNotes-'.$id.'.json';
-   		$file = fopen($name,'w+'); // FIXME permission denied on univ server
-     	fwrite($file, $json);
+   		$file = fopen($name,'w+');
+      	fwrite($file, $json);
    		fclose($file);
    		echo $id;
    } else {

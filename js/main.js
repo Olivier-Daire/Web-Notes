@@ -32,13 +32,72 @@ noteManager.prototype = {
         that.displaySingleNote(note);
       });
 
+      /* /!\ Can't generate a file on univ server
+       *     Can't save a file from localhost (Dropbox need access to the server)
+       */
+      $('#dropbox-export').on('click', $.proxy(function(){
 
-      $('#dropbox').on('click', $.proxy(function(){
+        if (Dropbox.isBrowserSupported()) {
 
-        var id = this.createJSONfile($.parseJSON(localStorage.getItem("WebNotes")));
-        // FIXME permission denied on univ server
-        Dropbox.save("https://etudiant.univ-mlv.fr/~odaire/WebNotes/temp/WebNotes-"+id+".json", "WebNotes");
-          
+          var id = this.createJSONfile(localStorage.getItem("WebNotes"));
+          var that = this;
+
+          id.success(function(id){
+            var today = that.formatDate(),
+            date = today[0],
+            dropboxOptions = {
+              files: [
+                  {'url': 'http://localhost/Web-Notes/temp/WebNotes-'+id+'.json', 'filename': 'WebNotes_'+date+'.json'},
+              ],
+              success: function () {
+                console.log('success');
+              },
+              error: function (errorMessage) {
+                console.log('Error when saving to Dropbox: '+errorMessage);
+              }
+            };
+
+            Dropbox.save(dropboxOptions);
+            //Dropbox.save("http://localhost/Web-Notes/temp/WebNotes-"+id+".json", "WebNotes");
+          });
+
+          id.error(function(){
+            console.log('Error generating JSON');
+          });
+        }else{
+          alert("Your browser is not supported by the Dropbox API, it's probably time to update your browser, check : \n\noutdatedbrowser.com");
+        }
+
+      }, this));
+
+      $('#dropbox-import').on('click', $.proxy(function(){
+
+        if (Dropbox.isBrowserSupported()) {
+
+          var that = this;
+          var options = {
+            // Required. Called when a user selects an item in the Chooser.
+            success: function(files) {
+                console.log("Here's the file link: " + files[0].link);
+                $.get( files[0].link, function( data ) {
+                  localStorage.setItem("WebNotes", data);
+                  that.displayNotes();
+                });
+            },
+            // Direct link to the content of the file
+            linkType: "direct",
+            multiselect: false,
+            // User will be able to select only json files
+            extensions: ['.json'],
+          };
+
+          if (confirm("This will erase all your current notes and replace them by the ones you choose to import, are you sure ?")) {
+            Dropbox.choose(options);
+          }
+        }else{
+          alert("Your browser is not supported by the Dropbox API, it's probably time to update your browser, check : \n\noutdatedbrowser.com");
+        }
+
       }, this));
 
       $('#delete').on('click', $.proxy(function(){
@@ -64,6 +123,7 @@ noteManager.prototype = {
       // Only when editing a note
       $(document).on('click', '.note button[type="submit"]', function(e){
         e.preventDefault();
+
         var note = that.getNote($(this).closest('form'));
         that.saveNote(note);
 
@@ -331,19 +391,11 @@ noteManager.prototype = {
      */
     createJSONfile: function(notes) {
       // TODO GET unique ID from php and return it
-      $.ajax({
+      return $.ajax({
         type : "POST",
         url : "php-tools/json.php",
-        dataType : 'json', 
         data : {
-            json : JSON.stringify(notes)
-        },
-        error: function(data){
-          console.log('Error generating JSON');
-          console.log(data);
-        },
-        success: function(data){
-          return data;
+            json : (notes)
         }
       });
     },
