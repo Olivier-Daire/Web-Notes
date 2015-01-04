@@ -1,10 +1,12 @@
-<html>
+<!doctype html>
+<html lang="fr">
 <head>
+  	<meta charset="utf-8">
 	<title>CrossNotes</title>
 	<link rel="icon" type="image/png" href="img/icones/favicon.png" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="lib/jQuery-Tags-Input/jquery.tagsinput.css" />
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -58,10 +60,10 @@
 					<span>segxdgsge</span>
 				</div>
 				<i>10/12/2014</i>
-				<button class="toolsButton">
+				<!--<button class="toolsButton">
 					<button class="edit"></button>
 					<button class="delete"></button>
-				</button>
+				</button>-->
 			</div>
 
 			<!--<div class="note film">
@@ -119,21 +121,20 @@
 
 	</div>
 
-	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 	<script src="lib/jQuery-Tags-Input/jquery.tagsinput.min.js"></script>
 	<script src="http://connect.soundcloud.com/sdk.js"></script>
 	<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="thas943csc5s4tu"></script>
 	<script type="text/javascript">
 		var noteManager = new noteManager({
-		 defaultSort: 'newer' // older		
-		 option: 'value2'
+		 defaultSort: 'newer' // older
 		});
 		noteManager.init();
 
 		$('.tags').tagsInput({
-			'height': 'auto',
-			'width' : 'auto'
+		 'height': 'auto',
+		 'width' : 'auto'
 		});
 	</script>
 
