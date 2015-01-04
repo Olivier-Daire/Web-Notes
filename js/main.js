@@ -226,7 +226,7 @@ noteManager.prototype = {
             }   
           }
 
-          $('#takeNotes').after(
+          $('#main').append(
             '<div id="note-'+i+'" class="note film">'+
               '<h2>'+notes[i].title+'</h2>'+
               '<p>'+notes[i].content+'</p>'+
@@ -265,7 +265,7 @@ noteManager.prototype = {
       }
 
       if (this.options.defaultSort === "older") {
-        $('#takeNotes').after(
+        $('#main').append(
           '<div id="note-'+notesLength+'" class="note film">'+
             '<h2>'+notes[i].title+'</h2>'+
             '<p>'+notes[i].content+'</p>'+
