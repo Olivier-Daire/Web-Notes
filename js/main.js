@@ -435,7 +435,7 @@ noteManager.prototype = {
         case 'youtu.be':
           s = this.getYoutubeId(s);
           var iframe = '<iframe id="" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
-          $('#note-'+id).prepend(iframe);
+          $('#note-'+id+' h2').after(iframe);
         break;
 
         case 'soundcloud.com':
@@ -445,7 +445,7 @@ noteManager.prototype = {
 
           var track_url = s;
           SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
-            $('#note-'+id).prepend(oEmbed.html);
+            $('#note-'+id+' h2').after(oEmbed.html);
           });
         break;
 
@@ -464,7 +464,7 @@ noteManager.prototype = {
 
               // Append the image
               var img = '<img src="'+url+'" alt="">';
-              $('#note-'+id).prepend(img);
+              $('#note-'+id+' h2').after(img);
 
               // Change note url to image URL instead of IMDB's one
               // so that there is juste one API call (first time the note is saved)
@@ -488,7 +488,7 @@ noteManager.prototype = {
               
               // Append the image
               var img = '<img src="'+url+'" alt="">';
-              $('#note-'+id).prepend(img);
+              $('#note-'+id+' h2').after(img);
 
               // Change note url to image URL instead of Allocine's one
               // so that there is juste one API call (first time the note is saved)
