@@ -416,7 +416,7 @@ noteManager.prototype = {
      * @return {string}   Matched URL
      */
     containsURL: function(s) {
-      var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+      var regexp = /(http|https)?(?::\/\/)?(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
       if (regexp.exec(s)) {
         return regexp.exec(s)[0];
       }
@@ -532,6 +532,12 @@ noteManager.prototype = {
      * @param  {strin} url  Webpage url
      */
     getTitleFromUrl: function(url) {
+      var regexp = /^(\w+:{0,1}\w*)/;
+
+      if (regexp.exec(url)) {
+        url = 'http://'+url;
+      }
+
       return $.ajax({
         type : "POST",
         url : "php-tools/getTitle.php",
