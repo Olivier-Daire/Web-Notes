@@ -283,10 +283,10 @@ noteManager.prototype = {
       if (this.options.defaultSort === "older") {
         $('#main').append(
           '<div id="note-'+notesLength+'" class="note film">'+
-            '<h2>'+notes[i].title+'</h2>'+
-            '<p>'+notes[i].content+'</p>'+
+            '<h2>'+note.title+'</h2>'+
+            '<p>'+note.content+'</p>'+
             '<div class="tools">'+ tags +'</div>'+
-            '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
+            '<i>'+note.date+' - '+note.time+'</i>'+
             '<button class="toolsButton"></button>'+
             '<!--<button class="delete">Delete</button>-->'+
           '</div>'
@@ -447,84 +447,87 @@ noteManager.prototype = {
     generateWidget: function(id, s) {
       var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
 
-      switch (regexp.exec(s)[0]) {
-        case 'youtube.com':
-        case 'youtu.be':
-          s = this.getYoutubeId(s);
-          var iframe = '<iframe id="" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
-          $('#note-'+id+' h2').after(iframe);
-        break;
+      if (regexp.exec(s)) {
+        switch (regexp.exec(s)[0]) {
+          case 'youtube.com':
+          case 'youtu.be':
+            s = this.getYoutubeId(s);
+            var iframe = '<iframe id="" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
+            $('#note-'+id+' h2').after(iframe);
+          break;
 
-        case 'soundcloud.com':
-          SC.initialize({
-            client_id: config.SoundCloud_client_id
-          });
-
-          var track_url = s;
-          SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
-            $('#note-'+id+' h2').after(oEmbed.html);
-          });
-        break;
-
-        case 'imdb.com':
-          var movieTitle = this.getTitleFromUrl(s);
-          var that = this;
-
-          movieTitle.success(function(movieTitle){
-            // Remove year from title 
-            var regex = /(\(.*\))/;
-            movieTitle = movieTitle.replace(regex.exec(movieTitle)[0], '');
-
-            var movie = that.getMovie(movieTitle);
-            movie.success(function(movie){
-              var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
-
-              // Append the image
-              var img = '<img src="'+url+'" alt="">';
-              $('#note-'+id+' h2').after(img);
-
-              // Change note url to image URL instead of IMDB's one
-              // so that there is juste one API call (first time the note is saved)
-              notes = $.parseJSON(localStorage.getItem("WebNotes"));
-              notes[id].url = url;
-              notes = JSON.stringify(notes);
-              localStorage.setItem("WebNotes", notes);
+          case 'soundcloud.com':
+            SC.initialize({
+              client_id: config.SoundCloud_client_id
             });
-          });
-        break;
 
-        case 'allocine.fr':
-          var movieTitle = this.getTitleFromUrl(s);
-          var that = this;
-
-          movieTitle.success(function(movieTitle){
-            var movie = that.getMovie(movieTitle);
-
-            movie.success(function(movie){
-              var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
-              
-              // Append the image
-              var img = '<img src="'+url+'" alt="">';
-              $('#note-'+id+' h2').after(img);
-
-              // Change note url to image URL instead of Allocine's one
-              // so that there is juste one API call (first time the note is saved)
-              notes = $.parseJSON(localStorage.getItem("WebNotes"));
-              notes[id].url = url;
-              notes = JSON.stringify(notes);
-              localStorage.setItem("WebNotes", notes);
+            var track_url = s;
+            SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
+              $('#note-'+id+' h2').after(oEmbed.html);
             });
-          });
-        break;
+          break;
 
-        case 'jpeg':
-        case 'jpg':
-        case 'png':
-        case 'gif':
-          var img = '<img src="'+s+'" alt="">';
-          $('#note-'+id).prepend(img);
-        break;
-      }
+          case 'imdb.com':
+            var movieTitle = this.getTitleFromUrl(s);
+            var that = this;
+
+            movieTitle.success(function(movieTitle){
+              // Remove year from title 
+              var regex = /(\(.*\))/;
+              movieTitle = movieTitle.replace(regex.exec(movieTitle)[0], '');
+
+              var movie = that.getMovie(movieTitle);
+              movie.success(function(movie){
+                var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
+
+                // Append the image
+                var img = '<img src="'+url+'" alt="">';
+                $('#note-'+id+' h2').after(img);
+
+                // Change note url to image URL instead of IMDB's one
+                // so that there is juste one API call (first time the note is saved)
+                notes = $.parseJSON(localStorage.getItem("WebNotes"));
+                notes[id].url = url;
+                notes = JSON.stringify(notes);
+                localStorage.setItem("WebNotes", notes);
+              });
+            });
+          break;
+
+          case 'allocine.fr':
+            var movieTitle = this.getTitleFromUrl(s);
+            var that = this;
+
+            movieTitle.success(function(movieTitle){
+              var movie = that.getMovie(movieTitle);
+
+              movie.success(function(movie){
+                var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
+                
+                // Append the image
+                var img = '<img src="'+url+'" alt="">';
+                $('#note-'+id+' h2').after(img);
+
+                // Change note url to image URL instead of Allocine's one
+                // so that there is juste one API call (first time the note is saved)
+                notes = $.parseJSON(localStorage.getItem("WebNotes"));
+                notes[id].url = url;
+                notes = JSON.stringify(notes);
+                localStorage.setItem("WebNotes", notes);
+              });
+            });
+          break;
+
+          case 'jpeg':
+          case 'jpg':
+          case 'png':
+          case 'gif':
+            var img = '<img src="'+s+'" alt="">';
+            $('#note-'+id).prepend(img);
+          break;
+        }
+      };
+
     },
 
     /**
