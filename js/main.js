@@ -81,7 +81,6 @@ noteManager.prototype = {
           var options = {
             // Required. Called when a user selects an item in the Chooser.
             success: function(files) {
-                console.log("Here's the file link: " + files[0].link);
                 $.get( files[0].link, function( data ) {
                   localStorage.setItem("WebNotes", data);
                   that.displayNotes();
@@ -253,7 +252,7 @@ noteManager.prototype = {
             }else{
               notes[i].content = notes[i].content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
             }
-          };
+          }
 
           $('#main').append(
             '<div id="note-'+i+'" class="note film">'+
@@ -292,7 +291,7 @@ noteManager.prototype = {
           }
         }
       }
-      
+
       // Replace url in text by a link
       var url = this.containsURL(note.content);
       if (typeof url !== undefined) {
@@ -304,30 +303,21 @@ noteManager.prototype = {
         }else{
           note.content = note.content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
         }
-      };
+      }
+
+      var noteHTML =  '<div id="note-'+notesLength+'" class="note film">'+
+                        '<h2>'+note.title+'</h2>'+
+                        '<p>'+note.content+'</p>'+
+                        '<div class="tools">'+ tags +'</div>'+
+                        '<i>'+note.date+' - '+note.time+'</i>'+
+                        '<button class="toolsButton"></button>'+
+                        '<!--<button class="delete">Delete</button>-->'+
+                      '</div>';
 
       if (this.options.defaultSort === "older") {
-        $('#main').append(
-          '<div id="note-'+notesLength+'" class="note film">'+
-            '<h2>'+note.title+'</h2>'+
-            '<p>'+note.content+'</p>'+
-            '<div class="tools">'+ tags +'</div>'+
-            '<i>'+note.date+' - '+note.time+'</i>'+
-            '<button class="toolsButton"></button>'+
-            '<!--<button class="delete">Delete</button>-->'+
-          '</div>'
-        );  
+        $('#main').append(noteHTML);  
       }else{
-        $('#takeNotes').after(
-          '<div id="note-'+notesLength+'" class="note film">'+
-            '<h2>'+note.title+'</h2>'+
-            '<p>'+note.content+'</p>'+
-            '<div class="tools">'+ tags +'</div>'+
-            '<i>'+note.date+' - '+note.time+'</i>'+
-            '<button class="toolsButton"></button>'+
-            '<!--<button class="delete">Delete</button>-->'+
-          '</div>'
-        );
+        $('#takeNotes').after(noteHTML);
       }
       
       if (note.url) {
@@ -461,14 +451,7 @@ noteManager.prototype = {
     containsURL: function(s) {
       var regexp = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
       if (regexp.exec(s)) {
-        var url =  regexp.exec(s)[0];
-
-        // If link starts with www add protocol (http) to it
-       /* regex = /^(www)/;
-        if (regex.exec(url)) {
-          url = 'http://'+url;
-        }*/
-        return url;
+        return regexp.exec(s)[0];
       }
     },
 
@@ -559,7 +542,7 @@ noteManager.prototype = {
             $('#note-'+id).prepend(img);
           break;
         }
-      };
+      }
 
     },
 
@@ -586,10 +569,10 @@ noteManager.prototype = {
      */
     getTitleFromUrl: function(url) {
       // If link starts with www add protocol (http) to it
-        regexp = /^(www)/;
-        if (regexp.exec(url)) {
-          url = 'http://'+url;
-        }
+      regexp = /^(www)/;
+      if (regexp.exec(url)) {
+        url = 'http://'+url;
+      }
       return $.ajax({
         type : "POST",
         url : "php-tools/getTitle.php",
@@ -606,9 +589,8 @@ noteManager.prototype = {
     getMovie: function(movieTitle) {
       movieTitle = encodeURI(movieTitle);
       var url = 'http://api.themoviedb.org/3/search/movie?query='+movieTitle+'&api_key='+config.TMDB_api_key;
-      var path;
 
-     return $.ajax({
+      return $.ajax({
         type : "GET",
         url : url,
         dataType: "jsonp",       
