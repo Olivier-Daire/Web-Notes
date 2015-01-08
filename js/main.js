@@ -242,6 +242,19 @@ noteManager.prototype = {
             }   
           }
 
+          // Replace url in text by a link
+          var url = this.containsURL(notes[i].content);
+          if (typeof url !== undefined) {
+            regexp = /^(www)/;
+            if (regexp.exec(url)) {
+              var urlWithoutProtocol = url;
+              url = 'http://'+url;
+              notes[i].content = notes[i].content.replace(urlWithoutProtocol, '<a href="'+ url +'">'+urlWithoutProtocol+'</a>');
+            }else{
+              notes[i].content = notes[i].content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
+            }
+          };
+
           $('#main').append(
             '<div id="note-'+i+'" class="note film">'+
               '<h2>'+notes[i].title+'</h2>'+
@@ -279,6 +292,19 @@ noteManager.prototype = {
           }
         }
       }
+      
+      // Replace url in text by a link
+      var url = this.containsURL(note.content);
+      if (typeof url !== undefined) {
+        regexp = /^(www)/;
+        if (regexp.exec(url)) {
+          var urlWithoutProtocol = url;
+          url = 'http://'+url;
+          note.content = note.content.replace(urlWithoutProtocol, '<a href="'+ url +'">'+urlWithoutProtocol+'</a>');
+        }else{
+          note.content = note.content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
+        }
+      };
 
       if (this.options.defaultSort === "older") {
         $('#main').append(
@@ -433,9 +459,16 @@ noteManager.prototype = {
      * @return {string}   Matched URL
      */
     containsURL: function(s) {
-      var regexp = /(http|https)?(?::\/\/)?(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+      var regexp = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
       if (regexp.exec(s)) {
-        return regexp.exec(s)[0];
+        var url =  regexp.exec(s)[0];
+
+        // If link starts with www add protocol (http) to it
+       /* regex = /^(www)/;
+        if (regex.exec(url)) {
+          url = 'http://'+url;
+        }*/
+        return url;
       }
     },
 
@@ -552,12 +585,11 @@ noteManager.prototype = {
      * @param  {strin} url  Webpage url
      */
     getTitleFromUrl: function(url) {
-      var regexp = /^(\w+:{0,1}\w*)/;
-
-      if (regexp.exec(url)) {
-        url = 'http://'+url;
-      }
-
+      // If link starts with www add protocol (http) to it
+        regexp = /^(www)/;
+        if (regexp.exec(url)) {
+          url = 'http://'+url;
+        }
       return $.ajax({
         type : "POST",
         url : "php-tools/getTitle.php",
