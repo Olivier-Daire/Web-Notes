@@ -23,6 +23,7 @@ noteManager.prototype = {
 
       var that = this;
 
+      // Save note and display it 
       $('button[type="submit"]').on('click', function(e){
         e.preventDefault();
 
@@ -32,7 +33,8 @@ noteManager.prototype = {
         that.displaySingleNote(note);
       });
 
-      /* /!\ Can't generate a file on univ server
+      /* Export to Dropbox
+       * /!\ Can't generate a file on univ server
        *     Can't save a file from localhost (Dropbox need access to the server)
        */
       $('#dropbox-export').on('click', $.proxy(function(){
@@ -70,6 +72,7 @@ noteManager.prototype = {
 
       }, this));
 
+      // Import from Dropbox  
       $('#dropbox-import').on('click', $.proxy(function(){
 
         if (Dropbox.isBrowserSupported()) {
@@ -100,12 +103,14 @@ noteManager.prototype = {
 
       }, this));
 
+      // Delete all notes
       $('#delete').on('click', $.proxy(function(){
         if (confirm("All notes will be deleted, are you sure ?")) {
           this.deleteNotes();
         }
       }, this));
 
+      // Delete a note
       $(document).on('click', '.note button.delete', function(){
         if (confirm("All notes will be deleted, are you sure ?")) {
           var id = $(this).parent().attr('id');
@@ -114,6 +119,7 @@ noteManager.prototype = {
         }
       });
 
+      // Edit a note
       $(document).on('click', '.note button.edit', function(){
         var id = $(this).parent().attr('id');
         id = id.substr(5, id.length);
@@ -134,10 +140,20 @@ noteManager.prototype = {
         that.displaySingleNote(note);
       });
 
+      // Sort by time
       $('#order').on('click', $.proxy(function(e){
         e.preventDefault();
         this.reverseOrder();
       }, this));
+
+      // Sort by tag 
+      $(document).on('click', '.note span[id^="tag-"]', function(){
+        var tag = $(this).text();
+        // Hide all notes and then show only the ones with the selected tag
+        $('div.note').hide();
+        $('div.note .tools span:contains("'+tag+'")').parent().parent().show();
+      });
+
     },
 
 
