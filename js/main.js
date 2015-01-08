@@ -420,9 +420,10 @@ noteManager.prototype = {
      * Display all notes in reverse order : old ones first
      */
     reverseOrder: function() {
-      $('#main > div').each(function() {
+      $('#main > div:not(#takeNotes)').each(function() {
         $(this).prependTo(this.parentNode);
       });
+      $('#main').prepend($('#takeNotes'));
     },
 
 
