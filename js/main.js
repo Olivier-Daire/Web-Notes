@@ -246,11 +246,19 @@ noteManager.prototype = {
           if (typeof url !== undefined) {
             regexp = /^(www)/;
             if (regexp.exec(url)) {
-              var urlWithoutProtocol = url;
-              url = 'http://'+url;
-              notes[i].content = notes[i].content.replace(urlWithoutProtocol, '<a href="'+ url +'">'+urlWithoutProtocol+'</a>');
+              if (notes[i].type === "video" || notes[i].type === "sound"){
+                notes[i].content = notes[i].content.replace(url, '');  
+              }else{
+                var urlWithoutProtocol = url;
+                url = 'http://'+url;
+                notes[i].content = notes[i].content.replace(urlWithoutProtocol, '<a href="'+ url +'">'+urlWithoutProtocol+'</a>');
+              }
             }else{
-              notes[i].content = notes[i].content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
+              if (notes[i].type == "video" || notes[i].type == "sound") {
+                notes[i].content = notes[i].content.replace(url, '');  
+              }else{
+                notes[i].content = notes[i].content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
+              }
             }
           }
 
@@ -297,11 +305,11 @@ noteManager.prototype = {
       if (typeof url !== undefined) {
         regexp = /^(www)/;
         if (regexp.exec(url)) {
-          var urlWithoutProtocol = url;
-          url = 'http://'+url;
-          note.content = note.content.replace(urlWithoutProtocol, '<a href="'+ url +'">'+urlWithoutProtocol+'</a>');
-        }else{
-          note.content = note.content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
+            var urlWithoutProtocol = url;
+            url = 'http://'+url;
+            note.content = note.content.replace(urlWithoutProtocol, '<a href="'+ url +'">'+urlWithoutProtocol+'</a>');
+        }else{        
+            note.content = note.content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
         }
       }
 
@@ -322,6 +330,13 @@ noteManager.prototype = {
       
       if (note.url) {
         this.generateWidget(notesLength, note.url);
+      }
+
+      // TODO Find a cleaner way to do this
+      if ($('#note-'+notesLength).hasClass('video') || $('#note-'+notesLength).hasClass('sound')){
+        var content = $('#note-'+notesLength+' p').text();
+        content = content.replace(url, '');
+        $('#note-'+notesLength+' p').text(content);
       }
     },
 
