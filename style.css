@@ -315,43 +315,43 @@ i{
 		COULEURS
 ************************/
 
-.youtube{
+.video{
 	border:2px solid #1E824C;
 }
 
-.youtube h2{
+.video h2{
 	background-color:#1E824C;
 }
 
-.youtube iframe, .soundcloud iframe{
+.video iframe, .sound iframe{
 	width:100%;
 }
 
-.youtube iframe{
+.video iframe{
 	height:300px;
 }
 
-.soundcloud iframe{
+.sound iframe{
 	height:140px;
 }
 
-.soundcloud{
+.sound{
 	border:2px solid #F9690E;
 }
 
-.soundcloud h2{
+.sound h2{
 	background-color: #F9690E;
 }
 
-.imdb{
+.movie{
 	border:2px solid #446CB3;
 }
 
-.imdb h2{
+.movie h2{
 	background-color: #446CB3;
 }
 
-.imdb img{
+.movie img{
 	width:256px;
 }
 

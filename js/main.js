@@ -255,7 +255,7 @@ noteManager.prototype = {
           }
 
           $('#main').append(
-            '<div id="note-'+i+'" class="note film">'+
+            '<div id="note-'+i+'" class="note '+notes[i].type+'">'+
               '<h2>'+notes[i].title+'</h2>'+
               '<p>'+notes[i].content+'</p>'+
               '<div class="tools">'+ tags +'</div>'+
@@ -305,7 +305,7 @@ noteManager.prototype = {
         }
       }
 
-      var noteHTML =  '<div id="note-'+notesLength+'">'+
+      var noteHTML =  '<div id="note-'+notesLength+'" class="note">'+
                         '<h2>'+note.title+'</h2>'+
                         '<p>'+note.content+'</p>'+
                         '<div class="tools">'+ tags +'</div>'+
@@ -470,10 +470,14 @@ noteManager.prototype = {
             s = this.getYoutubeId(s);
             var iframe = '<iframe id="" type="text/html" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
             $('#note-'+id+' h2').after(iframe);
-            var note = document.getElementById("note-"+id);
-            note.className = "note medium youtube";
-            /*$("#note-"+id+" p").remove();*/
+            
+            // Add type to note
+            notes = $.parseJSON(localStorage.getItem("WebNotes"));
+            notes[id].type = "video";
+            notes = JSON.stringify(notes);
+            localStorage.setItem("WebNotes", notes);
 
+            $('#note-'+id).addClass("video");
           break;
 
           case 'soundcloud.com':
@@ -484,10 +488,14 @@ noteManager.prototype = {
             var track_url = s;
             SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
               $('#note-'+id+' h2').after(oEmbed.html);
+              $('#note-'+id).addClass("sound");
             });
 
-            var note = document.getElementById("note-"+id);
-            note.className = "note medium soundcloud";
+            // Add type to note
+            notes = $.parseJSON(localStorage.getItem("WebNotes"));
+            notes[id].type = "sound";
+            notes = JSON.stringify(notes);
+            localStorage.setItem("WebNotes", notes);
 
           break;
 
@@ -500,8 +508,7 @@ noteManager.prototype = {
               var regex = /(\(.*\))/;
               movieTitle = movieTitle.replace(regex.exec(movieTitle)[0], '');
 
-                var note = document.getElementById("note-"+id);
-                note.className = "note small imdb";
+              $('#note-'+id).addClass("note small imdb");
 
               var movie = that.getMovie(movieTitle);
               movie.success(function(movie){
@@ -515,9 +522,11 @@ noteManager.prototype = {
                 // so that there is juste one API call (first time the note is saved)
                 notes = $.parseJSON(localStorage.getItem("WebNotes"));
                 notes[id].url = url;
+                notes[id].type = "movie";
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
 
+                $('#note-'+id).addClass("movie");
               });
             });
           break;
@@ -540,8 +549,11 @@ noteManager.prototype = {
                 // so that there is juste one API call (first time the note is saved)
                 notes = $.parseJSON(localStorage.getItem("WebNotes"));
                 notes[id].url = url;
+                notes[id].type = "movie";
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
+
+                $('#note-'+id).addClass("movie");
               });
             });
           break;
@@ -552,6 +564,14 @@ noteManager.prototype = {
           case 'gif':
             var img = '<img src="'+s+'" alt="">';
             $('#note-'+id).prepend(img);
+
+            // Add type to note
+            notes = $.parseJSON(localStorage.getItem("WebNotes"));
+            notes[id].type = "image";
+            notes = JSON.stringify(notes);
+            localStorage.setItem("WebNotes", notes);
+
+            $('#note-'+id).addClass("image");
           break;
         }
       }
