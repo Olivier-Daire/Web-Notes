@@ -305,11 +305,11 @@ noteManager.prototype = {
       if (typeof url !== undefined) {
         regexp = /^(www)/;
         if (regexp.exec(url)) {
-            var urlWithoutProtocol = url;
-            url = 'http://'+url;
-            note.content = note.content.replace(urlWithoutProtocol, '<a href="'+ url +'">'+urlWithoutProtocol+'</a>');
-        }else{        
-            note.content = note.content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
+          var urlWithoutProtocol = url;
+          url = 'http://'+url;
+          note.content = note.content.replace(urlWithoutProtocol, '<a href="'+ url +'">'+urlWithoutProtocol+'</a>');
+        }else{
+          note.content = note.content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
         }
       }
 
