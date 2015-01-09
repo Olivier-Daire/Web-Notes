@@ -305,7 +305,7 @@ noteManager.prototype = {
         }
       }
 
-      var noteHTML =  '<div id="note-'+notesLength+'" class="note film">'+
+      var noteHTML =  '<div id="note-'+notesLength+'">'+
                         '<h2>'+note.title+'</h2>'+
                         '<p>'+note.content+'</p>'+
                         '<div class="tools">'+ tags +'</div>'+
@@ -472,7 +472,7 @@ noteManager.prototype = {
             $('#note-'+id+' h2').after(iframe);
             var note = document.getElementById("note-"+id);
             note.className = "note medium youtube";
-            $("#note-"+id+" p").remove();
+            /*$("#note-"+id+" p").remove();*/
 
           break;
 
@@ -485,6 +485,10 @@ noteManager.prototype = {
             SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
               $('#note-'+id+' h2').after(oEmbed.html);
             });
+
+            var note = document.getElementById("note-"+id);
+            note.className = "note medium soundcloud";
+
           break;
 
           case 'imdb.com':
@@ -495,6 +499,9 @@ noteManager.prototype = {
               // Remove year from title 
               var regex = /(\(.*\))/;
               movieTitle = movieTitle.replace(regex.exec(movieTitle)[0], '');
+
+                var note = document.getElementById("note-"+id);
+                note.className = "note small imdb";
 
               var movie = that.getMovie(movieTitle);
               movie.success(function(movie){
@@ -510,6 +517,7 @@ noteManager.prototype = {
                 notes[id].url = url;
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
+
               });
             });
           break;
