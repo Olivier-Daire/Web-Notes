@@ -468,8 +468,12 @@ noteManager.prototype = {
           case 'youtube.com':
           case 'youtu.be':
             s = this.getYoutubeId(s);
-            var iframe = '<iframe id="" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
+            var iframe = '<iframe id="" type="text/html" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
             $('#note-'+id+' h2').after(iframe);
+            var note = document.getElementById("note-"+id);
+            note.className = "note medium youtube";
+            $("#note-"+id+" p").remove();
+
           break;
 
           case 'soundcloud.com':
