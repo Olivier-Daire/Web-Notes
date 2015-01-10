@@ -271,8 +271,8 @@ noteManager.prototype = {
               '<p>'+notes[i].content+'</p>'+
               '<div class="tools">'+ tags +'</div>'+
               '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
-              '<button class="toolsButton"></button>'+
-              '<!--<button class="delete">Delete</button>-->'+
+              '<button class="toolsButton edit"></button>'+
+              '<button class="toolsButton delete"></button>'+
             '</div>'
           );
 
@@ -324,8 +324,8 @@ noteManager.prototype = {
                         '<p>'+note.content+'</p>'+
                         '<div class="tools">'+ tags +'</div>'+
                         '<i>'+note.date+' - '+note.time+'</i>'+
-                        '<button class="toolsButton"></button>'+
-                        '<!--<button class="delete">Delete</button>-->'+
+                        '<button class="toolsButton edit"></button>'+
+                        '<button class="toolsButton delete"></button>'+
                       '</div>';
 
       if (this.options.defaultSort === "older") {
@@ -495,6 +495,7 @@ noteManager.prototype = {
      */
     generateWidget: function(id, s) {
       var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
+      console.log(regexp.exec(s)[0]);
 
       if (regexp.exec(s)) {
         switch (regexp.exec(s)[0]) {
@@ -510,7 +511,7 @@ noteManager.prototype = {
             notes = JSON.stringify(notes);
             localStorage.setItem("WebNotes", notes);
 
-            $('#note-'+id).addClass("video");
+            $('#note-'+id).addClass("medium video");
           break;
 
           case 'soundcloud.com':
@@ -586,7 +587,7 @@ noteManager.prototype = {
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
 
-                $('#note-'+id).addClass("movie");
+                $('#note-'+id).addClass("small movie");
               });
             });
           break;
@@ -596,7 +597,8 @@ noteManager.prototype = {
           case 'png':
           case 'gif':
             var img = '<img src="'+s+'" alt="">';
-            $('#note-'+id).prepend(img);
+            //$('#note-'+id).prepend(img);
+            $('#note-'+id+' h2').after(img);
 
             // Add type to note
             notes = $.parseJSON(localStorage.getItem("WebNotes"));
@@ -604,7 +606,18 @@ noteManager.prototype = {
             notes = JSON.stringify(notes);
             localStorage.setItem("WebNotes", notes);
 
-            $('#note-'+id).addClass("image");
+            imgWidth = $('#note-'+id+' img').width();
+            console.log(imgWidth);
+            if(imgWidth<256){
+              $('#note-'+id).addClass("small image noresize");
+            }else if(imgWidth<400){
+              $('#note-'+id).addClass("small image");
+            }else if(imgWidth<700){
+              $('#note-'+id).addClass("medium image");
+            }else{
+              $('#note-'+id).addClass("large image");
+            }
+            
           break;
         }
       }

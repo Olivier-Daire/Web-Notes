@@ -183,7 +183,7 @@ nav button:focus{
 }
 
 .note{
-	border:2px solid #d91e18;
+	border:2px solid #F7CA18;
 }
 
 .title, h2{
@@ -204,11 +204,11 @@ nav button:focus{
 }
 
 .note h2{
-	background-color:#d91e18;
+	background-color:#F7CA18;
 }
 
 .note p, #takeNotes p{
-	padding:20px;
+	margin:20px;
 	line-height:21px;
 	word-break: break-word;
 }
@@ -237,8 +237,8 @@ nav button:focus{
 }
 	
 i{
-	font-size:0.75em;
-	width:70%;
+	font-size:0.7em;
+	width:60%;
 	float:left;
 	padding:0;
 	margin:0;
@@ -247,14 +247,21 @@ i{
 	font-style:italic;
 }
 
-.toolsButton{
-	height:24px;
-	width:32px;
-	margin:-10px 6px 5px 0;
+.edit, .delete{
+	height:60px;
+	width:60px;
+	margin:0;
 	float:right;
-	background:url(img/filmTools.png) no-repeat;
 	border:none;
 	opacity:.6;
+}
+
+.edit{
+	background:url(img/editBasic.png) no-repeat;
+}
+
+.delete{
+	background:url(img/deleteBasic.png) no-repeat;
 }
 
 .toolsButton:hover{
@@ -277,8 +284,19 @@ i{
 	width:530px;
 }
 
+.small img, .medium img, .large img{
+	width:100%;
+}
+
 .large{
 	width:800px;
+}
+
+.noresize img{
+	width:auto;
+	display:block;
+	margin:auto;
+	margin-top:10px;
 }
 
 
@@ -302,6 +320,14 @@ i{
 	height:300px;
 }
 
+.video .edit{
+	background:url(img/editVideo.png) no-repeat;
+}
+
+.video .delete{
+	background:url(img/deleteVideo.png) no-repeat;
+}
+
 .sound iframe{
 	height:140px;
 }
@@ -314,6 +340,14 @@ i{
 	background-color: #F9690E;
 }
 
+.sound .edit{
+	background:url(img/editSound.png) no-repeat;
+}
+
+.sound .delete{
+	background:url(img/deleteSound.png) no-repeat;
+}
+
 .movie{
 	border:2px solid #446CB3;
 }
@@ -324,6 +358,31 @@ i{
 
 .movie img{
 	width:256px;
+}
+
+.movie .edit{
+	background:url(img/editMovie.png) no-repeat;
+}
+
+.movie .delete{
+	background:url(img/deleteMovie.png) no-repeat;
+}
+
+
+.image{
+	border:2px solid #8E44AD;
+}
+
+.image h2{
+	background-color: #8E44AD;
+}
+
+.image .edit{
+	background:url(img/editImg.png) no-repeat;
+}
+
+.image .delete{
+	background:url(img/deleteImg.png) no-repeat;
 }
 
 /************************
