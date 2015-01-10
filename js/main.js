@@ -596,25 +596,29 @@ noteManager.prototype = {
           case 'png':
           case 'gif':
             var img = '<img src="'+s+'" alt="">';
-            //$('#note-'+id).prepend(img);
             $('#note-'+id+' h2').after(img);
 
-            // Add type to note
+            //  Add type to note (on 2nd call, movies are handled like images
+            //  so we need to test if the type is not already defined 
+            //  in this case only it's really an image and not a poster)
             notes = $.parseJSON(localStorage.getItem("WebNotes"));
-            notes[id].type = "image";
-            notes = JSON.stringify(notes);
-            localStorage.setItem("WebNotes", notes);
+            if (notes[id].type !== 'movie') {
+              if (notes[id].type === undefined) {
+                notes[id].type = "image";
+                notes = JSON.stringify(notes);
+                localStorage.setItem("WebNotes", notes);
+              }
 
-            imgWidth = $('#note-'+id+' img').width();
-            console.log(imgWidth);
-            if(imgWidth<256){
-              $('#note-'+id).addClass("small image noresize");
-            }else if(imgWidth<400){
-              $('#note-'+id).addClass("small image");
-            }else if(imgWidth<700){
-              $('#note-'+id).addClass("medium image");
-            }else{
-              $('#note-'+id).addClass("large image");
+              var imgWidth = $('#note-'+id+' img').width();
+              if(imgWidth<256){
+                $('#note-'+id).addClass("small image noresize");
+              }else if(imgWidth<400){
+                $('#note-'+id).addClass("small image");
+              }else if(imgWidth<700){
+                $('#note-'+id).addClass("medium image");
+              }else{
+                $('#note-'+id).addClass("large image");
+              }
             }
             
           break;
