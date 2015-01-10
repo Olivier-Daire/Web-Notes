@@ -495,7 +495,6 @@ noteManager.prototype = {
      */
     generateWidget: function(id, s) {
       var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
-      console.log(regexp.exec(s)[0]);
 
       if (regexp.exec(s)) {
         switch (regexp.exec(s)[0]) {
