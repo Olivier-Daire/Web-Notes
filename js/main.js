@@ -140,7 +140,7 @@ noteManager.prototype = {
       });
 
       // Sort by time
-      $('#order').on('click', $.proxy(function(e){
+      $('#sort').on('click', $.proxy(function(e){
         e.preventDefault();
         this.reverseOrder();
       }, this));
