@@ -409,7 +409,7 @@ i{
 		RESPONSIVE
 ************************/
 
-@media screen and (max-width:1250px) {
+@media screen and (max-width:1400px) {
 	nav{
 		width:90%;
 	}
