@@ -54,7 +54,7 @@ nav button:focus{
 	float:right;
 }
 
-#mainContent{
+#main{
 	position:absolute;
 	top:140px;
 	width:80%;
@@ -182,7 +182,7 @@ nav button:focus{
 	background-color: #F9F9F9;
 }
 
-.film{
+.note{
 	border:2px solid #d91e18;
 }
 
@@ -203,7 +203,7 @@ nav button:focus{
 	color: #F9F9F9;
 }
 
-.film h2{
+.note h2{
 	background-color:#d91e18;
 }
 
@@ -220,12 +220,12 @@ nav button:focus{
 	margin-bottom: 20px;
 }
 
-.film span{
+.note span{
 	color:#d91e18;
 	padding:2px;
 }
 
-.film span:hover{
+.note span:hover{
 	color:#F9F9F9;
 	background-color:#d91e18;
 	cursor:pointer;
@@ -332,7 +332,7 @@ i{
 }
 
 @media screen and (max-width:1000px) {
-	#mainContent{
+	#main{
 		width:100%;
 		top:90px;
 		left:0%;
@@ -359,7 +359,7 @@ i{
 
 @media screen and (max-width:650px) {
 
-	#mainContent{
+	#main{
 		top:120px;
 	}
 
