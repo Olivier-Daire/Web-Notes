@@ -610,14 +610,14 @@ noteManager.prototype = {
               }
 
               var imgWidth = $('#note-'+id+' img').width();
-              if(imgWidth<256){
-                $('#note-'+id).addClass("small image noresize");
-              }else if(imgWidth<400){
-                $('#note-'+id).addClass("small image");
-              }else if(imgWidth<700){
-                $('#note-'+id).addClass("medium image");
-              }else{
+              if(imgWidth>700){
                 $('#note-'+id).addClass("large image");
+              }else if(imgWidth>400){
+                $('#note-'+id).addClass("medium image");
+              }else if(imgWidth>256){
+                $('#note-'+id).addClass("small image");
+              }else{
+                $('#note-'+id).addClass("small image noresize");
               }
             }
             

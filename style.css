@@ -415,7 +415,7 @@ i{
 	}
 }
 
-@media screen and (max-width:1000px) {
+@media screen and (max-width:1100px) {
 	#main{
 		width:100%;
 		top:90px;
@@ -441,7 +441,7 @@ i{
 
 }
 
-@media screen and (max-width:650px) {
+@media screen and (max-width:750px) {
 
 	#main{
 		top:120px;
@@ -472,7 +472,40 @@ i{
 	#buttonGroup{
 		float:none;
 		margin:auto;
-		width:323px;
+		width:419px;
 	}
 
+}
+
+@media screen and (max-width:750px) {
+
+	#buttonGroup{
+		width:auto;
+	}
+
+	header{
+		height:auto;
+		position:static;	
+	}
+
+	nav{
+		height:auto;
+	}
+
+
+
+	#main{
+		position:static;
+	}
+
+}
+
+@media screen and (max-width:330px) {
+	nav a{
+		width:100%;
+	}
+
+	nav a img{
+		width:100%;
+	}
 }
