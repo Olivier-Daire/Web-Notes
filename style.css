@@ -210,6 +210,11 @@ nav button:focus{
 .note p, #takeNotes p{
 	padding:20px;
 	line-height:21px;
+	word-break: break-word;
+}
+
+.note p a{
+	word-break: break-all;
 }
 
 .tools{

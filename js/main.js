@@ -262,6 +262,9 @@ noteManager.prototype = {
             }
           }
 
+          // Keep line breaks 
+          notes[i].content = this.nl2br(notes[i].content);
+
           $('#main').append(
             '<div id="note-'+i+'" class="note '+notes[i].type+'">'+
               '<h2>'+notes[i].title+'</h2>'+
@@ -312,6 +315,9 @@ noteManager.prototype = {
           note.content = note.content.replace(url, '<a href="'+ url +'">'+url+'</a>');  
         }
       }
+
+      // Keep line breaks 
+      note.content = this.nl2br(note.content);
 
       var noteHTML =  '<div id="note-'+notesLength+'" class="note">'+
                         '<h2>'+note.title+'</h2>'+
@@ -430,6 +436,18 @@ noteManager.prototype = {
       var tagsArray = tags.split(',');
 
       return tagsArray;
+    },
+
+    /**
+     * Convert line breaks to <br>
+     * http://phpjs.org/functions/nl2br/
+     * @param  {string}  str      String to be formated 
+     * @param  {Boolean} is_xhtml XHTML compatibility
+     * @return {string}           String formated with <br> tags
+     */
+    nl2br : function(str, is_xhtml){
+      var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
+      return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
     },
 
     /**
