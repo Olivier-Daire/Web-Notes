@@ -237,23 +237,28 @@ nav button:focus{
 }
 	
 i{
-	font-size:0.7em;
-	width:60%;
+	font-size:0.70em;
+	width:65%;
 	float:left;
 	padding:0;
 	margin:0;
-	margin-top:-5px;
+	margin-top:23px;
 	padding-left:20px;
 	font-style:italic;
+	color:#F7CA18;
 }
 
 .edit, .delete{
-	height:60px;
-	width:60px;
-	margin:0;
+	height:40px;
+	width:40px;
+	margin-bottom:5px;
 	float:right;
 	border:none;
-	opacity:.6;
+	opacity:.5;
+}
+
+.edit{
+	margin-right:5px;
 }
 
 .edit{
@@ -312,6 +317,10 @@ i{
 	background-color:#1E824C;
 }
 
+.video i{
+	color:#1E824C;
+}
+
 .video iframe, .sound iframe{
 	width:100%;
 }
@@ -340,6 +349,10 @@ i{
 	background-color: #F9690E;
 }
 
+.sound i{
+	color:#F9690E;
+}
+
 .sound .edit{
 	background:url(img/editSound.png) no-repeat;
 }
@@ -356,6 +369,10 @@ i{
 	background-color: #446CB3;
 }
 
+.movie i{
+	color:#446CB3;
+}
+
 .movie img{
 	width:256px;
 }
@@ -368,13 +385,16 @@ i{
 	background:url(img/deleteMovie.png) no-repeat;
 }
 
-
 .image{
 	border:2px solid #8E44AD;
 }
 
 .image h2{
 	background-color: #8E44AD;
+}
+
+.image i{
+	color:#8E44AD;
 }
 
 .image .edit{
