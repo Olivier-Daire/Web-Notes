@@ -3,3 +3,6 @@ js/config.js
 
 #Temp folder where json back-up are generated
 temp/*
+
+# Windows image file caches
+Thumbs.db
