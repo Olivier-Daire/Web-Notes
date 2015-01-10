@@ -33,6 +33,7 @@ nav button{
 	background-color: transparent;
 	border:2px solid transparent;
 	opacity:.85;
+	box-sizing: content-box;
 }
 
 nav button img{
