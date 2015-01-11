@@ -115,27 +115,9 @@ nav button:focus, #sort:focus{
 #searchButton input{
 	float: left;
 	height:28px;
-	width:65%;
+	width:94%;
 	padding: 4px;
-	margin:1px .5% 0 10px;
-}
-
-#searchButton button{
-	float:left;
-	height:24px;
-	width:25%;
-	margin-right:10px;
-	margin-top:1px;
-	color:#F9F9F9;
-	font-size:1em;
-	color: #F9F9F9;
-	background-color: #1C1C1C;
-	border:2px solid #991914;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
+	margin:1px .5% 0 12px;
 }
 
 #sort button{
@@ -147,10 +129,6 @@ nav button:focus, #sort:focus{
 	background-color:#1C1C1C;
 	border-bottom:2px solid #1C1C1C;
 	opacity:1;
-}
-
-#sort button:hover{
-	border-bottom:2px solid #1C1C1C;
 }
 
 #sort button span{
@@ -172,17 +150,12 @@ nav button:focus, #sort:focus{
 
 /** Gestion du survol et des menus cachés **/
 
-#searchButton button:hover{
-	background-color: #991914;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
-}
-
 #sort:hover, #searchIcon:hover, #tagsButton:hover{
 	cursor:pointer;
+}
+
+#sort button:hover{
+	border-bottom:2px solid #1C1C1C;
 }
 
 #sort:hover #sortButton, #searchIcon:hover #searchButton, #tagsIcon:hover #tagsButton{
@@ -199,7 +172,7 @@ nav button:focus, #sort:focus{
 }
 
 #searchIcon:hover #searchButton{
-	height:55px;
+	height:52px;
 	width:400px;
 	margin-left:-150px;
 }
