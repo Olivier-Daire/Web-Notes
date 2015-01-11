@@ -525,7 +525,7 @@ noteManager.prototype = {
         type : "POST",
         url : "php-tools/json.php",
         data : {
-            json : (notes)
+            json : notes
         }
       });
     },
