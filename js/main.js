@@ -47,10 +47,8 @@ noteManager.prototype = {
               files: [
                   {'url': document.URL+'/temp/WebNotes-'+id+'.json', 'filename': 'WebNotes.json'},
               ],
-              success: function () {
-                console.log('success');
-              },
               error: function (errorMessage) {
+                alert('An error occured, try again later.\nSorry for the inconvenience.');
                 console.log('Error when saving to Dropbox: '+errorMessage);
               }
             };
@@ -59,6 +57,7 @@ noteManager.prototype = {
           });
 
           id.error(function(){
+            alert('An error occured, try again later.\nSorry for the inconvenience.');
             console.log('Error generating JSON');
           });
         }else{
@@ -147,8 +146,7 @@ noteManager.prototype = {
         that.searchByTag(tag);
       });
 
-     
-
+      // Tag search
       $('#tagsIcon').on('mouseenter', $.proxy(function(){
         var tags = this.getAllTags();
 
@@ -162,6 +160,7 @@ noteManager.prototype = {
         
       }, this));
 
+      // Text search
       $('#searchIcon input').on('keyup', function(){
         var value = $(this).val();
         $('div.note').hide();
@@ -517,7 +516,6 @@ noteManager.prototype = {
      * @param  {JSON} notes    object containing all notes
      */
     createJSONfile: function(notes) {
-      // TODO GET unique ID from php and return it
       return $.ajax({
         type : "POST",
         url : "php-tools/json.php",
