@@ -148,7 +148,7 @@ noteManager.prototype = {
       // Sort by tag 
       $(document).on('click', '.note span[id^="tag-"], #tagsButton span', function(){
         var tag = $(this).text();
-        that.sortByTag(tag);
+        that.searchByTag(tag);
       });
 
      
@@ -445,7 +445,7 @@ noteManager.prototype = {
      * Show the notes containing the selecetd tag
      * @param  {string} tag 
      */
-    sortByTag: function(tag){
+    searchByTag: function(tag){
       // Hide all notes and then show only the ones with the selected tag
       $('div.note').hide();
       $('div.note .tools span:contains("'+tag+'")').parent().parent().show();
