@@ -426,6 +426,49 @@ i{
 	color:#F7CA18;
 }
 
+.note input, .note textarea{
+	width:100%;
+	border:none;
+	border-bottom:2px solid #F7CA18;
+	color:#1C1C1C;
+}
+
+.note form .tagsinput{
+	width:40px;
+}
+
+.note form{
+	box-shadow:0px 0px 15px #F7CA18;
+}
+
+.note input[class=title]{
+	background-color: #F7CA18;
+}
+
+.note button[type=submit]{
+	width:100%;
+	height:44px;
+	border:none;
+	color:#F9F9F9;
+	background-color: #1C1C1C;
+	transition:.25s;
+	-webkit-transition:.25s;
+	-moz-transition:.25s;
+	-ms-transition:.25s;
+	-o-transition:.25s;
+}
+
+.note button[type=submit]:hover{
+	font-size:1.1em;
+	background-color:#F7CA18;
+	border:none;
+	transition:.25s;
+	-webkit-transition:.25s;
+	-moz-transition:.25s;
+	-ms-transition:.25s;
+	-o-transition:.25s;
+}
+
 .edit, .delete{
 	height:40px;
 	width:40px;
@@ -509,6 +552,27 @@ i{
 .video .delete{
 	background:url(img/deleteVideo.png) no-repeat;
 }
+
+.video input, .video textarea{
+	border-bottom:2px solid green;
+}
+
+.video form{
+	box-shadow:0px 0px 8px black;
+}
+
+.video input[class=title]{
+	background-color: green;
+}
+
+.video button[type=submit]{
+	background-color: green;
+}
+
+.video button[type=submit]:hover{
+	background-color: #991914;
+}
+
 
 .sound iframe{
 	height:140px;
