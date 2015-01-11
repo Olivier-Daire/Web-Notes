@@ -34,26 +34,34 @@ nav{
 	margin-top:22px;
 }
 
-nav button, nav #sort, nav #searchIcon, nav #tagsIcon{
+nav button, nav #searchIcon, nav #tagsIcon{
 	position: static;
 	display:inline-block;
 	float:left;
-	width:76px;
-	height:76px;
 	background-color: transparent;
 	border:2px solid transparent;
 	box-sizing: content-box;
+}
+
+nav button{
+	width:76px;
+	height:76px;
+}
+
+.searchIcon, .tagsIcon{
+	width:76px;
+	height:76px;
 }
 
 nav button img, nav div img{
 	opacity:.85;
 }
 
-nav button img, #sort img{
+nav button img{
 	text-align: center;
 }
 
-nav button:hover, #sort:hover, #searchIcon:hover, #tagsIcon:hover{
+nav button:hover, #searchIcon:hover, #tagsIcon:hover{
 	border-bottom:2px solid #F9F9F9;
 }
 
@@ -61,7 +69,7 @@ nav button:hover > img, nav div:hover > img{
 	opacity:1;
 }
 
-nav button:focus, #sort:focus{
+nav button:focus, #searchIcon:focus, #tagIcon:focus{
 	outline:0;
 }
 
@@ -72,17 +80,13 @@ nav button:focus, #sort:focus{
 
 /** Gestion des div au sein du menu **/
 
-#sort{
-	display:inline-block;
-	width:76px;
-}
-
 #searchButton{
 	width:0px;
 	height:0px;
 	margin-left:0px;
 	padding-top:15px;
 	background-color: #1C1C1C;
+
 }
 
 #tagsButton{
@@ -92,6 +96,7 @@ nav button:focus, #sort:focus{
 	background-color: #1C1C1C;
 	padding:0px;
 	color:#F9F9F9;
+
 }
 
 #tagsButton span{
@@ -102,7 +107,7 @@ nav button:focus, #sort:focus{
 	background-color:#991914; 
 }
 
-#sortButton, #searchButton, #tagsButton{
+#searchButton, #tagsButton{
 	height:0px;
 	overflow:hidden;
 	transition:.1s;
@@ -120,55 +125,21 @@ nav button:focus, #sort:focus{
 	margin:1px .5% 0 12px;
 }
 
-#sort button{
-	position:static;
-	width:76px;
-	height:76px;
-	padding:0;
-	margin:0;
-	background-color:#1C1C1C;
-	border-bottom:2px solid #1C1C1C;
-	opacity:1;
-}
-
-#sort button span{
-	position:absolute;
-	margin:0;
-	padding:0;
-	float:left;
-	margin-top:-84px;
-	margin-left:74px;
-	line-height:82px;
-	display:block;
-	height:82px;
-	width:0px;
-	overflow:hidden;
-	color:white;
-	background-color: #1C1C1C;
-}
-
 
 /** Gestion du survol et des menus cachés **/
 
-#sort:hover, #searchIcon:hover, #tagsButton:hover{
+#searchIcon:hover, #tagsIcon:hover{
 	cursor:pointer;
 }
 
-#sort button:hover{
-	border-bottom:2px solid #1C1C1C;
-}
-
-#sort:hover #sortButton, #searchIcon:hover #searchButton, #tagsIcon:hover #tagsButton{
+#searchIcon:hover #searchButton, #tagsIcon:hover #tagsButton{
 	cursor:pointer;
+	margin-top:-3px;
 	transition:.25s;
 	-webkit-transition:.25s;
 	-moz-transition:.25s;
 	-ms-transition:.25s;
 	-o-transition:.25s;
-}
-
-#sort:hover #sortButton{
-	height:250px;
 }
 
 #searchIcon:hover #searchButton{
@@ -183,16 +154,6 @@ nav button:focus, #sort:focus{
 	height:auto;
 	padding:20px;
 }
-
-#sort button:hover span{
-	width:260px;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
-}
-
 
 
 /************************
@@ -714,13 +675,13 @@ i{
 		RESPONSIVE
 ************************/
 
-@media screen and (max-width:1400px) {
+@media screen and (max-width:1300px) {
 	nav{
 		width:90%;
 	}
 }
 
-@media screen and (max-width:1100px) {
+@media screen and (max-width:1015px) {
 	#main{
 		width:100%;
 		top:90px;
@@ -736,6 +697,12 @@ i{
 		height:50px;
 	}
 
+	 .searchIcon, .tagsIcon{
+	 	width:62px;
+	 	height:50px;
+	 	text-align: center;
+	 }
+
 	#buttonGroup{
 		width:auto;
 	}
@@ -746,14 +713,21 @@ i{
 
 }
 
-@media screen and (max-width:750px) {
+@media screen and (max-width:810px) {
+
+	.large{
+		width:530px;
+	}
+}
+
+@media screen and (max-width:650px) {
 
 	#main{
 		top:120px;
 	}
 
 	header{
-		height:120px;
+		height:130px;
 		position:relative;
 		top:0;
 	}
@@ -773,44 +747,82 @@ i{
 		width:300px;
 	}
 
-
 	#buttonGroup{
 		float:none;
 		margin:auto;
-		width:419px;
-	}
-
-}
-
-@media screen and (max-width:750px) {
-
-	#buttonGroup{
-		width:auto;
-	}
-
-	header{
+		width:330px;
 		height:auto;
-		position:static;	
 	}
 
 	nav{
 		height:auto;
 	}
 
-
-
 	#main{
 		position:static;
 	}
 
+	#searchIcon:hover #searchButton{
+		width:300px;
+		margin-left:-120%;
+	}
+
+	#tagsIcon:hover #tagsButton{
+		width:300px;
+		margin-left:-30%;
+	}
+
 }
 
-@media screen and (max-width:330px) {
+@media screen and (max-width:540px){
+
+	.large, .medium{
+		width: 260px;
+	}
+}
+
+@media screen and (max-width:340px) {
+
+	header{
+		height:180px;
+	}
+
+	nav{
+		height:auto;
+	}
+
+	#buttonGroup{
+		position:absolute;
+		top:60px;
+	}
+
 	nav a{
 		width:100%;
 	}
 
 	nav a img{
 		width:100%;
+	}
+
+	#buttonGroup{
+		width:auto;
+	}
+}
+
+@media screen and (max-width:270px){
+
+	.small, .medium, .large{
+		width:96%;
+	}
+
+	#takeNotes{
+		width:96%;
+	}
+}
+
+@media screen and (max-width:210px){
+
+	header{
+		height:220px;
 	}
 }
