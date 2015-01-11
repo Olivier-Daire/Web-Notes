@@ -458,6 +458,8 @@ noteManager.prototype = {
     clearForm: function() {
       $('form input.title, form textarea').val('');
       $('div.tagsinput span').remove();
+      $('.tagsInput input').val('');
+      $('input.tags').val('');
     },
 
     /**
