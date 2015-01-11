@@ -34,8 +34,7 @@ noteManager.prototype = {
       });
 
       /* Export to Dropbox
-       * /!\ Can't generate a file on univ server
-       *     Can't save a file from localhost (Dropbox need access to the server)
+       * /!\  Can't save a file from localhost (Dropbox need access to the server)
        */
       $('#dropbox-export').on('click', $.proxy(function(){
         if (Dropbox.isBrowserSupported()) {
@@ -44,11 +43,9 @@ noteManager.prototype = {
           var that = this;
           
           id.success(function(id){
-            var today = that.formatDate(),
-            date = today[0],
-            dropboxOptions = {
+            var dropboxOptions = {
               files: [
-                  {'url': document.URL+'/temp/WebNotes-'+id+'.json', 'filename': 'WebNotes_'+date+'.json'},
+                  {'url': document.URL+'/temp/WebNotes-'+id+'.json', 'filename': 'WebNotes.json'},
               ],
               success: function () {
                 console.log('success');
@@ -59,7 +56,6 @@ noteManager.prototype = {
             };
 
             Dropbox.save(dropboxOptions);
-            //Dropbox.save("http://localhost/Web-Notes/temp/WebNotes-"+id+".json", "WebNotes");
           });
 
           id.error(function(){
@@ -82,6 +78,7 @@ noteManager.prototype = {
             success: function(files) {
                 $.get( files[0].link, function( data ) {
                   localStorage.setItem("WebNotes", data);
+                  $('div[id^="note-"]').remove();
                   that.displayNotes();
                 });
             },
