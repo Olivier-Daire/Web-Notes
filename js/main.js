@@ -581,7 +581,6 @@ noteManager.prototype = {
             var track_url = s;
             SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
               $('#note-'+id+' h2').after(oEmbed.html);
-              $('#note-'+id).addClass("sound");
             });
 
             // Add type to note
@@ -590,6 +589,7 @@ noteManager.prototype = {
             notes = JSON.stringify(notes);
             localStorage.setItem("WebNotes", notes);
 
+            $('#note-'+id).addClass("sound");
           break;
 
           case 'imdb.com':
