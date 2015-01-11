@@ -28,9 +28,14 @@ noteManager.prototype = {
         e.preventDefault();
 
         var note = that.getNote($(this).closest('form'));
-        that.saveNote(note);
-        that.clearForm();
-        that.displaySingleNote(note);
+        if (note.content !== '' || note.title !== '') {
+          that.saveNote(note);
+          that.clearForm();
+          that.displaySingleNote(note);
+        }else{
+          alert("You can't submit an empty note !");
+        }
+
       });
 
       /* Export to Dropbox
