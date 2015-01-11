@@ -21,6 +21,13 @@ header{
 	z-index: 1;
 }
 
+/************************
+		MENU
+************************/
+
+
+/** Mise en place des éléments **/
+
 nav{
 	width:70%;
 	margin:auto;
@@ -63,6 +70,8 @@ nav button:focus, #sort:focus{
 	float:right;
 }
 
+/** Gestion des div au sein du menu **/
+
 #sort{
 	display:inline-block;
 	width:76px;
@@ -74,6 +83,16 @@ nav button:focus, #sort:focus{
 	margin-left:-150px;
 	padding-top:15px;
 	background-color: #1C1C1C;
+}
+
+#sortButton, #searchButton{
+	height:0px;
+	overflow:hidden;
+	transition:.25s;
+	-webkit-transition:.25s;
+	-moz-transition:.25s;
+	-ms-transition:.25s;
+	-o-transition:.25s;
 }
 
 #searchButton input{
@@ -102,54 +121,6 @@ nav button:focus, #sort:focus{
 	-o-transition:.25s;
 }
 
-#searchButton button:hover{
-	background-color: #991914;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
-}
-
-#sortButton, #searchButton{
-	height:0px;
-	overflow:hidden;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
-}
-
-#sort:hover, #searchIcon:hover{
-	cursor:pointer;
-}
-
-#sort:hover #sortButton, #searchIcon:hover #searchButton{
-	border-top:2px solid transparent;
-	cursor:pointer;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
-}
-
-#sort:hover #sortButton{
-	margin-top:-4px;
-}
-
-#searchIcon:hover #searchButton{
-	margin-top:-3px;
-}
-
-#sort:hover #sortButton{
-	height:250px;
-}
-
-#searchIcon:hover #searchButton{
-	height:56px;
-}
 
 #sort button{
 	position:static;
@@ -188,6 +159,47 @@ nav button:focus, #sort:focus{
 	-o-transition:.25s;
 }
 
+/** Gestion du survol et des menus cachés **/
+
+#searchButton button:hover{
+	background-color: #991914;
+	transition:.25s;
+	-webkit-transition:.25s;
+	-moz-transition:.25s;
+	-ms-transition:.25s;
+	-o-transition:.25s;
+}
+
+#sort:hover, #searchIcon:hover{
+	cursor:pointer;
+}
+
+#sort:hover #sortButton, #searchIcon:hover #searchButton{
+	border-top:2px solid transparent;
+	cursor:pointer;
+	transition:.25s;
+	-webkit-transition:.25s;
+	-moz-transition:.25s;
+	-ms-transition:.25s;
+	-o-transition:.25s;
+}
+
+#sort:hover #sortButton{
+	margin-top:-4px;
+}
+
+#searchIcon:hover #searchButton{
+	margin-top:-3px;
+}
+
+#sort:hover #sortButton{
+	height:250px;
+}
+
+#searchIcon:hover #searchButton{
+	height:56px;
+}
+
 #sort button:hover span{
 	width:260px;
 	transition:.25s;
@@ -196,6 +208,12 @@ nav button:focus, #sort:focus{
 	-ms-transition:.25s;
 	-o-transition:.25s;
 }
+
+
+
+/************************
+		MAIN
+************************/
 
 #main{
 	position:absolute;
@@ -207,6 +225,9 @@ nav button:focus, #sort:focus{
 
 	color:#1C1C1C;
 }
+
+
+/** Module de notes **/
 
 #takeNotes{
 	width:240px;
@@ -314,6 +335,9 @@ nav button:focus, #sort:focus{
    font-style:italic;  
 }
 
+
+/** Stylisation des notes **/
+
 .note, #takeNotes{
 	width:260px;
 	float:left;
@@ -419,10 +443,7 @@ i{
 }
 
 
-
-/************************
-		TAILLES
-************************/
+/** Tailles **/
 
 .small{
 	width:260px;
@@ -448,9 +469,7 @@ i{
 }
 
 
-/************************
-		COULEURS
-************************/
+/** Couleurs **/
 
 .video{
 	border:2px solid #1E824C;
