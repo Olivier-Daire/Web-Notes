@@ -442,7 +442,7 @@ i{
 }
 
 .note form{
-	box-shadow:0px 0px 15px #F7CA18;
+	box-shadow:0px 0px 20px #F7CA18;
 }
 
 .note input[class=title]{
@@ -485,9 +485,6 @@ i{
 
 .edit{
 	margin-right:5px;
-}
-
-.edit{
 	background:url(img/editBasic.png) no-repeat;
 }
 
@@ -496,7 +493,6 @@ i{
 }
 
 .toolsButton:hover{
-
 	opacity: 1;
 	cursor:pointer;
 }
@@ -567,7 +563,7 @@ i{
 }
 
 .video form{
-	box-shadow:0px 0px 15px #1E824C;
+	box-shadow:0px 0px 20px #1E824C;
 }
 
 .video input[class=title]{
@@ -575,6 +571,14 @@ i{
 }
 
 .video button[type=submit]:hover{
+	background-color:#1E824C;
+}
+
+.video span{
+	color:#1E824C;
+}
+
+.video span:hover{
 	background-color:#1E824C;
 }
 
@@ -612,7 +616,7 @@ i{
 }
 
 .sound form{
-	box-shadow:0px 0px 15px #F9690E;
+	box-shadow:0px 0px 20px #F9690E;
 }
 
 .sound input[class=title]{
@@ -620,6 +624,14 @@ i{
 }
 
 .sound button[type=submit]:hover{
+	background-color:#F9690E;
+}
+
+.sound span{
+	color:#F9690E;
+}
+
+.sound span:hover{
 	background-color:#F9690E;
 }
 
@@ -657,7 +669,7 @@ i{
 }
 
 .movie form{
-	box-shadow:0px 0px 15px #446CB3;
+	box-shadow:0px 0px 20px #446CB3;
 }
 
 .movie input[class=title]{
@@ -665,6 +677,14 @@ i{
 }
 
 .movie button[type=submit]:hover{
+	background-color:#446CB3;
+}
+
+.movie span{
+	color:#446CB3;
+}
+
+.movie span:hover{
 	background-color:#446CB3;
 }
 
@@ -698,7 +718,7 @@ i{
 }
 
 .image form{
-	box-shadow:0px 0px 15px #8E44AD;
+	box-shadow:0px 0px 20px #8E44AD;
 }
 
 .image input[class=title]{
@@ -706,6 +726,14 @@ i{
 }
 
 .image button[type=submit]:hover{
+	background-color:#8E44AD;
+}
+
+.image span{
+	color:#8E44AD;
+}
+
+.image span:hover{
 	background-color:#8E44AD;
 }
 

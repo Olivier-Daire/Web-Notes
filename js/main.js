@@ -403,7 +403,10 @@ noteManager.prototype = {
         '</form>'
       );
 
-     $('#note-'+id+' .tags').tagsInput();
+     $('#note-'+id+' .tags').tagsInput({
+       'height': 'auto',
+       'width' : 'auto',
+      });
     },
 
     /**
