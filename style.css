@@ -34,7 +34,7 @@ nav{
 	margin-top:22px;
 }
 
-nav button, nav #sort, nav #searchIcon{
+nav button, nav #sort, nav #searchIcon, nav #tagsIcon{
 	position: static;
 	display:inline-block;
 	float:left;
@@ -53,7 +53,7 @@ nav button img, #sort img{
 	text-align: center;
 }
 
-nav button:hover, #sort:hover, #searchIcon:hover{
+nav button:hover, #sort:hover, #searchIcon:hover, #tagsIcon:hover{
 	border-bottom:2px solid #F9F9F9;
 }
 
@@ -78,21 +78,38 @@ nav button:focus, #sort:focus{
 }
 
 #searchButton{
-	width:400px;
+	width:0px;
 	height:0px;
-	margin-left:-150px;
+	margin-left:0px;
 	padding-top:15px;
 	background-color: #1C1C1C;
 }
 
-#sortButton, #searchButton{
+#tagsButton{
+	width:0px;
+	height:0px;
+	margin-top:-1px;
+	background-color: #1C1C1C;
+	padding:0px;
+	color:#F9F9F9;
+}
+
+#tagsButton span{
+	padding:5px;
+}
+
+#tagsButton span:hover{
+	background-color:#991914; 
+}
+
+#sortButton, #searchButton, #tagsButton{
 	height:0px;
 	overflow:hidden;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
+	transition:.1s;
+	-webkit-transition:.1s;
+	-moz-transition:.1s;
+	-ms-transition:.1s;
+	-o-transition:.1s;
 }
 
 #searchButton input{
@@ -121,7 +138,6 @@ nav button:focus, #sort:focus{
 	-o-transition:.25s;
 }
 
-
 #sort button{
 	position:static;
 	width:76px;
@@ -132,7 +148,6 @@ nav button:focus, #sort:focus{
 	border-bottom:2px solid #1C1C1C;
 	opacity:1;
 }
-
 
 #sort button:hover{
 	border-bottom:2px solid #1C1C1C;
@@ -152,12 +167,8 @@ nav button:focus, #sort:focus{
 	overflow:hidden;
 	color:white;
 	background-color: #1C1C1C;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
 }
+
 
 /** Gestion du survol et des menus cachés **/
 
@@ -170,12 +181,11 @@ nav button:focus, #sort:focus{
 	-o-transition:.25s;
 }
 
-#sort:hover, #searchIcon:hover{
+#sort:hover, #searchIcon:hover, #tagsButton:hover{
 	cursor:pointer;
 }
 
-#sort:hover #sortButton, #searchIcon:hover #searchButton{
-	border-top:2px solid transparent;
+#sort:hover #sortButton, #searchIcon:hover #searchButton, #tagsIcon:hover #tagsButton{
 	cursor:pointer;
 	transition:.25s;
 	-webkit-transition:.25s;
@@ -185,19 +195,20 @@ nav button:focus, #sort:focus{
 }
 
 #sort:hover #sortButton{
-	margin-top:-4px;
-}
-
-#searchIcon:hover #searchButton{
-	margin-top:-3px;
-}
-
-#sort:hover #sortButton{
 	height:250px;
 }
 
 #searchIcon:hover #searchButton{
-	height:56px;
+	height:55px;
+	width:400px;
+	margin-left:-150px;
+}
+
+#tagsIcon:hover #tagsButton{
+	width:400px;
+	margin-left:-150px;
+	height:auto;
+	padding:20px;
 }
 
 #sort button:hover span{
