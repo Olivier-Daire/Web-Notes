@@ -111,7 +111,7 @@ noteManager.prototype = {
 
       // Delete a note
       $(document).on('click', '.note button.delete', function(){
-        if (confirm("All notes will be deleted, are you sure ?")) {
+        if (confirm("This note will be deleted, are you sure ?")) {
           var id = $(this).parent().attr('id');
           id = id.substr(5, id.length);
           that.deleteSingleNote(id); 
