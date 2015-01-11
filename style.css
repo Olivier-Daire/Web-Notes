@@ -27,7 +27,10 @@ nav{
 	margin-top:22px;
 }
 
-nav button{
+nav button, nav #sort{
+	position: static;
+	display:inline-block;
+	float:left;
 	width:76px;
 	height:76px;
 	background-color: transparent;
@@ -36,22 +39,101 @@ nav button{
 	box-sizing: content-box;
 }
 
-nav button img{
+nav button img, #sort img{
 	text-align: center;
 }
 
-nav button:hover{
+nav button:hover, #sort:hover{
 	border-bottom:2px solid #F9F9F9;
 	opacity:1;
 }
 
-nav button:focus{
+nav button:focus, #sort:focus{
 	outline:0;
 }
 
 #buttonGroup{
 	width:auto;
 	float:right;
+}
+
+
+#sort{
+	display:inline-block;
+	width:76px;
+}
+
+#sortButton{
+	height:0px;
+	overflow:hidden;
+	margin-top:-5px;
+	border-top:2px solid transparent;
+	transition:.25s;
+	-webkit-transition:.25s;
+	-moz-transition:.25s;
+	-ms-transition:.25s;
+	-o-transition:.25s;
+}
+
+#sort:hover{
+	cursor:pointer
+}
+
+#sort:hover #sortButton{
+	height:250px;
+	border-top:2px solid #F9F9F9;
+	cursor:pointer;
+	transition:.25s;
+	-webkit-transition:.25s;
+	-moz-transition:.25s;
+	-ms-transition:.25s;
+	-o-transition:.25s;
+}
+
+#sort button{
+	position:static;
+	width:76px;
+	height:76px;
+	padding:0;
+	margin:0;
+	background-color:#1C1C1C;
+	border-bottom:2px solid #1C1C1C;
+	opacity:1;
+}
+
+
+#sort button:hover{
+	border-bottom:2px solid #1C1C1C;
+}
+
+#sort button span{
+	position:absolute;
+	margin:0;
+	padding:0;
+	float:left;
+	margin-top:-84px;
+	margin-left:74px;
+	line-height:82px;
+	display:block;
+	height:82px;
+	width:0px;
+	overflow:hidden;
+	color:white;
+	background-color: #1C1C1C;
+	transition:.25s;
+	-webkit-transition:.25s;
+	-moz-transition:.25s;
+	-ms-transition:.25s;
+	-o-transition:.25s;
+}
+
+#sort button:hover span{
+	width:260px;
+	transition:.25s;
+	-webkit-transition:.25s;
+	-moz-transition:.25s;
+	-ms-transition:.25s;
+	-o-transition:.25s;
 }
 
 #main{
@@ -211,6 +293,7 @@ nav button:focus{
 	margin:20px;
 	line-height:21px;
 	word-break: break-word;
+	overflow:auto;
 }
 
 .note p a{
