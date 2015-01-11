@@ -49,7 +49,7 @@ noteManager.prototype = {
             date = today[0],
             dropboxOptions = {
               files: [
-                  {'url': 'http://localhost/Web-Notes/temp/WebNotes-'+id+'.json', 'filename': 'WebNotes_'+date+'.json'},
+                  {'url': config.website_url+'WebNotes-'+id+'.json', 'filename': 'WebNotes_'+date+'.json'},
               ],
               success: function () {
                 console.log('success');
