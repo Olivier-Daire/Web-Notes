@@ -690,13 +690,13 @@ i{
 		RESPONSIVE
 ************************/
 
-@media screen and (max-width:1300px) {
+@media screen and (max-width:1320px) {
 	nav{
 		width:90%;
 	}
 }
 
-@media screen and (max-width:1015px) {
+@media screen and (max-width:1025px) {
 	#main{
 		width:100%;
 		top:90px;
@@ -735,14 +735,14 @@ i{
 	}
 }
 
-@media screen and (max-width:650px) {
+@media screen and (max-width:730px) {
 
 	#main{
 		top:120px;
 	}
 
 	header{
-		height:130px;
+		height:150px;
 		position:relative;
 		top:0;
 	}
@@ -755,17 +755,17 @@ i{
 	nav a{
 		display:block;
 		margin:auto;
-		width:300px;
+		width:390px;
 	}
 
 	nav a img{
-		width:300px;
+		width:390px;
 	}
 
 	#buttonGroup{
 		float:none;
 		margin:auto;
-		width:330px;
+		width:396px;
 		height:auto;
 	}
 
@@ -796,7 +796,7 @@ i{
 	}
 }
 
-@media screen and (max-width:340px) {
+@media screen and (max-width:430px) {
 
 	header{
 		height:180px;
@@ -808,7 +808,7 @@ i{
 
 	#buttonGroup{
 		position:absolute;
-		top:60px;
+		top:70px;
 	}
 
 	nav a{
@@ -828,6 +828,10 @@ i{
 
 	.small, .medium, .large{
 		width:96%;
+	}
+
+	#buttonGroup{
+		top:50px;
 	}
 
 	#takeNotes{
