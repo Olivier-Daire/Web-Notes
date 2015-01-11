@@ -840,6 +840,10 @@ footer{
 	#buttonGroup{
 		width:auto;
 	}
+
+	.note, #takeNotes{
+		margin-left: 10%;
+	}
 }
 
 @media screen and (max-width:270px){
