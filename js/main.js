@@ -38,18 +38,17 @@ noteManager.prototype = {
        *     Can't save a file from localhost (Dropbox need access to the server)
        */
       $('#dropbox-export').on('click', $.proxy(function(){
-
         if (Dropbox.isBrowserSupported()) {
 
           var id = this.createJSONfile(localStorage.getItem("WebNotes"));
           var that = this;
-
+          
           id.success(function(id){
             var today = that.formatDate(),
             date = today[0],
             dropboxOptions = {
               files: [
-                  {'url': document.url+'/temp/WebNotes-'+id+'.json', 'filename': 'WebNotes_'+date+'.json'},
+                  {'url': document.URL+'/temp/WebNotes-'+id+'.json', 'filename': 'WebNotes_'+date+'.json'},
               ],
               success: function () {
                 console.log('success');
