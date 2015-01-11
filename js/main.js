@@ -166,6 +166,11 @@ noteManager.prototype = {
         
       }, this));
 
+      $('#searchIcon input').on('keyup', function(){
+        var value = $(this).val();
+        $('div.note').hide();
+        $('div.note:contains("'+value+'")').show();
+      });
     },
 
 
