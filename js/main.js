@@ -146,12 +146,25 @@ noteManager.prototype = {
       }, this));
 
       // Sort by tag 
-      $(document).on('click', '.note span[id^="tag-"]', function(){
+      $(document).on('click', '.note span[id^="tag-"], #tagsButton span', function(){
         var tag = $(this).text();
-        // Hide all notes and then show only the ones with the selected tag
-        $('div.note').hide();
-        $('div.note .tools span:contains("'+tag+'")').parent().parent().show();
+        that.sortByTag(tag);
       });
+
+     
+
+      $('#tagsIcon').on('mouseenter', $.proxy(function(){
+        var tags = this.getAllTags();
+
+        if (tags) {
+          var html = this.displayAllTags(tags);  
+
+          if (html !== '') {
+            $('#tagsButton').html(html);
+          }
+        }
+        
+      }, this));
 
     },
 
@@ -352,6 +365,7 @@ noteManager.prototype = {
     deleteNotes: function() {
       localStorage.removeItem("WebNotes");
       $('div[id^="note-"]').remove();
+      $('#tagsButton').html('You have currently no notes with a tag, add tags to your notes !');
     },
 
     /**
@@ -388,7 +402,49 @@ noteManager.prototype = {
      $('.tags').tagsInput();
     },
 
+    /**
+     * Fetch all tags from each note
+     * @return {array} Array of all tags
+     */
+    getAllTags: function(){
+      var notes = $.parseJSON(localStorage.getItem("WebNotes"));
+      var tags = [];
 
+      if (notes !== null) {
+        for (var i = notes.length-1 ; i >= 0; i--) {
+          for (var j = 0; j < notes[i].tags.length; j++) {
+            if (notes[i].tags[j] && $.inArray(notes[i].tags[j], tags) === -1) {
+               tags.push(notes[i].tags[j]);
+            }
+          }   
+        }
+        return tags;
+      }
+
+    },
+
+    /**
+     * Get all notes tags and return HTML code with a list of all the tags
+     * @param  {array} tags  Array of all tags
+     * @return {string}      HTML code 
+     */
+    displayAllTags: function(tags){
+      var html = '';
+      for (var i = 0; i < tags.length; i++) {
+        html = html + '<span>'+tags[i]+'</span>';
+      }
+      return html;
+    },
+
+    /**
+     * Show the notes containing the selecetd tag
+     * @param  {string} tag 
+     */
+    sortByTag: function(tag){
+      // Hide all notes and then show only the ones with the selected tag
+      $('div.note').hide();
+      $('div.note .tools span:contains("'+tag+'")').parent().parent().show();
+    },
 
     /******************
      TOOLKIT FUNCTIONS
