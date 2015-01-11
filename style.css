@@ -433,6 +433,10 @@ i{
 	color:#1C1C1C;
 }
 
+.note textarea{
+	height:200px;
+}
+
 .note form .tagsinput{
 	width:40px;
 }
@@ -443,6 +447,7 @@ i{
 
 .note input[class=title]{
 	background-color: #F7CA18;
+	color:#F9F9F9;
 }
 
 .note button[type=submit]{
@@ -554,23 +559,23 @@ i{
 }
 
 .video input, .video textarea{
-	border-bottom:2px solid green;
+	border-bottom:2px solid #1E824C;
+}
+
+.video form .tagsinput{
+	width:40px;
 }
 
 .video form{
-	box-shadow:0px 0px 8px black;
+	box-shadow:0px 0px 15px #1E824C;
 }
 
 .video input[class=title]{
-	background-color: green;
-}
-
-.video button[type=submit]{
-	background-color: green;
+	background-color: #1E824C;
 }
 
 .video button[type=submit]:hover{
-	background-color: #991914;
+	background-color:#1E824C;
 }
 
 
@@ -598,6 +603,27 @@ i{
 	background:url(img/deleteSound.png) no-repeat;
 }
 
+.sound input, .sound textarea{
+	border-bottom:2px solid #F9690E;
+}
+
+.sound form .tagsinput{
+	width:40px;
+}
+
+.sound form{
+	box-shadow:0px 0px 15px #F9690E;
+}
+
+.sound input[class=title]{
+	background-color: #F9690E;
+}
+
+.sound button[type=submit]:hover{
+	background-color:#F9690E;
+}
+
+
 .movie{
 	border:2px solid #446CB3;
 }
@@ -622,6 +648,27 @@ i{
 	background:url(img/deleteMovie.png) no-repeat;
 }
 
+.movie input, .movie textarea{
+	border-bottom:2px solid #446CB3;
+}
+
+.movie form .tagsinput{
+	width:40px;
+}
+
+.movie form{
+	box-shadow:0px 0px 15px #446CB3;
+}
+
+.movie input[class=title]{
+	background-color: #446CB3;
+}
+
+.movie button[type=submit]:hover{
+	background-color:#446CB3;
+}
+
+
 .image{
 	border:2px solid #8E44AD;
 }
@@ -640,6 +687,26 @@ i{
 
 .image .delete{
 	background:url(img/deleteImg.png) no-repeat;
+}
+
+.image input, .image textarea{
+	border-bottom:2px solid #8E44AD;
+}
+
+.image form .tagsinput{
+	width:40px;
+}
+
+.image form{
+	box-shadow:0px 0px 15px #8E44AD;
+}
+
+.image input[class=title]{
+	background-color: #8E44AD;
+}
+
+.image button[type=submit]:hover{
+	background-color:#8E44AD;
 }
 
 /************************

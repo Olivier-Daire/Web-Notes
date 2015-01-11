@@ -403,7 +403,7 @@ noteManager.prototype = {
         '</form>'
       );
 
-     $('.tags').tagsInput();
+     $('#note-'+id+' .tags').tagsInput();
     },
 
     /**
