@@ -6,20 +6,18 @@
 ************************/
 
 body{
-	width:100%;
-	height:100%;
-	background:url(img/bg.png);
-	
+	width: 100%;
+	height: 100%;
+	background-color: #fcfcfc;	
 }
 
-header{
-	position:fixed;
-	top:0;
-	background-color: #1C1C1C;
-	width:100%;
-	height:120px;
+/*header{
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 120px;
 	z-index: 1;
-}
+}*/
 
 /************************
 		MENU
@@ -28,103 +26,32 @@ header{
 
 /** Mise en place des éléments **/
 
-nav{
-	width:70%;
-	margin:auto;
-	margin-top:22px;
-}
-
-nav button, nav #searchIcon, nav #tagsIcon{
-	position: static;
-	display:inline-block;
-	float:left;
-	background-color: transparent;
-	border:2px solid transparent;
-	box-sizing: content-box;
+.brand-logo img{
+	width: 70%;
 }
 
 nav button{
-	width:76px;
-	height:76px;
+	display:inline-block;
+	box-sizing: content-box;
+	background-color: transparent;
+	border: none;
+	padding: 0 10px;
+	opacity: 0.9;
+	-webkit-transition: opacity 0.2s;
+  	-moz-transition: opacity 0.2s;
+  	-o-transition: opacity 0.2s;
+  	-ms-transition: opacity 0.2s;
+  	transition: opacity 0.2s;
 }
 
-.searchIcon, .tagsIcon{
-	width:76px;
-	height:76px;
+nav button:hover{
+	opacity: 1;
 }
 
-nav button img, nav div img{
-	opacity:.85;
-}
-
-nav button img{
-	text-align: center;
-}
-
-nav button:hover, #searchIcon:hover, #tagsIcon:hover{
-	border-bottom:2px solid #F9F9F9;
-}
-
-nav button:hover > img, nav div:hover > img{
-	opacity:1;
-}
-
-nav button:focus, #searchIcon:focus, #tagIcon:focus{
-	outline:0;
-}
-
-#buttonGroup{
-	width:auto;
-	float:right;
-}
 
 /** Gestion des div au sein du menu **/
 
-#searchButton{
-	width:0px;
-	height:0px;
-	margin-left:0px;
-	padding-top:15px;
-	background-color: #1C1C1C;
-
-}
-
-#tagsButton{
-	width:0px;
-	height:0px;
-	margin-top:-1px;
-	background-color: #1C1C1C;
-	padding:0px;
-	color:#F9F9F9;
-
-}
-
-#tagsButton span{
-	padding:5px;
-}
-
-#tagsButton span:hover{
-	background-color:#991914; 
-}
-
-#searchButton, #tagsButton{
-	height:0px;
-	overflow:hidden;
-	transition:.1s;
-	-webkit-transition:.1s;
-	-moz-transition:.1s;
-	-ms-transition:.1s;
-	-o-transition:.1s;
-}
-
-#searchButton input{
-	float: left;
-	height:28px;
-	width:94%;
-	padding: 4px;
-	margin:1px .5% 0 12px;
-}
-
+/* FIXME old markup */
 #searchButton input::-webkit-input-placeholder { /* WebKit browsers */
     color:    black;
 }
@@ -140,36 +67,6 @@ nav button:focus, #searchIcon:focus, #tagIcon:focus{
 #searchButton input:-ms-input-placeholder { /* Internet Explorer 10+ */
    color:    black;
 }
-
-/** Gestion du survol et des menus cachés **/
-
-#searchIcon:hover, #tagsIcon:hover{
-	cursor:pointer;
-}
-
-#searchIcon:hover #searchButton, #tagsIcon:hover #tagsButton{
-	cursor:pointer;
-	margin-top:-3px;
-	transition:.25s;
-	-webkit-transition:.25s;
-	-moz-transition:.25s;
-	-ms-transition:.25s;
-	-o-transition:.25s;
-}
-
-#searchIcon:hover #searchButton{
-	height:52px;
-	width:400px;
-	margin-left:-150px;
-}
-
-#tagsIcon:hover #tagsButton{
-	width:400px;
-	margin-left:-150px;
-	height:auto;
-	padding:20px;
-}
-
 
 /************************
 		MAIN
@@ -361,18 +258,6 @@ nav button:focus, #searchIcon:focus, #tagIcon:focus{
 	background-color:#d91e18;
 	cursor:pointer;
 }
-	
-i{
-	font-size:0.70em;
-	width:65%;
-	float:left;
-	padding:0;
-	margin:0;
-	margin-top:23px;
-	padding-left:20px;
-	font-style:italic;
-	color:#F7CA18;
-}
 
 .note input, .note textarea{
 	width:100%;
@@ -448,7 +333,7 @@ i{
 
 /** Tailles **/
 
-.small{
+/*.small{
 	width:260px;
 }
 
@@ -462,7 +347,7 @@ i{
 
 .large{
 	width:800px;
-}
+}*/
 
 .noresize img{
 	width:auto;
@@ -725,20 +610,11 @@ footer{
 		height:90px;
 	}
 
-	#buttonGroup button, #buttonGroup img{
-		width:50px;
-		height:50px;
-	}
-
 	 .searchIcon, .tagsIcon{
 	 	width:62px;
 	 	height:50px;
 	 	text-align: center;
 	 }
-
-	#buttonGroup{
-		width:auto;
-	}
 
 	nav a img{
 		width:260px;
