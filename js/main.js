@@ -152,7 +152,7 @@ noteManager.prototype = {
       });
 
       // Tag search
-      $('#tagsIcon').on('mouseenter', $.proxy(function(){
+      $('#search-by-tag').on('mouseenter', $.proxy(function(){
         var tags = this.getAllTags();
 
         if (tags) {
@@ -166,7 +166,7 @@ noteManager.prototype = {
       }, this));
 
       // Text search
-      $('#searchIcon input').on('keyup', function(){
+      $('#search-input').on('keyup', function(){
         var value = $(this).val();
         $('div.note').hide();
         $('div.note:contains("'+value+'")').show();
@@ -283,7 +283,7 @@ noteManager.prototype = {
           // Keep line breaks 
           notes[i].content = this.nl2br(notes[i].content);
 
-          $('#main').append(
+          $('main').append(
             '<div id="note-'+i+'" class="note '+notes[i].type+'">'+
               '<h2>'+notes[i].title+'</h2>'+
               '<p>'+notes[i].content+'</p>'+
@@ -347,7 +347,7 @@ noteManager.prototype = {
                       '</div>';
 
       if (this.options.defaultSort === "older") {
-        $('#main').append(noteHTML);  
+        $('main').append(noteHTML);  
       }else{
         $('#takeNotes').after(noteHTML);
       }
@@ -534,10 +534,10 @@ noteManager.prototype = {
      * Display all notes in reverse order : old ones first
      */
     reverseOrder: function() {
-      $('#main > div:not(#takeNotes)').each(function() {
+      $('main > div:not(#takeNotes)').each(function() {
         $(this).prependTo(this.parentNode);
       });
-      $('#main').prepend($('#takeNotes'));
+      $('main').prepend($('#takeNotes'));
     },
 
 
