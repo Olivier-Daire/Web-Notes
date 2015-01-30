@@ -24,18 +24,30 @@ noteManager.prototype = {
       var that = this;
 
       // Save note and display it 
-      $('button[type="submit"]').on('click', function(e){
+      $(document).on('click', 'button[type="submit"]', function(e){
         e.preventDefault();
-
-        var note = that.getNote($(this).closest('form'));
+        var form = $(this).closest('form')
+        var note = that.getNote(form);
         if (note.content !== '' || note.title !== '') {
           that.saveNote(note);
-          that.clearForm();
+          //that.clearForm();
+          // TODO : animate opacity
+          form.remove();
           that.displaySingleNote(note);
         }else{
           alert("You can't submit an empty note !");
         }
 
+      });
+
+      $('#new-note').on('click', function(){
+        if (!$('#new-note-form').length) {
+           that.newForm();
+          $('.card .mdi-navigation-close').on('click', function(){
+            // TODO : Animate opacity
+            $(this).closest('form').remove();
+          });
+        };
       });
 
       /* Export to Dropbox
@@ -110,17 +122,17 @@ noteManager.prototype = {
       }, this));
 
       // Delete a note
-      $(document).on('click', '.note button.delete', function(){
+      $(document).on('click', 'div[id^="note-"] button.delete', function(){
         if (confirm("This note will be deleted, are you sure ?")) {
-          var id = $(this).parent().attr('id');
+          var id = $(this).parents('div[id^="note-"]').attr('id');
           id = id.substr(5, id.length);
           that.deleteSingleNote(id); 
         }
       });
 
       // Edit a note
-      $(document).on('click', '.note button.edit', function(){
-        var id = $(this).parent().attr('id');
+      $(document).on('click', 'div[id^="note-"] button.edit', function(){
+        var id = $(this).parents('div[id^="note-"]').attr('id');
         id = id.substr(5, id.length);
         that.editNote(id);
       });
@@ -177,6 +189,32 @@ noteManager.prototype = {
     /******************
       CORE FUNCTIONS
     ******************/
+    // TODO : Add tags field
+    newForm: function(){
+      formHTML = 
+      '<form class="col s12 m3" id="new-note-form">'+
+        '<div class="card">'+
+          '<div class="card-content">'+
+              '<span class="card-title grey-text text-darken-4">Add a new note<i class="mdi-navigation-close right"></i></span>'+
+              '<div class="input-field col s12">'+
+                '<input type="text" id="title">'+
+                '<label for="title">Title</label>'+
+              '</div>'+
+              '<div class="input-field col s12">'+
+                '<textarea class="materialize-textarea"></textarea>'+
+                '<label>Content of your note</label>'+
+              '</div>'+
+              '<div class="clear"></div>'+
+          '</div>'+
+          '<div class="card-action center-align">'+
+            '<button class="btn waves-effect waves-light" type="submit" name="action">Submit<i class="mdi-content-send right"></i></button>'+
+          '</div>'+
+        '</div>'+
+      '</form>';
+
+      $('main .container .row').prepend(formHTML);
+    },
+
 
     /**
      * Get form data and return it as a JSON object
@@ -184,13 +222,15 @@ noteManager.prototype = {
      * @return {JSON}   Note as JSON object  
      */
     getNote: function(form) {
-      var title = form.find('.title').val(),
+      var title = form.find('#title').val(),
           content = form.find('textarea').val(),
           url = this.containsURL(content);
           today = this.formatDate(),
           date = today[0],
           time = today[1],
-          tags = this.formatTags(form.find('.tags').val());
+          // FIXME
+          //tags = this.formatTags(form.find('.tags').val());
+            tags = '';
 
       var note = this.formatNote(title, content, date, time, tags, url);
       return note;
@@ -283,15 +323,20 @@ noteManager.prototype = {
           // Keep line breaks 
           notes[i].content = this.nl2br(notes[i].content);
 
-          $('main').append(
-            '<div id="note-'+i+'" class="note '+notes[i].type+'">'+
-              '<h2>'+notes[i].title+'</h2>'+
-              '<p>'+notes[i].content+'</p>'+
-              '<div class="tools">'+ tags +'</div>'+
-              '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
-              '<button class="toolsButton edit"></button>'+
-              '<button class="toolsButton delete"></button>'+
-            '</div>'
+            // TODO : note id note type
+          $('main .container .row').append(
+            '<div class="col s12 m3" id="note-'+i+'"><div class="card blue-grey darken-3">'+
+              '<div class="card-content white-text">'+
+                '<span class="card-title">'+notes[i].title+'</span>'+
+                '<p>'+notes[i].content+'</p>'+
+              '</div>'+
+              '<div class="card-action">'+
+                '<div class="tools">'+ tags +'</div>'+
+                '<i class="white-text date">'+notes[i].date+' - '+notes[i].time+'</i>'+
+                '<span class="right"><button class="white-text edit"><i class="small mdi-editor-mode-edit"></i></button>'+
+                '<button class="white-text delete"><i class="small mdi-action-delete"></i></button></span>'+
+              '</div>'+
+            '</div></div>'
           );
 
           if (notes[i].url) {
@@ -336,20 +381,24 @@ noteManager.prototype = {
 
       // Keep line breaks 
       note.content = this.nl2br(note.content);
-
-      var noteHTML =  '<div id="note-'+notesLength+'" class="note">'+
-                        '<h2>'+note.title+'</h2>'+
-                        '<p>'+note.content+'</p>'+
-                        '<div class="tools">'+ tags +'</div>'+
-                        '<i>'+note.date+' - '+note.time+'</i>'+
-                        '<button class="toolsButton edit"></button>'+
-                        '<button class="toolsButton delete"></button>'+
-                      '</div>';
+      // TODO : notesLength as id 
+      var noteHTML = '<div class="col s12 m3"  id="note-'+notesLength+'"><div class="card blue-grey darken-3">'+
+                        '<div class="card-content white-text">'+
+                          '<span class="card-title">'+note.title+'</span>'+
+                          '<p>'+note.content+'</p>'+
+                        '</div>'+
+                        '<div class="card-action">'+
+                          '<div class="tools">'+ tags +'</div>'+
+                          '<i class="white-text date">'+note.date+' - '+note.time+'</i>'+
+                          '<span class="right"><button class="white-text edit"><i class="small mdi-editor-mode-edit"></i></button>'+
+                          '<button class="white-text delete"><i class="small mdi-action-delete"></i></button></span>'+
+                        '</div>'+
+                      '</div></div>';
 
       if (this.options.defaultSort === "older") {
-        $('main').append(noteHTML);  
+        $('main .container .row').append(noteHTML);  
       }else{
-        $('#takeNotes').after(noteHTML);
+        $('main .container .row').prepend(noteHTML);
       }
       
       if (note.url) {
@@ -370,7 +419,7 @@ noteManager.prototype = {
     deleteNotes: function() {
       localStorage.removeItem("WebNotes");
       $('div[id^="note-"]').remove();
-      $('#tagsButton').html('You have currently no notes with a tag, add tags to your notes !');
+      $('#dropdown1').html('You have currently no notes with a tag, add tags to your notes !');
     },
 
     /**
@@ -457,13 +506,13 @@ noteManager.prototype = {
     /******************
      TOOLKIT FUNCTIONS
     ******************/
-
-    clearForm: function() {
+    // Useless ?
+    /*clearForm: function() {
       $('form input.title, form textarea').val('');
       $('div.tagsinput span').remove();
       $('.tagsInput input').val('');
       $('input.tags').val('');
-    },
+    },*/
 
     /**
      * Get current date and time and format it
