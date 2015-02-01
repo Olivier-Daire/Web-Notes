@@ -49,6 +49,9 @@ nav button:hover{
 .dropdown-content{
 	padding: 0 10px;
 }
+main{
+	margin-top: 1rem;
+}
 
 main .container button.btn-floating{
 	position: fixed;

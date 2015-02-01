@@ -325,16 +325,16 @@ noteManager.prototype = {
 
             // TODO : note id note type
           $('main .container .row').append(
-            '<div class="col s12 m3" id="note-'+i+'"><div class="card blue-grey darken-3">'+
-              '<div class="card-content white-text">'+
-                '<span class="card-title">'+notes[i].title+'</span>'+
+            '<div class="col s12 m3" id="note-'+i+'"><div class="card">'+
+              '<div class="card-content">'+
+                '<span class="card-title grey-text text-darken-4">'+notes[i].title+'</span>'+
                 '<p>'+notes[i].content+'</p>'+
               '</div>'+
               '<div class="card-action">'+
                 '<div class="tools">'+ tags +'</div>'+
-                '<i class="white-text date">'+notes[i].date+' - '+notes[i].time+'</i>'+
-                '<span class="right"><button class="white-text edit"><i class="small mdi-editor-mode-edit"></i></button>'+
-                '<button class="white-text delete"><i class="small mdi-action-delete"></i></button></span>'+
+                '<i class="date">'+notes[i].date+' - '+notes[i].time+'</i>'+
+                '<span class="right grey-text text-darken-1"><button class="edit"><i class="small mdi-editor-mode-edit"></i></button>'+
+                '<button class="delete"><i class="small mdi-action-delete"></i></button></span>'+
               '</div>'+
             '</div></div>'
           );
@@ -382,16 +382,16 @@ noteManager.prototype = {
       // Keep line breaks 
       note.content = this.nl2br(note.content);
       // TODO : notesLength as id 
-      var noteHTML = '<div class="col s12 m3"  id="note-'+notesLength+'"><div class="card blue-grey darken-3">'+
-                        '<div class="card-content white-text">'+
-                          '<span class="card-title">'+note.title+'</span>'+
+      var noteHTML = '<div class="col s12 m3"  id="note-'+notesLength+'"><div class="card">'+
+                        '<div class="card-content">'+
+                          '<span class="card-title grey-text text-darken-4">'+note.title+'</span>'+
                           '<p>'+note.content+'</p>'+
                         '</div>'+
                         '<div class="card-action">'+
                           '<div class="tools">'+ tags +'</div>'+
-                          '<i class="white-text date">'+note.date+' - '+note.time+'</i>'+
-                          '<span class="right"><button class="white-text edit"><i class="small mdi-editor-mode-edit"></i></button>'+
-                          '<button class="white-text delete"><i class="small mdi-action-delete"></i></button></span>'+
+                          '<i class="date">'+note.date+' - '+note.time+'</i>'+
+                          '<span class="right grey-text text-darken-1"><button class="edit"><i class="small mdi-editor-mode-edit"></i></button>'+
+                          '<button class="delete"><i class="small mdi-action-delete"></i></button></span>'+
                         '</div>'+
                       '</div></div>';
 
@@ -444,19 +444,37 @@ noteManager.prototype = {
       var notes = $.parseJSON(localStorage.getItem("WebNotes"));
       var note = notes[id];
 
-     $('#note-'+id).html(
-        '<form>'+
-          '<input type="text" class="title" value="'+note.title+'">'+
-          '<textarea>'+note.content+'</textarea>'+
-          '<input name="tags" class="tags" value="'+note.tags+'" />'+
-          '<button type="submit">Save</button>'+
-        '</form>'
-      );
+      var editForm = 
+        '<form class="col s12" id="edit-note-form">'+
+          '<div class="card">'+
+            '<div class="card-content">'+
+                '<span class="card-title grey-text text-darken-4">Edit a note</span>'+
+                '<div class="input-field col s12">'+
+                  '<input type="text" id="title" value="'+note.title+'">'+
+                  '<label for="title">Title</label>'+
+                '</div>'+
+                '<div class="input-field col s12">'+
+                  '<textarea class="materialize-textarea">'+note.content+'</textarea>'+
+                  '<label>Content of your note</label>'+
+                '</div>'+
+                '<div class="clear"></div>'+
+            '</div>'+
+            '<div class="card-action center-align">'+
+              '<button class="btn waves-effect waves-light" type="submit" name="action">Submit<i class="mdi-content-send right"></i></button>'+
+            '</div>'+
+          '</div>'+
+        '</form>';
 
-     $('#note-'+id+' .tags').tagsInput({
+     $('#note-'+id).html(editForm);
+
+     // FIXME : bug in materialize framework with autofill
+     $('#note-'+id+' label').addClass('active');
+
+     // TODO : tag input
+    /* $('#note-'+id+' .tags').tagsInput({
        'height': 'auto',
        'width' : 'auto',
-      });
+      });*/
     },
 
     /**
@@ -494,7 +512,7 @@ noteManager.prototype = {
     },
 
     /**
-     * Show the notes containing the selecetd tag
+     * Show the notes containing the selected tag
      * @param  {string} tag 
      */
     searchByTag: function(tag){
