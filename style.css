@@ -59,7 +59,6 @@ main .container button.btn-floating{
 	right: 18%;
 }
 
-
 .card i.mdi-navigation-close{
 	cursor: pointer;
 }
@@ -74,4 +73,17 @@ div[id^="note-"] button i{
 
 div[id^="note-"] .card-action{
 	padding: 15px 20px;
+}
+
+.video iframe{
+	width: 100%;
+	height: 250px;
+}
+
+.card a{
+	color: #1565c0;
+}
+
+.card a:hover{
+	color: #64b5f6;
 }

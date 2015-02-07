@@ -42,77 +42,16 @@ noteManager.prototype = {
 
       $('#new-note').on('click', function(){
         if (!$('#new-note-form').length) {
-           that.newForm();
+          that.newForm();
+          $("html, body").animate({
+            scrollTop: 0
+          }, 600);
           $('.card .mdi-navigation-close').on('click', function(){
             // TODO : Animate opacity
             $(this).closest('form').remove();
           });
         };
       });
-
-      /* Export to Dropbox
-       * /!\  Can't save a file from localhost (Dropbox need access to the server)
-       */
-      $('#dropbox-export').on('click', $.proxy(function(){
-        if (Dropbox.isBrowserSupported()) {
-
-          var id = this.createJSONfile(localStorage.getItem("WebNotes"));
-          var that = this;
-          
-          id.success(function(id){
-            var dropboxOptions = {
-              files: [
-                  {'url': document.URL+'/temp/WebNotes-'+id+'.json', 'filename': 'WebNotes.json'},
-              ],
-              error: function (errorMessage) {
-                alert('An error occured, try again later.\nSorry for the inconvenience.');
-                console.log('Error when saving to Dropbox: '+errorMessage);
-              }
-            };
-
-            Dropbox.save(dropboxOptions);
-          });
-
-          id.error(function(){
-            alert('An error occured, try again later.\nSorry for the inconvenience.');
-            console.log('Error generating JSON');
-          });
-        }else{
-          alert("Your browser is not supported by the Dropbox API, it's probably time to update your browser, check : \n\noutdatedbrowser.com");
-        }
-
-      }, this));
-
-      // Import from Dropbox  
-      $('#dropbox-import').on('click', $.proxy(function(){
-
-        if (Dropbox.isBrowserSupported()) {
-
-          var that = this;
-          var options = {
-            // Required. Called when a user selects an item in the Chooser.
-            success: function(files) {
-                $.get( files[0].link, function( data ) {
-                  localStorage.setItem("WebNotes", data);
-                  $('div[id^="note-"]').remove();
-                  that.displayNotes();
-                });
-            },
-            // Direct link to the content of the file
-            linkType: "direct",
-            multiselect: false,
-            // User will be able to select only json files
-            extensions: ['.json'],
-          };
-
-          if (confirm("This will erase all your current notes and replace them by the ones you choose to import, are you sure ?")) {
-            Dropbox.choose(options);
-          }
-        }else{
-          alert("Your browser is not supported by the Dropbox API, it's probably time to update your browser, check : \n\noutdatedbrowser.com");
-        }
-
-      }, this));
 
       // Delete all notes
       $('#delete').on('click', $.proxy(function(){
@@ -180,10 +119,77 @@ noteManager.prototype = {
       // Text search
       $('#search-input').on('keyup', function(){
         var value = $(this).val();
-        $('div.note').hide();
-        $('div.note:contains("'+value+'")').show();
+        $('div[id^="note-"]').hide();
+        $('div[id^="note-"]:contains("'+value+'")').show();
       });
-    },
+
+
+       /* Export to Dropbox
+       * /!\  Can't save a file from localhost (Dropbox need access to the server)
+       */
+      $('#dropbox-export').on('click', $.proxy(function(){
+        if (Dropbox.isBrowserSupported()) {
+
+          var id = this.createJSONfile(localStorage.getItem("WebNotes"));
+          var that = this;
+          
+          id.success(function(id){
+            var dropboxOptions = {
+              files: [
+                  {'url': document.URL+'/temp/WebNotes-'+id+'.json', 'filename': 'WebNotes.json'},
+              ],
+              error: function (errorMessage) {
+                alert('An error occured, try again later.\nSorry for the inconvenience.');
+                console.log('Error when saving to Dropbox: '+errorMessage);
+              }
+            };
+
+            Dropbox.save(dropboxOptions);
+          });
+
+          id.error(function(){
+            alert('An error occured, try again later.\nSorry for the inconvenience.');
+            console.log('Error generating JSON');
+          });
+        }else{
+          alert("Your browser is not supported by the Dropbox API, it's probably time to update your browser, check : \n\noutdatedbrowser.com");
+        }
+
+      }, this));
+
+      // Import from Dropbox  
+      $('#dropbox-import').on('click', $.proxy(function(){
+
+        if (Dropbox.isBrowserSupported()) {
+
+          var that = this;
+          var options = {
+            // Required. Called when a user selects an item in the Chooser.
+            success: function(files) {
+                $.get( files[0].link, function( data ) {
+                  localStorage.setItem("WebNotes", data);
+                  $('div[id^="note-"]').remove();
+                  that.displayNotes();
+                });
+            },
+            // Direct link to the content of the file
+            linkType: "direct",
+            multiselect: false,
+            // User will be able to select only json files
+            extensions: ['.json'],
+          };
+
+          if (confirm("This will erase all your current notes and replace them by the ones you choose to import, are you sure ?")) {
+            Dropbox.choose(options);
+          }
+        }else{
+          alert("Your browser is not supported by the Dropbox API, it's probably time to update your browser, check : \n\noutdatedbrowser.com");
+        }
+
+      }, this));
+
+
+    }, // End plugEvents
 
 
     /******************
@@ -634,7 +640,7 @@ noteManager.prototype = {
           case 'youtu.be':
             s = this.getYoutubeId(s);
             var iframe = '<iframe id="" type="text/html" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
-            $('#note-'+id+' h2').after(iframe);
+             $('#note-'+id+' .card').prepend(iframe);
             
             // Add type to note
             notes = $.parseJSON(localStorage.getItem("WebNotes"));
@@ -642,7 +648,8 @@ noteManager.prototype = {
             notes = JSON.stringify(notes);
             localStorage.setItem("WebNotes", notes);
 
-            $('#note-'+id).addClass("medium video");
+            $('#note-'+id).attr('class',"col s12 m4 video");
+             $('#note-'+id+' .card').addClass('red darken-2');
           break;
 
           case 'soundcloud.com':
@@ -651,8 +658,8 @@ noteManager.prototype = {
             });
 
             var track_url = s;
-            SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
-              $('#note-'+id+' h2').after(oEmbed.html);
+            SC.oEmbed(track_url, { auto_play: false, show_comments: false, maxheight: 150 }, function(oEmbed) {
+              $('#note-'+id+' .card').prepend(oEmbed.html);
             });
 
             // Add type to note
@@ -661,7 +668,8 @@ noteManager.prototype = {
             notes = JSON.stringify(notes);
             localStorage.setItem("WebNotes", notes);
 
-            $('#note-'+id).addClass("sound");
+            $('#note-'+id).attr('class',"col s12 m5 sound");
+            $('#note-'+id+' .card').addClass('orange lighten-1');
           break;
 
           case 'imdb.com':
@@ -673,15 +681,18 @@ noteManager.prototype = {
               var regex = /(\(.*\))/;
               movieTitle = movieTitle.replace(regex.exec(movieTitle)[0], '');
 
-              $('#note-'+id).addClass("note small imdb");
-
               var movie = that.getMovie(movieTitle);
               movie.success(function(movie){
                 var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
 
                 // Append the image
-                var img = '<img src="'+url+'" alt="">';
-                $('#note-'+id+' h2').after(img);
+                var img = '<div class="card-image">'+
+                            '<img src="'+url+'" alt="">'+
+                          '</div>';
+                
+                $('#note-'+id+' .card').prepend(img);
+                $('#note-'+id).attr('class', 'col s12 m4');
+                $('#note-'+id+' .card').addClass('amber lighten-1');
 
                 // Change note url to image URL instead of IMDB's one
                 // so that there is juste one API call (first time the note is saved)
@@ -690,8 +701,6 @@ noteManager.prototype = {
                 notes[id].type = "movie";
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
-
-                $('#note-'+id).addClass("movie");
               });
             });
           break;
@@ -707,8 +716,13 @@ noteManager.prototype = {
                 var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
                 
                 // Append the image
-                var img = '<img src="'+url+'" alt="">';
-                $('#note-'+id+' h2').after(img);
+                var img = '<div class="card-image">'+
+                            '<img src="'+url+'" alt="">'+
+                          '</div>';
+                
+                $('#note-'+id+' .card').prepend(img);
+                $('#note-'+id).attr('class', 'col s12 m4');
+                $('#note-'+id+' .card').addClass('amber lighten-1');
 
                 // Change note url to image URL instead of Allocine's one
                 // so that there is juste one API call (first time the note is saved)
@@ -717,8 +731,6 @@ noteManager.prototype = {
                 notes[id].type = "movie";
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
-
-                $('#note-'+id).addClass("small movie");
               });
             });
           break;
@@ -727,8 +739,13 @@ noteManager.prototype = {
           case 'jpg':
           case 'png':
           case 'gif':
-            var img = '<img src="'+s+'" alt="">';
-            $('#note-'+id+' h2').after(img);
+            var img = '<div class="card-image">'+
+                        '<img src="'+s+'" alt="">'+
+                      '</div>';
+                
+            $('#note-'+id+' .card').prepend(img);
+            $('#note-'+id).attr('class', 'col s12 m4');
+            // FIXME : only for movies 
 
             //  Add type to note (on 2nd call, movies are handled like images
             //  so we need to test if the type is not already defined 
@@ -740,19 +757,8 @@ noteManager.prototype = {
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
               }
-
-              $('#note-'+id+' img').load(function(){
-                var imgWidth = $(this).width();
-                if(imgWidth>700){
-                  $('#note-'+id).addClass("large image");
-                }else if(imgWidth>400){
-                  $('#note-'+id).addClass("medium image");
-                }else if(imgWidth>256){
-                  $('#note-'+id).addClass("small image");
-                }else{
-                  $('#note-'+id).addClass("small image noresize");
-                }
-              });
+            }else{
+              $('#note-'+id+' .card').addClass('amber lighten-1');
             }
             
           break;
