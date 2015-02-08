@@ -26,7 +26,7 @@ noteManager.prototype = {
       // Save note and display it 
       $(document).on('click', 'button[type="submit"]', function(e){
         e.preventDefault();
-        var form = $(this).closest('form')
+        var form = $(this).closest('form');
         var note = that.getNote(form);
         if (note.content !== '' || note.title !== '') {
           that.saveNote(note);
@@ -50,7 +50,7 @@ noteManager.prototype = {
             // TODO : Animate opacity
             $(this).closest('form').remove();
           });
-        };
+        }
       });
 
       // Delete all notes
@@ -131,7 +131,6 @@ noteManager.prototype = {
         if (Dropbox.isBrowserSupported()) {
 
           var id = this.createJSONfile(localStorage.getItem("WebNotes"));
-          var that = this;
           
           id.success(function(id){
             var dropboxOptions = {
@@ -607,10 +606,10 @@ noteManager.prototype = {
      * Display all notes in reverse order : old ones first
      */
     reverseOrder: function() {
-      $('main > div:not(#takeNotes)').each(function() {
+      $('main .container .row > div:not(#new-note-form)').each(function() {
         $(this).prependTo(this.parentNode);
       });
-      $('main').prepend($('#takeNotes'));
+      $('main .container .row').prepend($('#new-note-form'));
     },
 
 
