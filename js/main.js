@@ -24,7 +24,7 @@ noteManager.prototype = {
       var that = this;
 
       // Save note and display it 
-      $(document).on('click', 'button[type="submit"]', function(e){
+      $(document).on('click', '#new-note-form button[type="submit"]', function(e){
         e.preventDefault();
         var form = $(this).closest('form');
         var note = that.getNote(form);
@@ -72,21 +72,21 @@ noteManager.prototype = {
       // Edit a note
       $(document).on('click', 'div[id^="note-"] button.edit', function(){
         var id = $(this).parents('div[id^="note-"]').attr('id');
+        // FIXME wrong id if deleting a note before trying to edit another :
+        // note's id changes in localstorage but not in the DOM
         id = id.substr(5, id.length);
         that.editNote(id);
       });
 
       // Only when editing a note
-      $(document).on('click', '.note button[type="submit"]', function(e){
+      $(document).on('click', '#edit-note-form button[type="submit"]', function(e){
         e.preventDefault();
-
-        var note = that.getNote($(this).closest('form'));
+        var form = $(this).closest('form');
+        var note = that.getNote(form);
         that.saveNote(note);
 
-        var id = $(this).closest('form').parent().attr('id');
-        id = id.substr(5, id.length);
+        var id = $(form).data("note-id");
         that.deleteSingleNote(id);
-
         that.displaySingleNote(note);
       });
 
@@ -202,7 +202,7 @@ noteManager.prototype = {
           '<div class="card-content">'+
               '<span class="card-title grey-text text-darken-4">Add a new note<i class="mdi-navigation-close right"></i></span>'+
               '<div class="input-field col s12">'+
-                '<input type="text" id="title">'+
+                '<input type="text" id="title" autofocus>'+
                 '<label for="title">Title</label>'+
               '</div>'+
               '<div class="input-field col s12">'+
@@ -446,11 +446,13 @@ noteManager.prototype = {
      * @param  {int} id  ID of the note to be edited
      */
     editNote: function(id) {
+      console.log(id);
       var notes = $.parseJSON(localStorage.getItem("WebNotes"));
       var note = notes[id];
+      console.log(notes);
 
       var editForm = 
-        '<form class="col s12" id="edit-note-form">'+
+        '<form class="col s12" id="edit-note-form" data-note-id="'+id+'">'+
           '<div class="card">'+
             '<div class="card-content">'+
                 '<span class="card-title grey-text text-darken-4">Edit a note</span>'+
