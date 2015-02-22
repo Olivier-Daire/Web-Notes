@@ -196,7 +196,7 @@ noteManager.prototype = {
     ******************/
     // TODO : Add tags field
     newForm: function(){
-      formHTML = 
+      var formHTML = 
       '<form class="col s12 m3" id="new-note-form">'+
         '<div class="card">'+
           '<div class="card-content">'+
@@ -227,15 +227,15 @@ noteManager.prototype = {
      * @return {JSON}   Note as JSON object  
      */
     getNote: function(form) {
-      var title = form.find('#title').val(),
-          content = form.find('textarea').val(),
-          url = this.containsURL(content);
-          today = this.formatDate(),
-          date = today[0],
-          time = today[1],
+      var title = form.find('#title').val();
+      var content = form.find('textarea').val();
+      var url = this.containsURL(content);
+      var today = this.formatDate();
+      var date = today[0];
+      var time = today[1];
           // FIXME
           //tags = this.formatTags(form.find('.tags').val());
-            tags = '';
+      var tags = '';
 
       var note = this.formatNote(title, content, date, time, tags, url);
       return note;
@@ -307,7 +307,7 @@ noteManager.prototype = {
           // Replace url in text by a link
           var url = this.containsURL(notes[i].content);
           if (typeof url !== undefined) {
-            regexp = /^(www)/;
+            var regexp = /^(www)/;
             if (regexp.exec(url)) {
               if (notes[i].type === "video" || notes[i].type === "sound"){
                 notes[i].content = notes[i].content.replace(url, '');  
@@ -374,7 +374,7 @@ noteManager.prototype = {
       // Replace url in text by a link
       var url = this.containsURL(note.content);
       if (typeof url !== undefined) {
-        regexp = /^(www)/;
+        var regexp = /^(www)/;
         if (regexp.exec(url)) {
           var urlWithoutProtocol = url;
           url = 'http://'+url;
@@ -446,10 +446,8 @@ noteManager.prototype = {
      * @param  {int} id  ID of the note to be edited
      */
     editNote: function(id) {
-      console.log(id);
       var notes = $.parseJSON(localStorage.getItem("WebNotes"));
       var note = notes[id];
-      console.log(notes);
 
       var editForm = 
         '<form class="col s12" id="edit-note-form" data-note-id="'+id+'">'+
@@ -634,6 +632,8 @@ noteManager.prototype = {
      */
     generateWidget: function(id, s) {
       var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
+      var that = this;
+      var movieTitle;
 
       if (regexp.exec(s)) {
         switch (regexp.exec(s)[0]) {
@@ -644,7 +644,7 @@ noteManager.prototype = {
              $('#note-'+id+' .card').prepend(iframe);
             
             // Add type to note
-            notes = $.parseJSON(localStorage.getItem("WebNotes"));
+            var notes = $.parseJSON(localStorage.getItem("WebNotes"));
             notes[id].type = "video";
             notes = JSON.stringify(notes);
             localStorage.setItem("WebNotes", notes);
@@ -674,8 +674,7 @@ noteManager.prototype = {
           break;
 
           case 'imdb.com':
-            var movieTitle = this.getTitleFromUrl(s);
-            var that = this;
+            movieTitle = this.getTitleFromUrl(s);
 
             movieTitle.success(function(movieTitle){
               // Remove year from title 
@@ -707,8 +706,7 @@ noteManager.prototype = {
           break;
 
           case 'allocine.fr':
-            var movieTitle = this.getTitleFromUrl(s);
-            var that = this;
+            movieTitle = this.getTitleFromUrl(s);
 
             movieTitle.success(function(movieTitle){
               var movie = that.getMovie(movieTitle);
@@ -791,7 +789,7 @@ noteManager.prototype = {
      */
     getTitleFromUrl: function(url) {
       // If link starts with www add protocol (http) to it
-      regexp = /^(www)/;
+      var regexp = /^(www)/;
       if (regexp.exec(url)) {
         url = 'http://'+url;
       }
