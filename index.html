@@ -17,13 +17,13 @@
 		    <nav class="indigo darken-1">
 		    	<div class="container">
 			      	<div class="nav-wrapper">
-				          	<a href="#!" class="brand-logo"><img src="img/logo.png" alt="CrossNotes's logo"></a>
+				          	<a href="#!" class="brand-logo"><h1>CROSSNOTES</h1></a>
 				          	<div class="right side-nav">
 				            	<button id="sort" title="Sort by date"><i class="small mdi-content-sort"></i></button>
 								<button id="search-by-tag"  title="Search by tag" class="dropdown-button" data-activates="dropdown1"><i class="small mdi-action-label-outline"></i></button>
-								<ul id="dropdown1" class="dropdown-content">
+								<!-- <ul id="dropdown1" class="dropdown-content">
 									You have currently no notes with a tag, add tags to your notes !
-								</ul>
+								</ul> -->
 								<button id="search" class="dropdown-button" data-activates="dropdown2"><i class="small mdi-action-search"></i></button>
 								<div id="dropdown2" class="dropdown-content">
 									<div class="input-field">
@@ -79,16 +79,15 @@
 		 'width' : 'auto',
 		});*/
 
-  $(".dropdown-button").dropdown({
-      inDuration: 300,
-      outDuration: 225,
-      constrain_width: false, // Does not change width of dropdown to that of the activator
-      hover: false, // Activate on click
-      alignment: "left", // Aligns dropdown to left or right edge (works with constrain_width)
-      gutter: 0, // Spacing from edge
-      belowOrigin: true,
-    }
-  );
+		$(".dropdown-button").dropdown({
+	      inDuration: 300,
+	      outDuration: 225,
+	      constrain_width: false, // Does not change width of dropdown to that of the activator
+	      hover: false, // Activate on click
+	      alignment: "left", // Aligns dropdown to left or right edge (works with constrain_width)
+	      gutter: 0, // Spacing from edge
+	      belowOrigin: true,
+	    });
 	</script>
 
 </body>

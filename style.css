@@ -28,8 +28,9 @@ button{
  	END GENERIC TAGS
 ************************/
 
-.brand-logo img{
-	width: 70%;
+.brand-logo h1{
+	margin: 0;
+	font-size: 1.2em;
 }
 
 nav button{

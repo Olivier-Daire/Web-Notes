@@ -65,15 +65,17 @@ noteManager.prototype = {
         if (confirm("This note will be deleted, are you sure ?")) {
           var id = $(this).parents('div[id^="note-"]').attr('id');
           id = id.substr(5, id.length);
-          that.deleteSingleNote(id); 
+          that.deleteSingleNote(id);
+          // Force update of all notes ids
+          // TODO : find a cleaner way to do this 
+          $('div[id^="note-"]').remove();
+          that.displayNotes();
         }
       });
 
       // Edit a note
       $(document).on('click', 'div[id^="note-"] button.edit', function(){
         var id = $(this).parents('div[id^="note-"]').attr('id');
-        // FIXME wrong id if deleting a note before trying to edit another :
-        // note's id changes in localstorage but not in the DOM
         id = id.substr(5, id.length);
         that.editNote(id);
       });
@@ -328,7 +330,6 @@ noteManager.prototype = {
           // Keep line breaks 
           notes[i].content = this.nl2br(notes[i].content);
 
-            // TODO : note id note type
           $('main .container .row').append(
             '<div class="col s12 m3" id="note-'+i+'"><div class="card">'+
               '<div class="card-content">'+
@@ -386,7 +387,6 @@ noteManager.prototype = {
 
       // Keep line breaks 
       note.content = this.nl2br(note.content);
-      // TODO : notesLength as id 
       var noteHTML = '<div class="col s12 m3"  id="note-'+notesLength+'"><div class="card">'+
                         '<div class="card-content">'+
                           '<span class="card-title grey-text text-darken-4">'+note.title+'</span>'+
