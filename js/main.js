@@ -747,7 +747,6 @@ noteManager.prototype = {
                 
             $('#note-'+id+' .card').prepend(img);
             $('#note-'+id).attr('class', 'col s12 m4');
-            // FIXME : only for movies 
 
             //  Add type to note (on 2nd call, movies are handled like images
             //  so we need to test if the type is not already defined 
