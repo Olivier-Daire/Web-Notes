@@ -5,56 +5,67 @@
 	<title>CrossNotes</title>
 	<link rel="icon" type="image/png" href="favicon.png" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="lib/jQuery-Tags-Input/jquery.tagsinput.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="lib/jQuery-Tags-Input/jquery.tagsinput.css" /> -->
+	<link type="text/css" rel="stylesheet" href="lib/materialize/css/materialize.css"  media="screen,projection"/>
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
 	<header>
-
-		<nav>
-			<a href="index.html"><img id="logo" src="img/logo.png" alt="CrossNotes's logo"></a>
-			<div id="buttonGroup">
-				<button id="sort" title="Sort by date"><img src="img/appbar.sort.png" alt="Trier les notes"></button>
-				<div id="tagsIcon"  class="tagsIcon" title="Search by tag"><img src="img/appbar.social.twitter.hashtag.png" alt="Search by tag">
-					<div id="tagsButton">
-						You have currently no notes with a tag, add tags to your notes !
-					</div>
-				</div>
-				<div id="searchIcon" class="searchIcon" ><img src="img/appbar.page.search.png" alt="Rechercher">
-					<div id="searchButton">
-						<input type="text" placeholder="Search by title, content or tag.">
-					</div>
-				</div>
-				<button id="dropbox-import" title="Import from Dropbox"><img src="img/appbar.social.dropbox.download.png" alt="Import from Dropbox"></button>
-				<button id="dropbox-export" title="Export to Dropbox"><img src="img/appbar.social.dropbox.upload.png" alt="Export to Dropbox"></button>
-				<button id="delete" title="Delete all notes"><img src="img/appbar.delete.png" alt="Delete all notes"></button>
-			</div>
-		</nav>
-
+		
+		<div class="navbar-fixed z-depth-1">
+		    <nav class="indigo darken-1">
+		    	<div class="container">
+			      	<div class="nav-wrapper">
+				          	<a href="#!" class="brand-logo"><h1>CROSSNOTES</h1></a>
+				          	<div class="right side-nav">
+				            	<button id="sort" title="Sort by date"><i class="small mdi-content-sort"></i></button>
+								<button id="search-by-tag"  title="Search by tag" class="dropdown-button" data-activates="dropdown1"><i class="small mdi-action-label-outline"></i></button>
+								<!-- <ul id="dropdown1" class="dropdown-content">
+									You have currently no notes with a tag, add tags to your notes !
+								</ul> -->
+								<button id="search" class="dropdown-button" data-activates="dropdown2"><i class="small mdi-action-search"></i></button>
+								<div id="dropdown2" class="dropdown-content">
+									<div class="input-field">
+										<input id="search-input" type="text">
+							    		<label for="search-input">Search</label>
+									</div>
+								</div>
+								<button id="dropbox-export" title="Export to Dropbox"><i class="small mdi-file-cloud-upload"></i></button>
+								<button id="dropbox-import" title="Import from Dropbox"><i class="small mdi-file-cloud-download"></i></button>
+								<button id="delete" title="Delete all notes"><i class="small mdi-action-delete"></i></button>
+				          	</div>
+			    	</div>
+		    	</div>
+			</nav>
+		</div>
+		
 	</header>
 
 
-	<div id="main">
+	<main>
 
-		<div id="takeNotes">
-			<form>
-				<input type="text" class="title" placeholder="Your title">
-				<textarea placeholder="Your content"></textarea>
-				<input name="tags" class="tags" value="" placeholder="Your tags"/>
-				<button type="submit">Submit note</button>
-			</form>
+		<div class="container">
+			<div class="row">
+
+
+		    </div>
+					
+		 	<button id="new-note" class="btn-floating btn-large waves-effect waves-light pink z-depth-2"><i class="mdi-content-add"></i></button>
 		</div>
-	</div>
+
+	</main>
 
 	<footer>
-		CrossNotes - copyright 2015
+		<div class="container center-align">
+			CrossNotes - copyright 2015
+		</div>
 	</footer>
 
 	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript" src="lib/materialize/js/materialize.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
-	<script src="lib/jQuery-Tags-Input/jquery.tagsinput.js"></script>
+	<!-- <script src="lib/jQuery-Tags-Input/jquery.tagsinput.js"></script> -->
 	<script src="http://connect.soundcloud.com/sdk.js"></script>
 	<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="thas943csc5s4tu"></script>
 	<script type="text/javascript">
@@ -63,10 +74,20 @@
 		});
 		noteManager.init();
 
-		$('.tags').tagsInput({
+/*		$('.tags').tagsInput({
 		 'height': 'auto',
 		 'width' : 'auto',
-		});
+		});*/
+
+		$(".dropdown-button").dropdown({
+	      inDuration: 300,
+	      outDuration: 225,
+	      constrain_width: false, // Does not change width of dropdown to that of the activator
+	      hover: false, // Activate on click
+	      alignment: "left", // Aligns dropdown to left or right edge (works with constrain_width)
+	      gutter: 0, // Spacing from edge
+	      belowOrigin: true,
+	    });
 	</script>
 
 </body>

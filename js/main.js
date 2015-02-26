@@ -24,13 +24,15 @@ noteManager.prototype = {
       var that = this;
 
       // Save note and display it 
-      $('button[type="submit"]').on('click', function(e){
+      $(document).on('click', '#new-note-form button[type="submit"]', function(e){
         e.preventDefault();
-
-        var note = that.getNote($(this).closest('form'));
+        var form = $(this).closest('form');
+        var note = that.getNote(form);
         if (note.content !== '' || note.title !== '') {
           that.saveNote(note);
-          that.clearForm();
+          //that.clearForm();
+          // TODO : animate opacity
+          form.remove();
           that.displaySingleNote(note);
         }else{
           alert("You can't submit an empty note !");
@@ -38,14 +40,99 @@ noteManager.prototype = {
 
       });
 
-      /* Export to Dropbox
+      $('#new-note').on('click', function(){
+        if (!$('#new-note-form').length) {
+          that.newForm();
+          $("html, body").animate({
+            scrollTop: 0
+          }, 600);
+          $('.card .mdi-navigation-close').on('click', function(){
+            // TODO : Animate opacity
+            $(this).closest('form').remove();
+          });
+        }
+      });
+
+      // Delete all notes
+      $('#delete').on('click', $.proxy(function(){
+        if (confirm("All notes will be deleted, are you sure ?")) {
+          this.deleteNotes();
+        }
+      }, this));
+
+      // Delete a note
+      $(document).on('click', 'div[id^="note-"] button.delete', function(){
+        if (confirm("This note will be deleted, are you sure ?")) {
+          var id = $(this).parents('div[id^="note-"]').attr('id');
+          id = id.substr(5, id.length);
+          that.deleteSingleNote(id);
+          // Force update of all notes ids
+          // TODO : find a cleaner way to do this 
+          $('div[id^="note-"]').remove();
+          that.displayNotes();
+        }
+      });
+
+      // Edit a note
+      $(document).on('click', 'div[id^="note-"] button.edit', function(){
+        var id = $(this).parents('div[id^="note-"]').attr('id');
+        id = id.substr(5, id.length);
+        that.editNote(id);
+      });
+
+      // Only when editing a note
+      $(document).on('click', '#edit-note-form button[type="submit"]', function(e){
+        e.preventDefault();
+        var form = $(this).closest('form');
+        var note = that.getNote(form);
+        that.saveNote(note);
+
+        var id = $(form).data("note-id");
+        that.deleteSingleNote(id);
+        that.displaySingleNote(note);
+      });
+
+      // Sort by time
+      $('#sort').on('click', $.proxy(function(e){
+        e.preventDefault();
+        this.reverseOrder();
+      }, this));
+
+      // Sort by tag 
+      $(document).on('click', '.note span[id^="tag-"], #tagsButton span', function(){
+        var tag = $(this).text();
+        that.searchByTag(tag);
+      });
+
+      // Tag search
+      $('#search-by-tag').on('mouseenter', $.proxy(function(){
+        var tags = this.getAllTags();
+
+        if (tags) {
+          var html = this.displayAllTags(tags);  
+
+          if (html !== '') {
+            $('#tagsButton').html(html);
+          }
+        }
+        
+      }, this));
+
+      // Text search
+      $('#search-input').on('keyup', function(){
+        var value = $(this).val();
+        $('div[id^="note-"]').hide();
+        $('div[id^="note-"]:contains("'+value+'")').show();
+      });
+
+
+       /* Export to Dropbox
        * /!\  Can't save a file from localhost (Dropbox need access to the server)
        */
       $('#dropbox-export').on('click', $.proxy(function(){
         if (Dropbox.isBrowserSupported()) {
 
           var id = this.createJSONfile(localStorage.getItem("WebNotes"));
-          var that = this;
           
           id.success(function(id){
             var dropboxOptions = {
@@ -102,81 +189,39 @@ noteManager.prototype = {
 
       }, this));
 
-      // Delete all notes
-      $('#delete').on('click', $.proxy(function(){
-        if (confirm("All notes will be deleted, are you sure ?")) {
-          this.deleteNotes();
-        }
-      }, this));
 
-      // Delete a note
-      $(document).on('click', '.note button.delete', function(){
-        if (confirm("This note will be deleted, are you sure ?")) {
-          var id = $(this).parent().attr('id');
-          id = id.substr(5, id.length);
-          that.deleteSingleNote(id); 
-        }
-      });
-
-      // Edit a note
-      $(document).on('click', '.note button.edit', function(){
-        var id = $(this).parent().attr('id');
-        id = id.substr(5, id.length);
-        that.editNote(id);
-      });
-
-      // Only when editing a note
-      $(document).on('click', '.note button[type="submit"]', function(e){
-        e.preventDefault();
-
-        var note = that.getNote($(this).closest('form'));
-        that.saveNote(note);
-
-        var id = $(this).closest('form').parent().attr('id');
-        id = id.substr(5, id.length);
-        that.deleteSingleNote(id);
-
-        that.displaySingleNote(note);
-      });
-
-      // Sort by time
-      $('#sort').on('click', $.proxy(function(e){
-        e.preventDefault();
-        this.reverseOrder();
-      }, this));
-
-      // Sort by tag 
-      $(document).on('click', '.note span[id^="tag-"], #tagsButton span', function(){
-        var tag = $(this).text();
-        that.searchByTag(tag);
-      });
-
-      // Tag search
-      $('#tagsIcon').on('mouseenter', $.proxy(function(){
-        var tags = this.getAllTags();
-
-        if (tags) {
-          var html = this.displayAllTags(tags);  
-
-          if (html !== '') {
-            $('#tagsButton').html(html);
-          }
-        }
-        
-      }, this));
-
-      // Text search
-      $('#searchIcon input').on('keyup', function(){
-        var value = $(this).val();
-        $('div.note').hide();
-        $('div.note:contains("'+value+'")').show();
-      });
-    },
+    }, // End plugEvents
 
 
     /******************
       CORE FUNCTIONS
     ******************/
+    // TODO : Add tags field
+    newForm: function(){
+      var formHTML = 
+      '<form class="col s12 m3" id="new-note-form">'+
+        '<div class="card">'+
+          '<div class="card-content">'+
+              '<span class="card-title grey-text text-darken-4">Add a new note<i class="mdi-navigation-close right"></i></span>'+
+              '<div class="input-field col s12">'+
+                '<input type="text" id="title" autofocus>'+
+                '<label for="title">Title</label>'+
+              '</div>'+
+              '<div class="input-field col s12">'+
+                '<textarea class="materialize-textarea"></textarea>'+
+                '<label>Content of your note</label>'+
+              '</div>'+
+              '<div class="clear"></div>'+
+          '</div>'+
+          '<div class="card-action center-align">'+
+            '<button class="btn waves-effect waves-light" type="submit" name="action">Submit<i class="mdi-content-send right"></i></button>'+
+          '</div>'+
+        '</div>'+
+      '</form>';
+
+      $('main .container .row').prepend(formHTML);
+    },
+
 
     /**
      * Get form data and return it as a JSON object
@@ -184,13 +229,15 @@ noteManager.prototype = {
      * @return {JSON}   Note as JSON object  
      */
     getNote: function(form) {
-      var title = form.find('.title').val(),
-          content = form.find('textarea').val(),
-          url = this.containsURL(content);
-          today = this.formatDate(),
-          date = today[0],
-          time = today[1],
-          tags = this.formatTags(form.find('.tags').val());
+      var title = form.find('#title').val();
+      var content = form.find('textarea').val();
+      var url = this.containsURL(content);
+      var today = this.formatDate();
+      var date = today[0];
+      var time = today[1];
+          // FIXME
+          //tags = this.formatTags(form.find('.tags').val());
+      var tags = '';
 
       var note = this.formatNote(title, content, date, time, tags, url);
       return note;
@@ -262,7 +309,7 @@ noteManager.prototype = {
           // Replace url in text by a link
           var url = this.containsURL(notes[i].content);
           if (typeof url !== undefined) {
-            regexp = /^(www)/;
+            var regexp = /^(www)/;
             if (regexp.exec(url)) {
               if (notes[i].type === "video" || notes[i].type === "sound"){
                 notes[i].content = notes[i].content.replace(url, '');  
@@ -283,15 +330,19 @@ noteManager.prototype = {
           // Keep line breaks 
           notes[i].content = this.nl2br(notes[i].content);
 
-          $('#main').append(
-            '<div id="note-'+i+'" class="note '+notes[i].type+'">'+
-              '<h2>'+notes[i].title+'</h2>'+
-              '<p>'+notes[i].content+'</p>'+
-              '<div class="tools">'+ tags +'</div>'+
-              '<i>'+notes[i].date+' - '+notes[i].time+'</i>'+
-              '<button class="toolsButton edit"></button>'+
-              '<button class="toolsButton delete"></button>'+
-            '</div>'
+          $('main .container .row').append(
+            '<div class="col s12 m3" id="note-'+i+'"><div class="card">'+
+              '<div class="card-content">'+
+                '<span class="card-title grey-text text-darken-4">'+notes[i].title+'</span>'+
+                '<p>'+notes[i].content+'</p>'+
+              '</div>'+
+              '<div class="card-action">'+
+                '<div class="tools">'+ tags +'</div>'+
+                '<i class="date">'+notes[i].date+' - '+notes[i].time+'</i>'+
+                '<span class="right grey-text text-darken-1"><button class="edit"><i class="small mdi-editor-mode-edit"></i></button>'+
+                '<button class="delete"><i class="small mdi-action-delete"></i></button></span>'+
+              '</div>'+
+            '</div></div>'
           );
 
           if (notes[i].url) {
@@ -324,7 +375,7 @@ noteManager.prototype = {
       // Replace url in text by a link
       var url = this.containsURL(note.content);
       if (typeof url !== undefined) {
-        regexp = /^(www)/;
+        var regexp = /^(www)/;
         if (regexp.exec(url)) {
           var urlWithoutProtocol = url;
           url = 'http://'+url;
@@ -336,20 +387,23 @@ noteManager.prototype = {
 
       // Keep line breaks 
       note.content = this.nl2br(note.content);
-
-      var noteHTML =  '<div id="note-'+notesLength+'" class="note">'+
-                        '<h2>'+note.title+'</h2>'+
-                        '<p>'+note.content+'</p>'+
-                        '<div class="tools">'+ tags +'</div>'+
-                        '<i>'+note.date+' - '+note.time+'</i>'+
-                        '<button class="toolsButton edit"></button>'+
-                        '<button class="toolsButton delete"></button>'+
-                      '</div>';
+      var noteHTML = '<div class="col s12 m3"  id="note-'+notesLength+'"><div class="card">'+
+                        '<div class="card-content">'+
+                          '<span class="card-title grey-text text-darken-4">'+note.title+'</span>'+
+                          '<p>'+note.content+'</p>'+
+                        '</div>'+
+                        '<div class="card-action">'+
+                          '<div class="tools">'+ tags +'</div>'+
+                          '<i class="date">'+note.date+' - '+note.time+'</i>'+
+                          '<span class="right grey-text text-darken-1"><button class="edit"><i class="small mdi-editor-mode-edit"></i></button>'+
+                          '<button class="delete"><i class="small mdi-action-delete"></i></button></span>'+
+                        '</div>'+
+                      '</div></div>';
 
       if (this.options.defaultSort === "older") {
-        $('#main').append(noteHTML);  
+        $('main .container .row').append(noteHTML);  
       }else{
-        $('#takeNotes').after(noteHTML);
+        $('main .container .row').prepend(noteHTML);
       }
       
       if (note.url) {
@@ -370,7 +424,7 @@ noteManager.prototype = {
     deleteNotes: function() {
       localStorage.removeItem("WebNotes");
       $('div[id^="note-"]').remove();
-      $('#tagsButton').html('You have currently no notes with a tag, add tags to your notes !');
+      $('#dropdown1').html('You have currently no notes with a tag, add tags to your notes !');
     },
 
     /**
@@ -395,19 +449,37 @@ noteManager.prototype = {
       var notes = $.parseJSON(localStorage.getItem("WebNotes"));
       var note = notes[id];
 
-     $('#note-'+id).html(
-        '<form>'+
-          '<input type="text" class="title" value="'+note.title+'">'+
-          '<textarea>'+note.content+'</textarea>'+
-          '<input name="tags" class="tags" value="'+note.tags+'" />'+
-          '<button type="submit">Save</button>'+
-        '</form>'
-      );
+      var editForm = 
+        '<form class="col s12" id="edit-note-form" data-note-id="'+id+'">'+
+          '<div class="card">'+
+            '<div class="card-content">'+
+                '<span class="card-title grey-text text-darken-4">Edit a note</span>'+
+                '<div class="input-field col s12">'+
+                  '<input type="text" id="title" value="'+note.title+'">'+
+                  '<label for="title">Title</label>'+
+                '</div>'+
+                '<div class="input-field col s12">'+
+                  '<textarea class="materialize-textarea">'+note.content+'</textarea>'+
+                  '<label>Content of your note</label>'+
+                '</div>'+
+                '<div class="clear"></div>'+
+            '</div>'+
+            '<div class="card-action center-align">'+
+              '<button class="btn waves-effect waves-light" type="submit" name="action">Submit<i class="mdi-content-send right"></i></button>'+
+            '</div>'+
+          '</div>'+
+        '</form>';
 
-     $('#note-'+id+' .tags').tagsInput({
+     $('#note-'+id).html(editForm);
+
+     // FIXME : bug in materialize framework with autofill
+     $('#note-'+id+' label').addClass('active');
+
+     // TODO : tag input
+    /* $('#note-'+id+' .tags').tagsInput({
        'height': 'auto',
        'width' : 'auto',
-      });
+      });*/
     },
 
     /**
@@ -445,7 +517,7 @@ noteManager.prototype = {
     },
 
     /**
-     * Show the notes containing the selecetd tag
+     * Show the notes containing the selected tag
      * @param  {string} tag 
      */
     searchByTag: function(tag){
@@ -457,13 +529,13 @@ noteManager.prototype = {
     /******************
      TOOLKIT FUNCTIONS
     ******************/
-
-    clearForm: function() {
+    // Useless ?
+    /*clearForm: function() {
       $('form input.title, form textarea').val('');
       $('div.tagsinput span').remove();
       $('.tagsInput input').val('');
       $('input.tags').val('');
-    },
+    },*/
 
     /**
      * Get current date and time and format it
@@ -534,10 +606,10 @@ noteManager.prototype = {
      * Display all notes in reverse order : old ones first
      */
     reverseOrder: function() {
-      $('#main > div:not(#takeNotes)').each(function() {
+      $('main .container .row > div:not(#new-note-form)').each(function() {
         $(this).prependTo(this.parentNode);
       });
-      $('#main').prepend($('#takeNotes'));
+      $('main .container .row').prepend($('#new-note-form'));
     },
 
 
@@ -560,22 +632,28 @@ noteManager.prototype = {
      */
     generateWidget: function(id, s) {
       var regexp = /(youtube\.com|youtu\.be|soundcloud\.com|imdb\.com|allocine\.fr|jpe?g|gif|png)/;
+      var that = this;
+      var movieTitle;
 
       if (regexp.exec(s)) {
         switch (regexp.exec(s)[0]) {
           case 'youtube.com':
           case 'youtu.be':
             s = this.getYoutubeId(s);
-            var iframe = '<iframe id="" type="text/html" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
-            $('#note-'+id+' h2').after(iframe);
-            
-            // Add type to note
-            notes = $.parseJSON(localStorage.getItem("WebNotes"));
-            notes[id].type = "video";
-            notes = JSON.stringify(notes);
-            localStorage.setItem("WebNotes", notes);
+            // Only if correct youtube URL
+            if (s !== '') {
+              var iframe = '<iframe id="" type="text/html" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
+               $('#note-'+id+' .card').prepend(iframe);
+              
+              // Add type to note
+              var notes = $.parseJSON(localStorage.getItem("WebNotes"));
+              notes[id].type = "video";
+              notes = JSON.stringify(notes);
+              localStorage.setItem("WebNotes", notes);
 
-            $('#note-'+id).addClass("medium video");
+              $('#note-'+id).attr('class',"col s12 m4 video");
+              $('#note-'+id+' .card').addClass('red darken-2');
+            }
           break;
 
           case 'soundcloud.com':
@@ -584,37 +662,40 @@ noteManager.prototype = {
             });
 
             var track_url = s;
-            SC.oEmbed(track_url, { auto_play: false, show_comments: false }, function(oEmbed) {
-              $('#note-'+id+' h2').after(oEmbed.html);
+            SC.oEmbed(track_url, { auto_play: false, show_comments: false, maxheight: 150 }, function(oEmbed) {
+              $('#note-'+id+' .card').prepend(oEmbed.html);
             });
 
             // Add type to note
-            notes = $.parseJSON(localStorage.getItem("WebNotes"));
+            var notes = $.parseJSON(localStorage.getItem("WebNotes"));
             notes[id].type = "sound";
             notes = JSON.stringify(notes);
             localStorage.setItem("WebNotes", notes);
 
-            $('#note-'+id).addClass("sound");
+            $('#note-'+id).attr('class',"col s12 m5 sound");
+            $('#note-'+id+' .card').addClass('orange lighten-1');
           break;
 
           case 'imdb.com':
-            var movieTitle = this.getTitleFromUrl(s);
-            var that = this;
+            movieTitle = this.getTitleFromUrl(s);
 
             movieTitle.success(function(movieTitle){
               // Remove year from title 
               var regex = /(\(.*\))/;
               movieTitle = movieTitle.replace(regex.exec(movieTitle)[0], '');
 
-              $('#note-'+id).addClass("note small imdb");
-
               var movie = that.getMovie(movieTitle);
               movie.success(function(movie){
                 var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
 
                 // Append the image
-                var img = '<img src="'+url+'" alt="">';
-                $('#note-'+id+' h2').after(img);
+                var img = '<div class="card-image">'+
+                            '<img src="'+url+'" alt="">'+
+                          '</div>';
+                
+                $('#note-'+id+' .card').prepend(img);
+                $('#note-'+id).attr('class', 'col s12 m4');
+                $('#note-'+id+' .card').addClass('amber lighten-1');
 
                 // Change note url to image URL instead of IMDB's one
                 // so that there is juste one API call (first time the note is saved)
@@ -623,15 +704,12 @@ noteManager.prototype = {
                 notes[id].type = "movie";
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
-
-                $('#note-'+id).addClass("movie");
               });
             });
           break;
 
           case 'allocine.fr':
-            var movieTitle = this.getTitleFromUrl(s);
-            var that = this;
+            movieTitle = this.getTitleFromUrl(s);
 
             movieTitle.success(function(movieTitle){
               var movie = that.getMovie(movieTitle);
@@ -640,8 +718,13 @@ noteManager.prototype = {
                 var url = 'http://image.tmdb.org/t/p/w342'+movie.results[0].poster_path;
                 
                 // Append the image
-                var img = '<img src="'+url+'" alt="">';
-                $('#note-'+id+' h2').after(img);
+                var img = '<div class="card-image">'+
+                            '<img src="'+url+'" alt="">'+
+                          '</div>';
+                
+                $('#note-'+id+' .card').prepend(img);
+                $('#note-'+id).attr('class', 'col s12 m4');
+                $('#note-'+id+' .card').addClass('amber lighten-1');
 
                 // Change note url to image URL instead of Allocine's one
                 // so that there is juste one API call (first time the note is saved)
@@ -650,8 +733,6 @@ noteManager.prototype = {
                 notes[id].type = "movie";
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
-
-                $('#note-'+id).addClass("small movie");
               });
             });
           break;
@@ -660,8 +741,12 @@ noteManager.prototype = {
           case 'jpg':
           case 'png':
           case 'gif':
-            var img = '<img src="'+s+'" alt="">';
-            $('#note-'+id+' h2').after(img);
+            var img = '<div class="card-image">'+
+                        '<img src="'+s+'" alt="">'+
+                      '</div>';
+                
+            $('#note-'+id+' .card').prepend(img);
+            $('#note-'+id).attr('class', 'col s12 m4');
 
             //  Add type to note (on 2nd call, movies are handled like images
             //  so we need to test if the type is not already defined 
@@ -673,19 +758,8 @@ noteManager.prototype = {
                 notes = JSON.stringify(notes);
                 localStorage.setItem("WebNotes", notes);
               }
-
-              $('#note-'+id+' img').load(function(){
-                var imgWidth = $(this).width();
-                if(imgWidth>700){
-                  $('#note-'+id).addClass("large image");
-                }else if(imgWidth>400){
-                  $('#note-'+id).addClass("medium image");
-                }else if(imgWidth>256){
-                  $('#note-'+id).addClass("small image");
-                }else{
-                  $('#note-'+id).addClass("small image noresize");
-                }
-              });
+            }else{
+              $('#note-'+id+' .card').addClass('amber lighten-1');
             }
             
           break;
@@ -701,14 +775,12 @@ noteManager.prototype = {
      */
     getYoutubeId: function(url){
       var ID = '';
-      url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-      if(url[2] !== undefined) {
-        ID = url[2].split(/[^0-9a-z_]/i);
-        ID = ID[0];
-      }else{
-        ID = url;
+      var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+      var match = url.match(regExp);
+      if (match && match[7].length == 11){
+        ID = match[7];
       }
-        return ID;
+      return ID;
     },
 
     /**
@@ -717,7 +789,7 @@ noteManager.prototype = {
      */
     getTitleFromUrl: function(url) {
       // If link starts with www add protocol (http) to it
-      regexp = /^(www)/;
+      var regexp = /^(www)/;
       if (regexp.exec(url)) {
         url = 'http://'+url;
       }
