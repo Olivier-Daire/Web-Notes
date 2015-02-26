@@ -641,7 +641,7 @@ noteManager.prototype = {
           case 'youtu.be':
             s = this.getYoutubeId(s);
             // Only if correct youtube URL
-            if (s !== -1) {
+            if (s !== '') {
               var iframe = '<iframe id="" type="text/html" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
                $('#note-'+id+' .card').prepend(iframe);
               
@@ -667,7 +667,7 @@ noteManager.prototype = {
             });
 
             // Add type to note
-            notes = $.parseJSON(localStorage.getItem("WebNotes"));
+            var notes = $.parseJSON(localStorage.getItem("WebNotes"));
             notes[id].type = "sound";
             notes = JSON.stringify(notes);
             localStorage.setItem("WebNotes", notes);
@@ -778,9 +778,7 @@ noteManager.prototype = {
       var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
       var match = url.match(regExp);
       if (match && match[7].length == 11){
-        var ID = match[7];
-      }else{
-        ID = -1;
+        ID = match[7];
       }
       return ID;
     },
