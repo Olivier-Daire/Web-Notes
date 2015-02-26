@@ -640,17 +640,20 @@ noteManager.prototype = {
           case 'youtube.com':
           case 'youtu.be':
             s = this.getYoutubeId(s);
-            var iframe = '<iframe id="" type="text/html" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
-             $('#note-'+id+' .card').prepend(iframe);
-            
-            // Add type to note
-            var notes = $.parseJSON(localStorage.getItem("WebNotes"));
-            notes[id].type = "video";
-            notes = JSON.stringify(notes);
-            localStorage.setItem("WebNotes", notes);
+            // Only if correct youtube URL
+            if (s !== -1) {
+              var iframe = '<iframe id="" type="text/html" src="http://www.youtube.com/embed/'+s+'" frameborder="0"/>';
+               $('#note-'+id+' .card').prepend(iframe);
+              
+              // Add type to note
+              var notes = $.parseJSON(localStorage.getItem("WebNotes"));
+              notes[id].type = "video";
+              notes = JSON.stringify(notes);
+              localStorage.setItem("WebNotes", notes);
 
-            $('#note-'+id).attr('class',"col s12 m4 video");
-             $('#note-'+id+' .card').addClass('red darken-2');
+              $('#note-'+id).attr('class',"col s12 m4 video");
+              $('#note-'+id+' .card').addClass('red darken-2');
+            }
           break;
 
           case 'soundcloud.com':
@@ -773,14 +776,14 @@ noteManager.prototype = {
      */
     getYoutubeId: function(url){
       var ID = '';
-      url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-      if(url[2] !== undefined) {
-        ID = url[2].split(/[^0-9a-z_]/i);
-        ID = ID[0];
+      var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+      var match = url.match(regExp);
+      if (match && match[7].length == 11){
+        var ID = match[7];
       }else{
-        ID = url;
+        ID = -1;
       }
-        return ID;
+      return ID;
     },
 
     /**
